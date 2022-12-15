@@ -9,7 +9,7 @@ export const Product: FC<IProductProps> = ({ product }) => {
   return (
     <div>
       <div>
-        <h2>{product.name}</h2>
+        <h3>{product.name}</h3>
         <div>
           <img src={product.photo[0]} alt="prosuct" />
           <ul>

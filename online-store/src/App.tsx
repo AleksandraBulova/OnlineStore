@@ -10,10 +10,8 @@ function App() {
       <nav>
         <ul>
           {routes.map((route) => (
-            <li>
-              <Link key={route.id} to={route.path}>
-                {route.name}
-              </Link>
+            <li key={route.id}>
+              <Link to={route.path}>{route.name}</Link>
             </li>
           ))}
         </ul>
