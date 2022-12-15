@@ -3,8 +3,11 @@ import { routes } from "./routes";
 import { Link } from "react-router-dom";
 import "./App.css";
 import { MainLayout } from "./layouts/mainLayout";
+import { useSelector } from "react-redux";
 
 function App() {
+  const store = useSelector((store) => store);
+  console.log(store);
   return (
     <BrowserRouter>
       <nav>
