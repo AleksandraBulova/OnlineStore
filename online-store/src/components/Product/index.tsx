@@ -14,9 +14,9 @@ export const Product: FC<IProductProps> = ({ product }) => {
           <img src={product.photo[0]} alt="prosuct" />
           <ul>
             <li>Brand: {product.brand}</li>
-            <li>{product.description}</li>
-            <li>{product.price}$</li>
-            <li>{product.stock}</li>
+            <li>Description: {product.description}</li>
+            <li>Price: {product.price}$</li>
+            <li>Stock: {product.stock}</li>
           </ul>
         </div>
       </div>

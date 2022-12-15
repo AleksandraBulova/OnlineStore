@@ -6,7 +6,7 @@ export const products: IProduct[] = [
     name: "Anthilia",
     brand: "Donnafugata",
     type: "wine",
-    description: "White, dry, 0.75л., 12.5%, Italy, 2021",
+    description: "White, dry, 0.75l., 12.5%, Italy, 2021",
     price: 50,
     stock: 55,
     photo: [
@@ -19,7 +19,7 @@ export const products: IProduct[] = [
     name: "Gran Feudo Crianza",
     brand: "Bodegas Chivite",
     type: "wine",
-    description: "Red, dry, 0.75л., 13%, Spain, 2017",
+    description: "Red, dry, 0.75l., 13%, Spain, 2017",
     price: 65,
     stock: 40,
     photo: [
@@ -32,7 +32,7 @@ export const products: IProduct[] = [
     name: "Clarendelle a par Haut-Brion Rose",
     brand: "Domaine Clarence Dillon",
     type: "wine",
-    description: "Rose, dry, 0.75л., 12%, France, 2021",
+    description: "Rose, dry, 0.75l., 12%, France, 2021",
     price: 45,
     stock: 70,
     photo: [
@@ -45,7 +45,7 @@ export const products: IProduct[] = [
     name: "Hito",
     brand: "Bodegas",
     type: "wine",
-    description: "Red, dry, 0.75л., 14%, Spain, 2020",
+    description: "Red, dry, 0.75l., 14%, Spain, 2020",
     price: 70,
     stock: 35,
     photo: [
@@ -58,7 +58,7 @@ export const products: IProduct[] = [
     name: "Carolina Reserva Pinot Noir",
     brand: "Santa Carolina",
     type: "wine",
-    description: "Red, dry, 0.75л., 13%, Chile, 2020",
+    description: "Red, dry, 0.75l., 13%, Chile, 2020",
     price: 60,
     stock: 100,
     photo: [
@@ -71,7 +71,7 @@ export const products: IProduct[] = [
     name: "Hacienda Lopez de Haro",
     brand: "Reserva",
     type: "wine",
-    description: "Red, dry, 0.75л., 14%, Spain, 2016",
+    description: "Red, dry, 0.75l., 14%, Spain, 2016",
     price: 80,
     stock: 75,
     photo: [
@@ -84,7 +84,7 @@ export const products: IProduct[] = [
     name: "Chardonnay",
     brand: "Fairview",
     type: "wine",
-    description: "White, dry, 0.75л., 13%, South Africa, 2020",
+    description: "White, dry, 0.75l., 13%, South Africa, 2020",
     price: 30,
     stock: 65,
     photo: [
@@ -97,7 +97,7 @@ export const products: IProduct[] = [
     name: "Rosado",
     brand: "Finca Nueva",
     type: "wine",
-    description: "Rose, dry, 0.75л., 13%, Spain, 2019",
+    description: "Rose, dry, 0.75l., 13%, Spain, 2019",
     price: 25,
     stock: 50,
     photo: [
@@ -110,7 +110,7 @@ export const products: IProduct[] = [
     name: "Trigaio",
     brand: "Feudi di San Gregorio",
     type: "wine",
-    description: "Red, dry, 0.75л., 13%, Spain, 2019",
+    description: "Red, dry, 0.75l., 13%, Spain, 2019",
     price: 60,
     stock: 25,
     photo: [
@@ -123,7 +123,7 @@ export const products: IProduct[] = [
     name: "Sedara",
     brand: "Donnafugata",
     type: "wine",
-    description: "Red, dry, 0.75л., 13%, Italy, 2020",
+    description: "Red, dry, 0.75l., 13%, Italy, 2020",
     price: 90,
     stock: 75,
     photo: [
@@ -136,7 +136,7 @@ export const products: IProduct[] = [
     name: "Demuerte Classic",
     brand: "Demuerte",
     type: "wine",
-    description: "Red, semi-dry, 0.75л., 14%, Spain, 2019",
+    description: "Red, semi-dry, 0.75l., 14%, Spain, 2019",
     price: 90,
     stock: 75,
     photo: [
@@ -149,7 +149,7 @@ export const products: IProduct[] = [
     name: "Condado de Oriza Tempranillo",
     brand: "Pagos del Rey",
     type: "wine",
-    description: "Red, dry, 0.75л., 13%, Spain, 2020",
+    description: "Red, dry, 0.75l., 13%, Spain, 2020",
     price: 100,
     stock: 65,
     photo: [
@@ -162,7 +162,7 @@ export const products: IProduct[] = [
     name: "Chianti Castiglioni",
     brand: "Frescobaldi",
     type: "wine",
-    description: "Red, dry, 0.75л., 13%, Italy, 2020",
+    description: "Red, dry, 0.75l., 13%, Italy, 2020",
     price: 125,
     stock: 90,
     photo: [
@@ -175,7 +175,7 @@ export const products: IProduct[] = [
     name: "Viura",
     brand: "Finca Nueva",
     type: "wine",
-    description: "White, dry, 0.75л., 13%, Spain, 2019",
+    description: "White, dry, 0.75l., 13%, Spain, 2019",
     price: 150,
     stock: 75,
     photo: [
@@ -188,7 +188,7 @@ export const products: IProduct[] = [
     name: "Carolina Reserva Carmenere",
     brand: "Santa Carolina",
     type: "wine",
-    description: "Red, dry, 0.75л., 13%, Chile, 2019",
+    description: "Red, dry, 0.75l., 13%, Chile, 2019",
     price: 85,
     stock: 40,
     photo: [
@@ -201,7 +201,7 @@ export const products: IProduct[] = [
     name: "Xitxarello",
     brand: "Democratic Wines",
     type: "wine",
-    description: "White, semi-dry, 0.75л., 11%, Spain, 2021",
+    description: "White, semi-dry, 0.75l., 11%, Spain, 2021",
     price: 40,
     stock: 55,
     photo: [
@@ -214,7 +214,7 @@ export const products: IProduct[] = [
     name: "Rkatsiteli",
     brand: "Giuaani",
     type: "wine",
-    description: "White, dry, 0.75л., 13%, Georgia, 2019",
+    description: "White, dry, 0.75l., 13%, Georgia, 2019",
     price: 35,
     stock: 70,
     photo: [
@@ -227,7 +227,7 @@ export const products: IProduct[] = [
     name: "Semillon Chardonnay",
     brand: "Rawson's Retreat",
     type: "wine",
-    description: "White, semi-dry, 0.75л., 12%, Australia, 2019",
+    description: "White, semi-dry, 0.75l., 12%, Australia, 2019",
     price: 25,
     stock: 65,
     photo: [
@@ -240,7 +240,7 @@ export const products: IProduct[] = [
     name: "Noa White",
     brand: "NOA",
     type: "wine",
-    description: "White, dry, 0.75л., 13%, Armenia, 2018",
+    description: "White, dry, 0.75l., 13%, Armenia, 2018",
     price: 30,
     stock: 45,
     photo: [
@@ -253,7 +253,7 @@ export const products: IProduct[] = [
     name: "Cabernet Sauvignon",
     brand: "Achaval Ferrer",
     type: "wine",
-    description: "Red, dry, 0.75л., 14%, Argentina, 2018",
+    description: "Red, dry, 0.75l., 14%, Argentina, 2018",
     price: 210,
     stock: 65,
     photo: [
@@ -266,7 +266,7 @@ export const products: IProduct[] = [
     name: "Beaujolais-Villages",
     brand: "Joseph Drouhin",
     type: "wine",
-    description: "Red, dry, 0.75л., 13%, France, 2020",
+    description: "Red, dry, 0.75l., 13%, France, 2020",
     price: 170,
     stock: 80,
     photo: [
@@ -279,7 +279,7 @@ export const products: IProduct[] = [
     name: "Cabernet Sauvignon Vineyards",
     brand: "Trapiche",
     type: "wine",
-    description: "Red, dry, 0.75л., 13%, Argentina, 2020",
+    description: "Red, dry, 0.75l., 13%, Argentina, 2020",
     price: 25,
     stock: 65,
     photo: [
@@ -292,7 +292,7 @@ export const products: IProduct[] = [
     name: "Valdeorras",
     brand: "Valdesil",
     type: "wine",
-    description: "White, dry, 0.75л., 14%, Spain, 2017",
+    description: "White, dry, 0.75l., 14%, Spain, 2017",
     price: 135,
     stock: 40,
     photo: [
@@ -305,7 +305,7 @@ export const products: IProduct[] = [
     name: "Bordeaux",
     brand: "Jean-Pierre Moueix",
     type: "wine",
-    description: "Red, dry, 0.75л., 14%, France, 2018",
+    description: "Red, dry, 0.75l., 14%, France, 2018",
     price: 135,
     stock: 40,
     photo: [
@@ -318,7 +318,7 @@ export const products: IProduct[] = [
     name: "Pingus",
     brand: "Dominio de Pingus",
     type: "wine",
-    description: "Red, dry, 0.75л., 15%, Spain, 2011",
+    description: "Red, dry, 0.75l., 15%, Spain, 2011",
     price: 3000,
     stock: 10,
     photo: [
@@ -331,7 +331,7 @@ export const products: IProduct[] = [
     name: "Rosebank Aged 30 Years",
     brand: "Rosebank Distillery",
     type: "whiskey",
-    description: "Single malt, 0.7л., 48%, Scotland",
+    description: "Single malt, 0.7l., 48%, Scotland",
     price: 110,
     stock: 45,
     photo: [
@@ -344,7 +344,7 @@ export const products: IProduct[] = [
     name: "Copper Pot",
     brand: "Writers Tears",
     type: "whiskey",
-    description: "Blended, 0.7л., 40%, Ireland",
+    description: "Blended, 0.7l., 40%, Ireland",
     price: 95,
     stock: 60,
     photo: [
@@ -357,7 +357,7 @@ export const products: IProduct[] = [
     name: "Double Oak",
     brand: "Writers Tears",
     type: "whiskey",
-    description: "Blended, 0.7л., 46%, Ireland",
+    description: "Blended, 0.7l., 46%, Ireland",
     price: 70,
     stock: 115,
     photo: [
@@ -370,7 +370,7 @@ export const products: IProduct[] = [
     name: "Cask Strength",
     brand: "Writers Tears",
     type: "whiskey",
-    description: "Blended, 0.7л., 54%, Ireland",
+    description: "Blended, 0.7l., 54%, Ireland",
     price: 80,
     stock: 40,
     photo: [
@@ -383,7 +383,7 @@ export const products: IProduct[] = [
     name: "The Harvest",
     brand: "The Irishman",
     type: "whiskey",
-    description: "Blended, 0.7л., 40%, Ireland",
+    description: "Blended, 0.7l., 40%, Ireland",
     price: 75,
     stock: 65,
     photo: [
@@ -396,7 +396,7 @@ export const products: IProduct[] = [
     name: "Finition Grain Fin",
     brand: "Bellevoye",
     type: "whiskey",
-    description: "Malt, 0.7л., 40%, France",
+    description: "Malt, 0.7l., 40%, France",
     price: 75,
     stock: 65,
     photo: [
@@ -409,7 +409,7 @@ export const products: IProduct[] = [
     name: "Finition Sauternes",
     brand: "Bellevoye",
     type: "whiskey",
-    description: "Malt, 0.7л., 40%, France",
+    description: "Malt, 0.7l., 40%, France",
     price: 60,
     stock: 40,
     photo: [
@@ -422,7 +422,7 @@ export const products: IProduct[] = [
     name: "Edition Tourbee",
     brand: "Bellevoye",
     type: "whiskey",
-    description: "Malt, 0.7л., 43%, France",
+    description: "Malt, 0.7l., 43%, France",
     price: 105,
     stock: 65,
     photo: [
@@ -435,7 +435,7 @@ export const products: IProduct[] = [
     name: "Finition Prune",
     brand: "Bellevoye",
     type: "whiskey",
-    description: "Malt, 0.7л., 43%, France",
+    description: "Malt, 0.7l., 43%, France",
     price: 70,
     stock: 15,
     photo: [
@@ -448,7 +448,7 @@ export const products: IProduct[] = [
     name: "Finition Calvados",
     brand: "Bellevoye",
     type: "whiskey",
-    description: "Malt, 0.7л., 43%, France",
+    description: "Malt, 0.7l., 43%, France",
     price: 70,
     stock: 15,
     photo: [
@@ -461,7 +461,7 @@ export const products: IProduct[] = [
     name: "Finition Grand Cru",
     brand: "Bellevoye",
     type: "whiskey",
-    description: "Malt, 0.7л., 43%, France",
+    description: "Malt, 0.7l., 43%, France",
     price: 75,
     stock: 25,
     photo: [
@@ -474,7 +474,7 @@ export const products: IProduct[] = [
     name: "Cardhu Aged 12 Years Old",
     brand: "Cardhu",
     type: "whiskey",
-    description: "Single malt, 0.7л., 40%, Scotland",
+    description: "Single malt, 0.7l., 40%, Scotland",
     price: 55,
     stock: 60,
     photo: [
@@ -487,7 +487,7 @@ export const products: IProduct[] = [
     name: "Bell's Original",
     brand: "Bell's",
     type: "whiskey",
-    description: "Blended, 1л., 40%, Scotland",
+    description: "Blended, 1l., 40%, Scotland",
     price: 55,
     stock: 60,
     photo: [
@@ -500,7 +500,7 @@ export const products: IProduct[] = [
     name: "Founder's Reserve Caribbean Cask Finish",
     brand: "The Irishman",
     type: "whiskey",
-    description: "Blended, 0.7л., 46%, Ireland",
+    description: "Blended, 0.7l., 46%, Ireland",
     price: 70,
     stock: 35,
     photo: [
@@ -513,7 +513,7 @@ export const products: IProduct[] = [
     name: "Nikka Days",
     brand: "Nikka",
     type: "whiskey",
-    description: "Blended, 0.7л., 40%, Japan",
+    description: "Blended, 0.7l., 40%, Japan",
     price: 85,
     stock: 40,
     photo: [
@@ -526,7 +526,7 @@ export const products: IProduct[] = [
     name: "Deanston 15 Years Old",
     brand: "Deanston",
     type: "whiskey",
-    description: "Single malt, 0.7л., 46%, Scotland",
+    description: "Single malt, 0.7l., 46%, Scotland",
     price: 75,
     stock: 20,
     photo: [
@@ -539,7 +539,7 @@ export const products: IProduct[] = [
     name: "Founder's Reserve Marsala Cask Finishin",
     brand: "The Irishman",
     type: "whiskey",
-    description: "Blended, 0.7л., 46%, Ireland",
+    description: "Blended, 0.7l., 46%, Ireland",
     price: 60,
     stock: 75,
     photo: [
@@ -552,7 +552,7 @@ export const products: IProduct[] = [
     name: "Blue Label",
     brand: "Johnnie Walker",
     type: "whiskey",
-    description: "Blended, 0.7л., 40%, Scotland",
+    description: "Blended, 0.7l., 40%, Scotland",
     price: 80,
     stock: 40,
     photo: [
@@ -565,7 +565,7 @@ export const products: IProduct[] = [
     name: "Carribean Rum Cask Finish",
     brand: "Tullamore Dew",
     type: "whiskey",
-    description: "Blended, 0.7л., 43%, Ireland",
+    description: "Blended, 0.7l., 43%, Ireland",
     price: 115,
     stock: 35,
     photo: [
@@ -578,7 +578,7 @@ export const products: IProduct[] = [
     name: "Oloroso Sherry Oak",
     brand: "Kavalan",
     type: "whiskey",
-    description: "Malt, 0.7л., 46%, Taiwan",
+    description: "Malt, 0.7l., 46%, Taiwan",
     price: 95,
     stock: 20,
     photo: [
@@ -591,7 +591,7 @@ export const products: IProduct[] = [
     name: "Solist",
     brand: "Kavalan",
     type: "whiskey",
-    description: "Malt, 0.7л., 56%, Taiwan",
+    description: "Malt, 0.7l., 56%, Taiwan",
     price: 210,
     stock: 55,
     photo: [
@@ -604,7 +604,7 @@ export const products: IProduct[] = [
     name: "Talisker 10 Years",
     brand: "Talisker",
     type: "whiskey",
-    description: "Malt, 0.75л., 45%, Ireland",
+    description: "Malt, 0.75l., 45%, Ireland",
     price: 140,
     stock: 60,
     photo: [
@@ -617,7 +617,7 @@ export const products: IProduct[] = [
     name: "Yoichi Single Malt",
     brand: "Nikka",
     type: "whiskey",
-    description: "Blended, 0.7л., 47%, Japan",
+    description: "Blended, 0.7l., 47%, Japan",
     price: 325,
     stock: 45,
     photo: [
@@ -630,7 +630,7 @@ export const products: IProduct[] = [
     name: "Miyagikyo Single Malt",
     brand: "Nikka",
     type: "whiskey",
-    description: "Blended, 0.7л., 48%, Japan",
+    description: "Blended, 0.7l., 48%, Japan",
     price: 350,
     stock: 80,
     photo: [
@@ -643,7 +643,7 @@ export const products: IProduct[] = [
     name: "Tobermory Aged 23 Years",
     brand: "Tobermory",
     type: "whiskey",
-    description: "Single malt, 0.7л., 46%, Scotland",
+    description: "Single malt, 0.7l., 46%, Scotland",
     price: 890,
     stock: 15,
     photo: [
