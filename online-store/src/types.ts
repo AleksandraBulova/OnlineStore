@@ -6,3 +6,14 @@ export interface IRoute {
   path: string;
   element: FC;
 }
+
+export interface IProduct {
+  id: number;
+  type: string;
+  name: string;
+  brand: string;
+  description: string;
+  price: number;
+  stock: number;
+  photo: Array<string>;
+}
