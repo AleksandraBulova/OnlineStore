@@ -1,6 +1,7 @@
 import { IRoute } from "./types";
 import { MainPage } from "./pages/MainPage";
 import { CartPage } from "./pages/CartPage";
+import { ProductPage } from "./pages/ProductPage";
 
 export const routes: IRoute[] = [
   {
@@ -14,5 +15,11 @@ export const routes: IRoute[] = [
     name: "Cart",
     path: "/cart",
     element: CartPage,
+  },
+  {
+    id: 3,
+    name: "Product",
+    path: "/product/:id",
+    element: ProductPage,
   },
 ];

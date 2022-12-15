@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useSelector } from "react-redux";
-import { Product } from "../Product";
+import { ProductCard } from "../ProductCard";
 import { RootState } from "../../redux/store";
 import { HeaderSectionProducts } from "../HeaderSectionProducts";
 
@@ -12,7 +12,7 @@ export const SectionProducts: FC = () => {
       <HeaderSectionProducts />
       <div>
         {viewProducts.map((product) => (
-          <Product key={product.id} product={product} />
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
     </section>
