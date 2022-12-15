@@ -17,3 +17,8 @@ export interface IProduct {
   stock: number;
   photo: Array<string>;
 }
+
+export interface ISortOption {
+  value: string;
+  label: string;
+}

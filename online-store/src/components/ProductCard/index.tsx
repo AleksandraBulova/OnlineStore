@@ -1,17 +1,24 @@
 import { FC } from "react";
+import { useNavigate } from "react-router-dom";
 import { IProduct } from "../../types";
 
-interface IProductProps {
+interface IProductCardProps {
   product: IProduct;
 }
 
-export const Product: FC<IProductProps> = ({ product }) => {
+export const ProductCard: FC<IProductCardProps> = ({ product }) => {
+  const navigate = useNavigate();
+
   return (
     <div>
       <div>
         <h3>{product.name}</h3>
         <div>
-          <img src={product.photo[0]} alt="prosuct" />
+          <img
+            onClick={() => navigate(`/product/${product.id}`)}
+            src={product.photo[0]}
+            alt="prosuct"
+          />
           <ul>
             <li>Brand: {product.brand}</li>
             <li>Category: {product.type}</li>
