@@ -1,0 +1,33 @@
+@import "../../styles/colors";
+@import "../../styles/templates";
+
+.header {
+  height: 70px;
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+  }
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  @include transition;
+
+  &__img {
+    width: 2em;
+    height: 2em;
+  }
+
+  &__text {
+    @include accentText(1.2em, 400);
+  }
+
+  &:hover {
+    color: $accent-red;
+  }
+}
