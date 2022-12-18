@@ -1,6 +1,7 @@
 import { FC } from "react"
 import { useNavigate } from "react-router-dom"
 import { IProduct } from "../../types"
+import { Button } from "../UI/Button"
 
 import styles from "./styles.module.scss"
 
@@ -44,9 +45,9 @@ export const ProductCard: FC<IProductCardProps> = ({ product }) => {
           <li className={styles.info__price}>{`${product.price} $`}</li>
         </ul>
       </div>
-      <div>
-        <button>Details</button>
-        <button>Add to cart</button>
+      <div className={styles.product__buttons}>
+        <Button text="Add to cart" isActive={false} />
+        <Button text="Details" isActive={false} />
       </div>
     </div>
   )
