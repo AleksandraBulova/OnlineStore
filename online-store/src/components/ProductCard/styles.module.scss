@@ -2,16 +2,15 @@
 @import "../../styles/templates";
 
 .product {
+  display: grid;
+  gap: 0.2em;
   padding: 1.5em 1em;
   border-radius: 0.5em;
   @include transition;
-
-  &__info {
-    text-align: center;
-    cursor: pointer;
-  }
+  cursor: pointer;
 
   &__name {
+    flex-grow: 1;
     @include transition;
 
     &:hover {
@@ -23,23 +22,41 @@
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   }
 
-  &__buttons {
-    display: flex;
-    align-items: center;
-    gap: 0.5em;
+  button {
+    position: relative;
+    z-index: 10;
+  }
+}
 
-    & button:first-child {
-      flex: 2 1 auto;
-    }
+.product_vertical {
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto auto;
+  align-items: center;
+  text-align: center;
 
-    & button:last-child {
-      flex: 1 1 auto;
-    }
+  .info {
+    text-align: center;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+
+.product_gorizontal {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas: "img ." "img ." "img .";
+  grid-column-gap: 0.5em;
+
+  .img {
+    grid-area: img;
   }
 }
 
 .img {
   position: relative;
+  width: 100%;
   overflow: hidden;
 
   &__itemWrapper {
@@ -126,8 +143,6 @@
 }
 
 .info {
-  text-align: center;
-
   &__category,
   &__brand,
   &__description,
