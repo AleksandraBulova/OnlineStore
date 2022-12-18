@@ -1,11 +1,14 @@
-import { FC } from "react";
-import { SectionProducts } from "../../components/SectionProducts";
+import { FC } from "react"
+import { SectionProducts } from "../../components/SectionProducts"
+import { SectionFilters } from "../../components/SectionFilters"
+
+import styles from "./styles.module.scss"
 
 export const MainPage: FC = () => {
   return (
-    <main>
-      <h2>Main page</h2>
+    <main className={styles.mainPage}>
+      <SectionFilters />
       <SectionProducts />
     </main>
-  );
-};
+  )
+}

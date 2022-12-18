@@ -1,0 +1,15 @@
+.products {
+  flex: 3 1 auto;
+
+  &__list {
+    display: grid;
+
+    &_vertical {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    &_gorizontal {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
