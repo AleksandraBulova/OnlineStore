@@ -1,0 +1,15 @@
+@mixin primaryText($size, $weight) {
+  font-family: "Ubuntu", sans-serif;
+  font-size: $size;
+  font-weight: $weight;
+}
+
+@mixin accentText($size, $weight) {
+  font-family: "Mr-Bedfort", serif;
+  font-size: $size;
+  font-weight: $weight;
+}
+
+@mixin transition {
+  transition: all 0.3s ease-in-out;
+}
