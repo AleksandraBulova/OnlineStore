@@ -17,6 +17,10 @@ export const ProductCard: FC<IProductCardProps> = ({ product, view = "vertical" 
     gorizontal: styles.product_gorizontal,
   }
   const productStyle = [styles.product, viewStyle[view]].join(" ")
+  const addToCard = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
+    alert("TODO: Реализовать логику добавления в карзину")
+  }
 
   return (
     <div className={productStyle} onClick={() => navigate(`/product/${product.id}`)}>
@@ -24,9 +28,10 @@ export const ProductCard: FC<IProductCardProps> = ({ product, view = "vertical" 
         <div className={styles.img__pagination_left}></div>
         <div className={styles.img__pagination_right}></div>
         <div className={styles.img__itemWrapper}>
-          {product.photo.map((photo) => {
+          {product.photo.map((photo, i) => {
             return (
               <div
+                key={i + 1}
                 className={styles.img__item}
                 style={{ backgroundImage: `url(${photo})` }}
               />
@@ -46,7 +51,7 @@ export const ProductCard: FC<IProductCardProps> = ({ product, view = "vertical" 
         <li className={styles.info__stock}>Stock: {product.stock}</li>
         <li className={styles.info__price}>{`${product.price} $`}</li>
       </ul>
-      <Button text="Add to cart" isActive={false} />
+      <Button text="Add to cart" isActive={false} onClick={addToCard} />
     </div>
   )
 }

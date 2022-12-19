@@ -1,3 +1,5 @@
 .mainPage {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  gap: 1em;
 }
