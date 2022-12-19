@@ -1,16 +1,17 @@
-import { FC } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { sortOptions } from "../../constants/sortOptions"
-import { products } from "../../products"
-import { setSearch, setSorting } from "../../redux/reducers/productsReducer"
-import { RootState } from "../../redux/store"
-import { ISortOption } from "../../types"
+import { FC } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { sortOptions } from "../../constants/sortOptions";
+import { setSearch, setSorting } from "../../redux/reducers/productsReducer";
+import { RootState } from "../../redux/store";
+import { ISortOption } from "../../types";
 
-import styles from "./styles.module.scss"
+import styles from "./styles.module.scss";
 
 export const HeaderSectionProducts: FC = () => {
-  const { sortType, search } = useSelector((state: RootState) => state.products)
-  const dispatch = useDispatch()
+  const { sortType, search, viewProducts } = useSelector(
+    (state: RootState) => state.products
+  );
+  const dispatch = useDispatch();
 
   return (
     <header className={styles.productsHeader}>
@@ -21,7 +22,9 @@ export const HeaderSectionProducts: FC = () => {
         onChange={(event) =>
           dispatch(
             setSorting(
-              sortOptions.find((el) => el.value === event.target.value) as ISortOption
+              sortOptions.find(
+                (el) => el.value === event.target.value
+              ) as ISortOption
             )
           )
         }
@@ -39,7 +42,9 @@ export const HeaderSectionProducts: FC = () => {
         type="text"
         placeholder="Search product"
       />
-      <div className={styles.productsHeader__found}>Found: {products.length}</div>
+      <div className={styles.productsHeader__found}>
+        Found: {viewProducts.length}
+      </div>
     </header>
-  )
-}
+  );
+};

@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IProduct, ISortOption } from "../../types";
 import { products } from "../../products";
+import { initialBrandsFilter } from "../../constants/sortOptions";
 
 export interface IProductsState {
   products: IProduct[];
@@ -8,6 +9,9 @@ export interface IProductsState {
   sortType: ISortOption;
   search: string;
   filterCategory: {
+    [key: string]: boolean;
+  };
+  filterBrand: {
     [key: string]: boolean;
   };
 }
@@ -26,6 +30,7 @@ const initialState: IProductsState = {
     cognac: false,
     vodka: false,
   },
+  filterBrand: initialBrandsFilter,
 };
 
 export const productsSlice = createSlice({
@@ -72,17 +77,47 @@ export const productsSlice = createSlice({
         ? state.products.filter((el) => choosenCategoriesKeys.includes(el.type))
         : state.products;
     },
+    setFilterBrand: (
+      state,
+      action: PayloadAction<{ checked: boolean; brand: string }>
+    ) => {
+      state.filterBrand[action.payload.brand] = action.payload.checked;
+      const choosenCategoriesKeys = Object.entries(state.filterBrand)
+        .filter((el) => el[1])
+        .map((el) => el[0]);
+      state.viewProducts = choosenCategoriesKeys.length
+        ? state.products.filter((el) =>
+            choosenCategoriesKeys.includes(
+              el.brand
+                .split(" ")
+                .join("")
+                .split("'")
+                .join("")
+                .split("-")
+                .join("")
+                .split(".")
+                .join("")
+            )
+          )
+        : state.products;
+    },
     resetFilter: (state) => {
       state.viewProducts = state.products;
       state.filterCategory.wine = false;
       state.filterCategory.whiskey = false;
       state.filterCategory.cognac = false;
       state.filterCategory.vodka = false;
+      state.filterBrand = initialBrandsFilter;
     },
   },
 });
 
-export const { setSorting, setSearch, setFilterCategory, resetFilter } =
-  productsSlice.actions;
+export const {
+  setSorting,
+  setSearch,
+  setFilterCategory,
+  resetFilter,
+  setFilterBrand,
+} = productsSlice.actions;
 
 export default productsSlice.reducer;
