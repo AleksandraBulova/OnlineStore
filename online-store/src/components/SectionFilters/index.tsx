@@ -1,11 +1,19 @@
-import { FC } from "react"
+import { FC } from "react";
+import { useDispatch } from "react-redux";
+import { resetFilter } from "../../redux/reducers/productsReducer";
+import { BrandFilter } from "../BrandFilter";
+import { CaregoryFilter } from "../CaregoryFilter";
 
-import styles from "./styles.module.scss"
+import styles from "./styles.module.scss";
 
 export const SectionFilters: FC = () => {
+  const dispatch = useDispatch();
+
   return (
     <section className={styles.filters}>
-      <span>TODO: Filters</span>
+      <button onClick={() => dispatch(resetFilter())}>Reset Filters</button>
+      <CaregoryFilter />
+      <BrandFilter />
     </section>
-  )
-}
+  );
+};
