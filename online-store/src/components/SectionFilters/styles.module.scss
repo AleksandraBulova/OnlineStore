@@ -1,3 +1,21 @@
+@import "../../styles/colors";
+
 .filters {
-  flex: 1 1 30em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+
+  &__buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5em;
+    height: 50px;
+    padding: 0.5em 0;
+    border-bottom: 2px solid $accent-red;
+
+    & button {
+      flex-grow: 1;
+    }
+  }
 }
