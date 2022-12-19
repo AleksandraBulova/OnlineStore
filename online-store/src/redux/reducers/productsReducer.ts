@@ -7,6 +7,9 @@ export interface IProductsState {
   viewProducts: IProduct[];
   sortType: ISortOption;
   search: string;
+  filterCategory: {
+    [key: string]: boolean;
+  };
 }
 
 const initialState: IProductsState = {
@@ -17,6 +20,12 @@ const initialState: IProductsState = {
     label: "Without sorting",
   },
   search: "",
+  filterCategory: {
+    wine: false,
+    whiskey: false,
+    cognac: false,
+    vodka: false,
+  },
 };
 
 export const productsSlice = createSlice({
@@ -51,9 +60,29 @@ export const productsSlice = createSlice({
         state.viewProducts = state.products;
       }
     },
+    setFilterCategory: (
+      state,
+      action: PayloadAction<{ checked: boolean; category: string }>
+    ) => {
+      state.filterCategory[action.payload.category] = action.payload.checked;
+      const choosenCategoriesKeys = Object.entries(state.filterCategory)
+        .filter((el) => el[1])
+        .map((el) => el[0]);
+      state.viewProducts = choosenCategoriesKeys.length
+        ? state.products.filter((el) => choosenCategoriesKeys.includes(el.type))
+        : state.products;
+    },
+    resetFilter: (state) => {
+      state.viewProducts = state.products;
+      state.filterCategory.wine = false;
+      state.filterCategory.whiskey = false;
+      state.filterCategory.cognac = false;
+      state.filterCategory.vodka = false;
+    },
   },
 });
 
-export const { setSorting, setSearch } = productsSlice.actions;
+export const { setSorting, setSearch, setFilterCategory, resetFilter } =
+  productsSlice.actions;
 
 export default productsSlice.reducer;
