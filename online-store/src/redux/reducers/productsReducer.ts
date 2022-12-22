@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IProduct, ISortOption } from "../../types";
-import { products } from "../../products";
+import { products, randomProducts } from "../../products";
 import { initialBrandsFilter } from "../../constants/sortOptions";
 
 export interface IProductsState {
@@ -18,17 +18,17 @@ export interface IProductsState {
 
 const initialState: IProductsState = {
   products,
-  viewProducts: products,
+  viewProducts: randomProducts,
   sortType: {
     value: "default",
     label: "Without sorting",
   },
   search: "",
   filterCategory: {
-    wine: false,
-    whiskey: false,
-    cognac: false,
-    vodka: false,
+    Wine: false,
+    Whiskey: false,
+    Cognac: false,
+    Vodka: false,
   },
   filterBrand: initialBrandsFilter,
 };
@@ -51,7 +51,7 @@ export const productsSlice = createSlice({
           );
           break;
         case "default":
-          state.viewProducts = state.products;
+          state.viewProducts = randomProducts;
           break;
       }
     },
@@ -62,7 +62,7 @@ export const productsSlice = createSlice({
           product.name.toLowerCase().includes(action.payload.toLowerCase())
         );
       } else {
-        state.viewProducts = state.products;
+        state.viewProducts = randomProducts;
       }
     },
     setFilterCategory: (
@@ -75,7 +75,7 @@ export const productsSlice = createSlice({
         .map((el) => el[0]);
       state.viewProducts = choosenCategoriesKeys.length
         ? state.products.filter((el) => choosenCategoriesKeys.includes(el.type))
-        : state.products;
+        : randomProducts;
     },
     setFilterBrand: (
       state,
@@ -87,27 +87,20 @@ export const productsSlice = createSlice({
         .map((el) => el[0]);
       state.viewProducts = choosenCategoriesKeys.length
         ? state.products.filter((el) =>
-            choosenCategoriesKeys.includes(
-              el.brand
-                .split(" ")
-                .join("")
-                .split("'")
-                .join("")
-                .split("-")
-                .join("")
-                .split(".")
-                .join("")
-            )
+            choosenCategoriesKeys.includes(el.brand)
           )
-        : state.products;
+        : randomProducts;
     },
     resetFilter: (state) => {
-      state.viewProducts = state.products;
-      state.filterCategory.wine = false;
-      state.filterCategory.whiskey = false;
-      state.filterCategory.cognac = false;
-      state.filterCategory.vodka = false;
+      state.viewProducts = randomProducts;
+      state.filterCategory.Wine = false;
+      state.filterCategory.Whiskey = false;
+      state.filterCategory.Cognac = false;
+      state.filterCategory.Vodka = false;
       state.filterBrand = initialBrandsFilter;
+      state.sortType.value = "default";
+      state.sortType.label = "Without sorting";
+      state.search = "";
     },
   },
 });
