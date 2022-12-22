@@ -1,0 +1,12 @@
+@import "../../styles/colors";
+@import "../../styles/templates";
+
+.brandFilter {
+  display: flex;
+  flex-direction: column;
+
+  &__title {
+    @include accentText(1.5em, 600);
+    border-bottom: 2px solid $accent-red;
+  }
+}

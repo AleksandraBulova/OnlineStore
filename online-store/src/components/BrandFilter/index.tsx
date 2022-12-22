@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { products } from "../../products";
 import { setFilterBrand } from "../../redux/reducers/productsReducer";
 import { RootState } from "../../redux/store";
+import { Filter } from "../Filter";
 
 export const BrandFilter: FC = () => {
-  const brandsFilter = useSelector(
-    (state: RootState) => state.products.filterBrand
+  const { filterBrand, viewProducts } = useSelector(
+    (state: RootState) => state.products
   );
 
   const dispatch = useDispatch();
@@ -21,15 +22,7 @@ export const BrandFilter: FC = () => {
   };
 
   const brands = products.map((product) => {
-    return product.brand
-      .split(" ")
-      .join("")
-      .split("'")
-      .join("")
-      .split("-")
-      .join("")
-      .split(".")
-      .join("");
+    return product.brand;
   });
 
   const uniqueBrands = Array.from(new Set(brands));
@@ -38,17 +31,20 @@ export const BrandFilter: FC = () => {
     <div>
       <h2>Brand</h2>
       <div>
-        {uniqueBrands.map((brand, i) => {
+        {uniqueBrands.map((brand) => {
           return (
-            <label key={brand}>
-              <input
-                type="checkbox"
-                checked={brandsFilter[brand]}
-                value={brand}
-                onChange={handleChangeCategory}
+            <div key={brand}>
+              <Filter
+                key={brand}
+                typeOrBrand={brand}
+                filterCategory={filterBrand}
+                handleChangeCategory={handleChangeCategory}
               />
-              {brand}
-            </label>
+              <div>
+                ({viewProducts.filter((el) => el.brand === brand).length}/
+                {products.filter((el) => el.brand === brand).length})
+              </div>
+            </div>
           );
         })}
       </div>
