@@ -14,6 +14,7 @@ export interface IProductsState {
   filterBrand: {
     [key: string]: boolean;
   };
+  productsCart: IProduct[];
 }
 
 const initialState: IProductsState = {
@@ -31,6 +32,7 @@ const initialState: IProductsState = {
     Vodka: false,
   },
   filterBrand: initialBrandsFilter,
+  productsCart: [],
 };
 
 export const productsSlice = createSlice({
@@ -102,6 +104,16 @@ export const productsSlice = createSlice({
       state.sortType.label = "Without sorting";
       state.search = "";
     },
+    setProductsCart: (state, action: PayloadAction<IProduct>) => {
+      state.productsCart = [...state.productsCart, action.payload];
+      console.log(state.productsCart);
+    },
+    resetProductsCart: (state, action: PayloadAction<IProduct>) => {
+      state.productsCart = state.productsCart.filter(
+        (product) => product.id !== action.payload.id
+      );
+      console.log(state.productsCart);
+    },
   },
 });
 
@@ -111,6 +123,8 @@ export const {
   setFilterCategory,
   resetFilter,
   setFilterBrand,
+  setProductsCart,
+  resetProductsCart,
 } = productsSlice.actions;
 
 export default productsSlice.reducer;
