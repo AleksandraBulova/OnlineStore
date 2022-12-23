@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../redux/store";
 import { IProduct } from "../../types";
+import { Button } from "../UI/Button";
 
 import styles from "./styles.module.scss";
 
@@ -27,11 +28,23 @@ export const ProductCart: FC<IProductCardProps> = ({ product, index }) => {
         <div>
           <div>Stock: {product.stock}</div>
           <div>
-            <button> - </button>
+            <Button
+              text="-"
+              isActive={false}
+              onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
+                event.stopPropagation()
+              }
+            />
             <div>
               {productsCart.filter((item) => item.id === product.id).length}
             </div>
-            <button> + </button>
+            <Button
+              text="+"
+              isActive={false}
+              onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
+                event.stopPropagation()
+              }
+            />
           </div>
           <div>{`$${product.price}`}</div>
         </div>
