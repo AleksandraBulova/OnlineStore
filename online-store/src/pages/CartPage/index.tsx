@@ -1,5 +1,10 @@
 import { FC } from "react";
+import { SectionProductsCart } from "../../components/SectionProductsCart";
 
 export const CartPage: FC = () => {
-  return <h2>Cart page</h2>;
+  return (
+    <main>
+      <SectionProductsCart />
+    </main>
+  );
 };
