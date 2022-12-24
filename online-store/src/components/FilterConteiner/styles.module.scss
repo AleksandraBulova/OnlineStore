@@ -1,0 +1,34 @@
+@import "../../styles/colors";
+@import "../../styles/templates";
+
+.filterContainer {
+  display: flex;
+  flex-direction: column;
+
+  &__title {
+    @include accentText(1.5em, 600);
+    border-bottom: 2px solid $accent-red;
+  }
+
+  &__filters {
+    max-height: 30vh;
+    margin-top: 0.2em;
+    padding-right: 0.2em;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 0.2em;
+    }
+
+    &::-webkit-scrollbar-track {
+      -webkit-box-shadow: 5px 5px 5px -5px rgba(34, 60, 80, 0.2) inset;
+      background-color: $primary-light;
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background: linear-gradient(180deg, $accent-red, $accent-orange);
+    }
+  }
+}
