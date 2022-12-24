@@ -1,9 +1,9 @@
-import { FC, ReactNode } from "react";
-import { Footer } from "../../components/Footer";
-import { Header } from "../../components/Header";
+import { FC, ReactNode } from "react"
+import { Footer } from "../../components/Footer"
+import { Header } from "../../components/Header"
 
 interface MainLayoutProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
 export const MainLayout: FC<MainLayoutProps> = ({ children }) => {
@@ -13,5 +13,5 @@ export const MainLayout: FC<MainLayoutProps> = ({ children }) => {
       {children}
       <Footer />
     </>
-  );
-};
+  )
+}

@@ -1,5 +1,6 @@
 .mainPage {
   display: grid;
   grid-template-columns: 1fr 4fr;
+  flex-grow: 1;
   gap: 1em;
 }
