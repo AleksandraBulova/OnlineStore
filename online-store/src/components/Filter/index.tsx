@@ -1,13 +1,13 @@
-import { FC } from "react"
+import { FC } from "react";
 
-import styles from "./styles.module.scss"
+import styles from "./styles.module.scss";
 
 interface FilterProps {
-  typeOrBrand: string
+  typeOrBrand: string;
   filterCategory: {
-    [key: string]: boolean
-  }
-  handleChangeCategory: (event: React.ChangeEvent<HTMLInputElement>) => void
+    [key: string]: boolean;
+  };
+  handleChangeCategory: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const Filter: FC<FilterProps> = (props) => {
@@ -24,5 +24,5 @@ export const Filter: FC<FilterProps> = (props) => {
         <span className={styles.filter__name}>{props.typeOrBrand}</span>
       </label>
     </>
-  )
-}
+  );
+};
