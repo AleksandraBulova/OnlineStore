@@ -1,0 +1,19 @@
+@import "../../../styles/colors";
+@import "../../../styles/templates.scss";
+
+.dualSlider {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.values {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+
+  &__value {
+    flex-grow: 1;
+    text-align: center;
+  }
+}

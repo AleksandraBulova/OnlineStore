@@ -1,18 +1,18 @@
-import { FC } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { setFilterCategory } from "../../redux/reducers/productsReducer"
-import { RootState } from "../../redux/store"
-import { FilterContainer } from "../FilterConteiner"
-import { Filter } from "../Filter"
+import { FC } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setFilterCategory } from "../../redux/reducers/productsReducer";
+import { RootState } from "../../redux/store";
+import { FilterContainer } from "../FilterConteiner";
+import { Filter } from "../Filter";
 
-import styles from "./styles.module.scss"
+import styles from "./styles.module.scss";
 
 export const CaregoryFilter: FC = () => {
   const { filterCategory, products, viewProducts } = useSelector(
     (state: RootState) => state.products
-  )
+  );
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const handleChangeCategory = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(
@@ -20,11 +20,11 @@ export const CaregoryFilter: FC = () => {
         checked: event.target.checked,
         category: event.target.value,
       })
-    )
-  }
+    );
+  };
 
-  const types = products.map((product) => product.type)
-  const uniqueTypes = Array.from(new Set(types))
+  const types = products.map((product) => product.type);
+  const uniqueTypes = Array.from(new Set(types));
 
   return (
     <FilterContainer title="Category">
@@ -42,8 +42,8 @@ export const CaregoryFilter: FC = () => {
               {products.filter((el) => el.type === type).length})
             </div>
           </div>
-        )
+        );
       })}
     </FilterContainer>
-  )
-}
+  );
+};
