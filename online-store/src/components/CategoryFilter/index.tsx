@@ -2,6 +2,7 @@ import { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFilterCategory } from "../../redux/reducers/productsReducer";
 import { RootState } from "../../redux/store";
+import { FilterContainer } from "../FilterConteiner";
 import { Filter } from "../Filter";
 
 import styles from "./styles.module.scss";
@@ -26,11 +27,10 @@ export const CaregoryFilter: FC = () => {
   const uniqueTypes = Array.from(new Set(types));
 
   return (
-    <div className={styles.brandFilter}>
-      <h2 className={styles.brandFilter__title}>Category</h2>
+    <FilterContainer title="Category">
       {uniqueTypes.map((type) => {
         return (
-          <div key={type}>
+          <div className={styles.categoryFilter} key={type}>
             <Filter
               key={type}
               typeOrBrand={type}
@@ -44,6 +44,6 @@ export const CaregoryFilter: FC = () => {
           </div>
         );
       })}
-    </div>
+    </FilterContainer>
   );
 };
