@@ -45,7 +45,7 @@ export const ProductCard: FC<IProductCardProps> = ({
     product: IProduct
   ) => {
     event.stopPropagation();
-    dispatch(resetProductsCart(product));
+    dispatch(resetProductsCart({ product, buttonClick: "drop" }));
   };
 
   const isInCart = useMemo(() => {
