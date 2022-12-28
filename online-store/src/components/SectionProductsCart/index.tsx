@@ -8,12 +8,13 @@ import styles from "./styles.module.scss";
 
 export const SectionProductsCart: FC = () => {
   const { productsCart } = useSelector((state: RootState) => state.products);
+  const uniqueProductsCart = Array.from(new Set(productsCart));
   console.log(productsCart);
 
   return (
     <>
       <HeaderSectionProductsCart />
-      {productsCart.map((product, index) => {
+      {uniqueProductsCart.map((product, index) => {
         return <ProductCart key={index} product={product} index={index} />;
       })}
     </>

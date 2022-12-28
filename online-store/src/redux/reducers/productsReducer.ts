@@ -54,10 +54,14 @@ export const productsSlice = createSlice({
       state.sortType = action.payload;
       switch (action.payload.value) {
         case "ascCost":
-          state.viewProducts = [...state.products].sort((a, b) => a.price - b.price);
+          state.viewProducts = [...state.products].sort(
+            (a, b) => a.price - b.price
+          );
           break;
         case "descCost":
-          state.viewProducts = [...state.products].sort((a, b) => b.price - a.price);
+          state.viewProducts = [...state.products].sort(
+            (a, b) => b.price - a.price
+          );
           break;
         case "default":
           state.viewProducts = randomProducts;
@@ -95,7 +99,9 @@ export const productsSlice = createSlice({
         .filter((el) => el[1])
         .map((el) => el[0]);
       state.viewProducts = choosenCategoriesKeys.length
-        ? state.products.filter((el) => choosenCategoriesKeys.includes(el.brand))
+        ? state.products.filter((el) =>
+            choosenCategoriesKeys.includes(el.brand)
+          )
         : randomProducts;
     },
     setDualSlider: (
@@ -118,19 +124,27 @@ export const productsSlice = createSlice({
         state[filterType].inputValues[1] = value;
       }
 
-      state[filterType].minValueIndex = Math.min(...state[filterType].inputValues);
-      state[filterType].maxValueIndex = Math.max(...state[filterType].inputValues);
+      state[filterType].minValueIndex = Math.min(
+        ...state[filterType].inputValues
+      );
+      state[filterType].maxValueIndex = Math.max(
+        ...state[filterType].inputValues
+      );
 
-      state.viewProducts = state.products.filter((product) => {
+      state.viewProducts = randomProducts.filter((product) => {
         if (filterType === DualSliderFilterTypes.price) {
           return (
-            product.price >= state[filterType].values[state[filterType].minValueIndex] &&
-            product.price <= state[filterType].values[state[filterType].maxValueIndex]
+            product.price >=
+              state[filterType].values[state[filterType].minValueIndex] &&
+            product.price <=
+              state[filterType].values[state[filterType].maxValueIndex]
           );
         } else if (filterType === DualSliderFilterTypes.stock) {
           return (
-            product.stock >= state[filterType].values[state[filterType].minValueIndex] &&
-            product.stock <= state[filterType].values[state[filterType].maxValueIndex]
+            product.stock >=
+              state[filterType].values[state[filterType].minValueIndex] &&
+            product.stock <=
+              state[filterType].values[state[filterType].maxValueIndex]
           );
         }
       });
@@ -142,6 +156,8 @@ export const productsSlice = createSlice({
       state.filterCategory.Cognac = false;
       state.filterCategory.Vodka = false;
       state.filterBrand = initialBrandsFilter;
+      state.filterPrices = initialPricesFilter;
+      state.filterStocks = initialStocksFilter;
       state.sortType.value = "default";
       state.sortType.label = "Without sorting";
       state.search = "";
@@ -150,10 +166,30 @@ export const productsSlice = createSlice({
       state.productsCart = [...state.productsCart, action.payload];
       console.log(state.productsCart);
     },
-    resetProductsCart: (state, action: PayloadAction<IProduct>) => {
-      state.productsCart = state.productsCart.filter(
-        (product) => product.id !== action.payload.id
-      );
+    resetProductsCart: (
+      state,
+      action: PayloadAction<{ product: IProduct; buttonClick: string }>
+    ) => {
+      if (action.payload.buttonClick === "drop") {
+        state.productsCart = state.productsCart.filter(
+          (product) => product.id !== action.payload.product.id
+        );
+      }
+      if (action.payload.buttonClick === "remove") {
+        const idProducts = state.productsCart
+          .reverse()
+          .map((product) => product.id);
+
+        const indexRemove = idProducts.findIndex(
+          (id) => id === action.payload.product.id
+        );
+
+        state.productsCart = [
+          ...state.productsCart.slice(0, indexRemove),
+          ...state.productsCart.slice(indexRemove + 1),
+        ].reverse();
+      }
+
       console.log(state.productsCart);
     },
   },

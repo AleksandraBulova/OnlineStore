@@ -1,6 +1,10 @@
 import { FC } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import {
+  resetProductsCart,
+  setProductsCart,
+} from "../../redux/reducers/productsReducer";
 import { RootState } from "../../redux/store";
 import { IProduct } from "../../types";
 import { Button } from "../UI/Button";
@@ -15,6 +19,30 @@ interface IProductCardProps {
 export const ProductCart: FC<IProductCardProps> = ({ product, index }) => {
   const navigate = useNavigate();
   const { productsCart } = useSelector((state: RootState) => state.products);
+  const dispatch = useDispatch();
+
+  const addToCard = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    product: IProduct
+  ) => {
+    event.stopPropagation();
+    dispatch(setProductsCart(product));
+  };
+
+  const dropToCard = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    product: IProduct
+  ) => {
+    event.stopPropagation();
+    console.log(product, "product");
+    dispatch(
+      resetProductsCart({
+        product,
+        buttonClick: "remove",
+      })
+    );
+  };
+
   return (
     <div onClick={() => navigate(`/product/${product.id}`)}>
       <div>{index + 1}</div>
@@ -32,7 +60,7 @@ export const ProductCart: FC<IProductCardProps> = ({ product, index }) => {
               text="-"
               isActive={false}
               onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
-                event.stopPropagation()
+                dropToCard(event, product)
               }
             />
             <div>
@@ -42,7 +70,7 @@ export const ProductCart: FC<IProductCardProps> = ({ product, index }) => {
               text="+"
               isActive={false}
               onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
-                event.stopPropagation()
+                addToCard(event, product)
               }
             />
           </div>
