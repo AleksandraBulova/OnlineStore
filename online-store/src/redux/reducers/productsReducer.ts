@@ -52,9 +52,6 @@ export const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    log: () => {
-      console.log("hello");
-    },
     setSorting: (state, action: PayloadAction<SortOption>) => {
       state.sortType = action.payload;
       const actualState = JSON.parse(JSON.stringify(state));
