@@ -52,6 +52,9 @@ export const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
+    log: () => {
+      console.log("hello");
+    },
     setSorting: (state, action: PayloadAction<SortOption>) => {
       state.sortType = action.payload;
       const actualState = JSON.parse(JSON.stringify(state));
@@ -126,26 +129,18 @@ export const productsSlice = createSlice({
         state[filterType].inputValues[1] = value;
       }
 
-      state[filterType].minValueIndex = Math.min(
-        ...state[filterType].inputValues
-      );
-      state[filterType].maxValueIndex = Math.max(
-        ...state[filterType].inputValues
-      );
+      state[filterType].minValueIndex = Math.min(...state[filterType].inputValues);
+      state[filterType].maxValueIndex = Math.max(...state[filterType].inputValues);
 
       const actualState = JSON.parse(JSON.stringify(state));
-      state.viewProducts = getFiltersState(
-        actualState.products,
-        {
-          sortType: actualState.sortType,
-          search: actualState.search,
-          filterCategory: actualState.filterCategory,
-          filterBrand: actualState.filterBrand,
-          filterPrices: actualState.filterPrices,
-          filterStocks: actualState.filterStocks,
-        },
-        filterType
-      );
+      state.viewProducts = getFiltersState(actualState.products, {
+        sortType: actualState.sortType,
+        search: actualState.search,
+        filterCategory: actualState.filterCategory,
+        filterBrand: actualState.filterBrand,
+        filterPrices: actualState.filterPrices,
+        filterStocks: actualState.filterStocks,
+      });
     },
     resetFilter: (state) => {
       state.viewProducts = state.products;
