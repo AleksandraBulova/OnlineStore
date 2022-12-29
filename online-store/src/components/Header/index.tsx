@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import { IRoute } from "../../types";
+import { Route } from "../../types";
 import { routes } from "../../routes";
 
 import logo from "../../assets/logo.png";
@@ -9,8 +9,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 
 export const Header: FC = () => {
-  const [mainPage, cartPage]: IRoute[] = routes;
-  const { productsCart } = useSelector((state: RootState) => state.products);
+  const [mainPage, cartPage]: Route[] = routes;
+  const { productsCart } = useSelector((state: RootState) => state.cart);
   const sumProducts = productsCart.reduce(
     (acc, product) => acc + product.price,
     0

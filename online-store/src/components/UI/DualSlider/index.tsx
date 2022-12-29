@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { DualSliderInputNumbers } from "../../../constants/sortOptions";
+import { DualSliderInputNumbers } from "../../../types";
 
 import styles from "./styles.module.scss";
 

@@ -1,9 +1,9 @@
-import { IRoute } from "./types";
+import { Route } from "./types";
 import { MainPage } from "./pages/MainPage";
 import { CartPage } from "./pages/CartPage";
 import { ProductPage } from "./pages/ProductPage";
 
-export const routes: IRoute[] = [
+export const routes: Route[] = [
   {
     id: 1,
     name: "Main",

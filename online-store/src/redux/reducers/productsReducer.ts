@@ -1,19 +1,23 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IProduct, ISortOption } from "../../types";
-import { products, randomProducts } from "../../products";
 import {
-  initialBrandsFilter,
   DualSliderFilter,
   DualSliderFilterTypes,
   DualSliderInputNumbers,
+  Product,
+  SortOption,
+} from "../../types";
+import { randomProducts } from "../../products";
+import { getFiltersState } from "../../utils/getFiltersState";
+import {
+  initialBrandsFilter,
   initialPricesFilter,
   initialStocksFilter,
 } from "../../constants/sortOptions";
 
 export interface IProductsState {
-  products: IProduct[];
-  viewProducts: IProduct[];
-  sortType: ISortOption;
+  products: Product[];
+  viewProducts: Product[];
+  sortType: SortOption;
   search: string;
   filterCategory: {
     [key: string]: boolean;
@@ -23,11 +27,10 @@ export interface IProductsState {
   };
   filterPrices: DualSliderFilter;
   filterStocks: DualSliderFilter;
-  productsCart: IProduct[];
 }
 
 const initialState: IProductsState = {
-  products,
+  products: randomProducts,
   viewProducts: randomProducts,
   sortType: {
     value: "default",
@@ -43,66 +46,65 @@ const initialState: IProductsState = {
   filterBrand: initialBrandsFilter,
   filterPrices: initialPricesFilter,
   filterStocks: initialStocksFilter,
-  productsCart: [],
 };
 
 export const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    setSorting: (state, action: PayloadAction<ISortOption>) => {
+    setSorting: (state, action: PayloadAction<SortOption>) => {
       state.sortType = action.payload;
-      switch (action.payload.value) {
-        case "ascCost":
-          state.viewProducts = [...state.products].sort(
-            (a, b) => a.price - b.price
-          );
-          break;
-        case "descCost":
-          state.viewProducts = [...state.products].sort(
-            (a, b) => b.price - a.price
-          );
-          break;
-        case "default":
-          state.viewProducts = randomProducts;
-          break;
-      }
+      const actualState = JSON.parse(JSON.stringify(state));
+      state.viewProducts = getFiltersState(actualState.products, {
+        sortType: actualState.sortType,
+        search: actualState.search,
+        filterCategory: actualState.filterCategory,
+        filterBrand: actualState.filterBrand,
+        filterPrices: actualState.filterPrices,
+        filterStocks: actualState.filterStocks,
+      });
     },
     setSearch: (state, action: PayloadAction<string>) => {
       state.search = action.payload;
-      if (action.payload.length > 0) {
-        state.viewProducts = state.products.filter((product) =>
-          product.name.toLowerCase().includes(action.payload.toLowerCase())
-        );
-      } else {
-        state.viewProducts = randomProducts;
-      }
+      const actualState = JSON.parse(JSON.stringify(state));
+      state.viewProducts = getFiltersState(actualState.products, {
+        sortType: actualState.sortType,
+        search: actualState.search,
+        filterCategory: actualState.filterCategory,
+        filterBrand: actualState.filterBrand,
+        filterPrices: actualState.filterPrices,
+        filterStocks: actualState.filterStocks,
+      });
     },
     setFilterCategory: (
       state,
       action: PayloadAction<{ checked: boolean; category: string }>
     ) => {
       state.filterCategory[action.payload.category] = action.payload.checked;
-      const choosenCategoriesKeys = Object.entries(state.filterCategory)
-        .filter((el) => el[1])
-        .map((el) => el[0]);
-      state.viewProducts = choosenCategoriesKeys.length
-        ? state.products.filter((el) => choosenCategoriesKeys.includes(el.type))
-        : randomProducts;
+      const actualState = JSON.parse(JSON.stringify(state));
+      state.viewProducts = getFiltersState(actualState.products, {
+        sortType: actualState.sortType,
+        search: actualState.search,
+        filterCategory: actualState.filterCategory,
+        filterBrand: actualState.filterBrand,
+        filterPrices: actualState.filterPrices,
+        filterStocks: actualState.filterStocks,
+      });
     },
     setFilterBrand: (
       state,
       action: PayloadAction<{ checked: boolean; brand: string }>
     ) => {
       state.filterBrand[action.payload.brand] = action.payload.checked;
-      const choosenCategoriesKeys = Object.entries(state.filterBrand)
-        .filter((el) => el[1])
-        .map((el) => el[0]);
-      state.viewProducts = choosenCategoriesKeys.length
-        ? state.products.filter((el) =>
-            choosenCategoriesKeys.includes(el.brand)
-          )
-        : randomProducts;
+      const actualState = JSON.parse(JSON.stringify(state));
+      state.viewProducts = getFiltersState(actualState.products, {
+        sortType: actualState.sortType,
+        search: actualState.search,
+        filterCategory: actualState.filterCategory,
+        filterBrand: actualState.filterBrand,
+        filterPrices: actualState.filterPrices,
+        filterStocks: actualState.filterStocks,
+      });
     },
     setDualSlider: (
       state,
@@ -131,26 +133,22 @@ export const productsSlice = createSlice({
         ...state[filterType].inputValues
       );
 
-      state.viewProducts = randomProducts.filter((product) => {
-        if (filterType === DualSliderFilterTypes.price) {
-          return (
-            product.price >=
-              state[filterType].values[state[filterType].minValueIndex] &&
-            product.price <=
-              state[filterType].values[state[filterType].maxValueIndex]
-          );
-        } else if (filterType === DualSliderFilterTypes.stock) {
-          return (
-            product.stock >=
-              state[filterType].values[state[filterType].minValueIndex] &&
-            product.stock <=
-              state[filterType].values[state[filterType].maxValueIndex]
-          );
-        }
-      });
+      const actualState = JSON.parse(JSON.stringify(state));
+      state.viewProducts = getFiltersState(
+        actualState.products,
+        {
+          sortType: actualState.sortType,
+          search: actualState.search,
+          filterCategory: actualState.filterCategory,
+          filterBrand: actualState.filterBrand,
+          filterPrices: actualState.filterPrices,
+          filterStocks: actualState.filterStocks,
+        },
+        filterType
+      );
     },
     resetFilter: (state) => {
-      state.viewProducts = randomProducts;
+      state.viewProducts = state.products;
       state.filterCategory.Wine = false;
       state.filterCategory.Whiskey = false;
       state.filterCategory.Cognac = false;
@@ -162,36 +160,6 @@ export const productsSlice = createSlice({
       state.sortType.label = "Without sorting";
       state.search = "";
     },
-    setProductsCart: (state, action: PayloadAction<IProduct>) => {
-      state.productsCart = [...state.productsCart, action.payload];
-      console.log(state.productsCart);
-    },
-    resetProductsCart: (
-      state,
-      action: PayloadAction<{ product: IProduct; buttonClick: string }>
-    ) => {
-      if (action.payload.buttonClick === "drop") {
-        state.productsCart = state.productsCart.filter(
-          (product) => product.id !== action.payload.product.id
-        );
-      }
-      if (action.payload.buttonClick === "remove") {
-        const idProducts = state.productsCart
-          .reverse()
-          .map((product) => product.id);
-
-        const indexRemove = idProducts.findIndex(
-          (id) => id === action.payload.product.id
-        );
-
-        state.productsCart = [
-          ...state.productsCart.slice(0, indexRemove),
-          ...state.productsCart.slice(indexRemove + 1),
-        ].reverse();
-      }
-
-      console.log(state.productsCart);
-    },
   },
 });
 
@@ -202,8 +170,6 @@ export const {
   setDualSlider,
   resetFilter,
   setFilterBrand,
-  setProductsCart,
-  resetProductsCart,
 } = productsSlice.actions;
 
 export default productsSlice.reducer;

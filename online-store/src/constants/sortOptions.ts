@@ -1,30 +1,7 @@
 import { products } from "../products";
-import { IProduct, ISortOption } from "../types";
+import { brandsFilter, DualSliderFilter, Product, SortOption } from "../types";
 
-type DualSliderInputValues = [firstInput: number, secondInput: number];
-
-interface brandsFilter {
-  [key: string]: boolean;
-}
-
-export interface DualSliderFilter {
-  values: number[];
-  inputValues: DualSliderInputValues;
-  minValueIndex: number;
-  maxValueIndex: number;
-}
-
-export enum DualSliderFilterTypes {
-  price = "filterPrices",
-  stock = "filterStocks",
-}
-
-export enum DualSliderInputNumbers {
-  input1,
-  input2,
-}
-
-export const sortOptions: ISortOption[] = [
+export const sortOptions: SortOption[] = [
   {
     value: "default",
     label: "Without sorting",
@@ -61,8 +38,10 @@ export const initialPricesFilter: DualSliderFilter = {
 const productStocks: number[] = Array.from(
   new Set(
     products
-      .map((product: IProduct) => product.stock)
-      .sort((firstStock: number, secondStock: number) => firstStock - secondStock)
+      .map((product: Product) => product.stock)
+      .sort(
+        (firstStock: number, secondStock: number) => firstStock - secondStock
+      )
   )
 );
 

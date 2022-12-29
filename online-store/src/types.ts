@@ -1,13 +1,13 @@
 import { FC } from "react";
 
-export interface IRoute {
+export interface Route {
   id: number;
   name: string;
   path: string;
   element: FC;
 }
 
-export interface IProduct {
+export interface Product {
   id: number;
   type: string;
   name: string;
@@ -18,7 +18,30 @@ export interface IProduct {
   photo: Array<string>;
 }
 
-export interface ISortOption {
+export interface SortOption {
   value: string;
   label: string;
+}
+
+export interface brandsFilter {
+  [key: string]: boolean;
+}
+
+export enum DualSliderFilterTypes {
+  price = "filterPrices",
+  stock = "filterStocks",
+}
+
+export enum DualSliderInputNumbers {
+  input1,
+  input2,
+}
+
+type DualSliderInputValues = [firstInput: number, secondInput: number];
+
+export interface DualSliderFilter {
+  values: number[];
+  inputValues: DualSliderInputValues;
+  minValueIndex: number;
+  maxValueIndex: number;
 }

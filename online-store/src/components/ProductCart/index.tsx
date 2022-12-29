@@ -4,26 +4,26 @@ import { useNavigate } from "react-router-dom";
 import {
   resetProductsCart,
   setProductsCart,
-} from "../../redux/reducers/productsReducer";
+} from "../../redux/reducers/cartReduser";
 import { RootState } from "../../redux/store";
-import { IProduct } from "../../types";
+import { Product } from "../../types";
 import { Button } from "../UI/Button";
 
 import styles from "./styles.module.scss";
 
 interface IProductCardProps {
-  product: IProduct;
+  product: Product;
   index: number;
 }
 
 export const ProductCart: FC<IProductCardProps> = ({ product, index }) => {
   const navigate = useNavigate();
-  const { productsCart } = useSelector((state: RootState) => state.products);
+  const { productsCart } = useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch();
 
   const addToCard = (
     event: React.MouseEvent<HTMLButtonElement>,
-    product: IProduct
+    product: Product
   ) => {
     event.stopPropagation();
     dispatch(setProductsCart(product));
@@ -31,7 +31,7 @@ export const ProductCart: FC<IProductCardProps> = ({ product, index }) => {
 
   const dropToCard = (
     event: React.MouseEvent<HTMLButtonElement>,
-    product: IProduct
+    product: Product
   ) => {
     event.stopPropagation();
     console.log(product, "product");
