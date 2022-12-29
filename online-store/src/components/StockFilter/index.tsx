@@ -2,12 +2,9 @@ import { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setDualSlider } from "../../redux/reducers/productsReducer";
 import { RootState } from "../../redux/store";
+import { DualSliderFilterTypes, DualSliderInputNumbers } from "../../types";
 import { FilterContainer } from "../FilterConteiner";
 import { DualSlider } from "../UI/DualSlider";
-import {
-  DualSliderFilterTypes,
-  DualSliderInputNumbers,
-} from "../../constants/sortOptions";
 
 export const StockFilter: FC = () => {
   const {

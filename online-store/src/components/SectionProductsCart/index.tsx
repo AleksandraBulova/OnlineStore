@@ -7,7 +7,7 @@ import { ProductCart } from "../ProductCart";
 import styles from "./styles.module.scss";
 
 export const SectionProductsCart: FC = () => {
-  const { productsCart } = useSelector((state: RootState) => state.products);
+  const { productsCart } = useSelector((state: RootState) => state.cart);
   const uniqueProductsCart = Array.from(new Set(productsCart));
   console.log(productsCart);
 

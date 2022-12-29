@@ -4,11 +4,12 @@ import { setFilterCategory } from "../../redux/reducers/productsReducer";
 import { RootState } from "../../redux/store";
 import { FilterContainer } from "../FilterConteiner";
 import { Filter } from "../Filter";
+import { products } from "../../products";
 
 import styles from "./styles.module.scss";
 
 export const CaregoryFilter: FC = () => {
-  const { filterCategory, products, viewProducts } = useSelector(
+  const { filterCategory, viewProducts } = useSelector(
     (state: RootState) => state.products
   );
 
