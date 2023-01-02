@@ -3,10 +3,14 @@ import { Product } from "../../types";
 
 export interface IProductsState {
   productsCart: Product[];
+  limitOfProductsPerPage: number;
+  pageOfProductsCart: number;
 }
 
 const initialState: IProductsState = {
   productsCart: [],
+  limitOfProductsPerPage: 3,
+  pageOfProductsCart: 1,
 };
 
 export const cartSlice = createSlice({
@@ -45,9 +49,29 @@ export const cartSlice = createSlice({
         ].reverse();
       }
     },
+    setLimitOfProductsPerPage: (
+      state,
+      action: PayloadAction<{ limit: number; page: number }>
+    ) => {
+      const statePage = Math.ceil(
+        state.productsCart.length / action.payload.limit
+      );
+      if (action.payload.page > statePage) {
+        state.pageOfProductsCart = statePage;
+      }
+      state.limitOfProductsPerPage = action.payload.limit;
+    },
+    changePage: (state, action: PayloadAction<number>) => {
+      state.pageOfProductsCart = action.payload;
+    },
   },
 });
 
-export const { setProductsCart, resetProductsCart } = cartSlice.actions;
+export const {
+  setProductsCart,
+  resetProductsCart,
+  setLimitOfProductsPerPage,
+  changePage,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -4,12 +4,10 @@ import { useNavigate } from "react-router-dom";
 import {
   resetProductsCart,
   setProductsCart,
-} from "../../../redux/reducers/cartReduser";
+} from "../../../redux/reducers/cartReducer";
 import { RootState } from "../../../redux/store";
 import { Product } from "../../../types";
 import { Button } from "../../UI/Button";
-
-import styles from "./styles.module.scss";
 
 interface IProductCardProps {
   product: Product;
@@ -45,7 +43,7 @@ export const ProductCart: FC<IProductCardProps> = ({ product, index }) => {
 
   return (
     <div onClick={() => navigate(`/product/${product.id}`)}>
-      <div>{index + 1}</div>
+      <div>{index}</div>
       <div>
         <img src={product.photo[0]} alt="product" />
         <div>

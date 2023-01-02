@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import {
   setProductsCart,
   resetProductsCart,
-} from "../../../redux/reducers/cartReduser";
+} from "../../../redux/reducers/cartReducer";
 import { RootState } from "../../../redux/store";
 import { Product } from "../../../types";
 import { Button } from "../../UI/Button";
