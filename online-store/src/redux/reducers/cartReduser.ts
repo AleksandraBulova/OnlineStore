@@ -14,7 +14,12 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     setProductsCart: (state, action: PayloadAction<Product>) => {
-      state.productsCart = [...state.productsCart, action.payload];
+      const amountProductsCart = state.productsCart.filter(
+        (product: Product) => product.id === action.payload.id
+      );
+      if (amountProductsCart.length < action.payload.stock) {
+        state.productsCart = [...state.productsCart, action.payload];
+      }
     },
     resetProductsCart: (
       state,

@@ -29,7 +29,7 @@ export const ProductCart: FC<IProductCardProps> = ({ product, index }) => {
     dispatch(setProductsCart(product));
   };
 
-  const dropToCard = (
+  const removeToCard = (
     event: React.MouseEvent<HTMLButtonElement>,
     product: Product
   ) => {
@@ -60,7 +60,7 @@ export const ProductCart: FC<IProductCardProps> = ({ product, index }) => {
               text="-"
               isActive={false}
               onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
-                dropToCard(event, product)
+                removeToCard(event, product)
               }
             />
             <div>
