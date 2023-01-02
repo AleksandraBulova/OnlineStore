@@ -24,9 +24,7 @@ export const Header: FC = () => {
           <h1 className={styles.logo__text}>Online store</h1>
         </Link>
         <div>Cart total: ${sumProducts}</div>
-        <Link to={cartPage.path}>
-          {productsCart.length === 0 ? "Cart" : `Cart: ${productsCart.length}`}
-        </Link>
+        <Link to={cartPage.path}>Cart: {productsCart.length}</Link>
       </div>
     </header>
   );

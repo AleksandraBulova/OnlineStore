@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { SectionFilters } from "../../components/SectionFilters";
-import { SectionProducts } from "../../components/SectionProducts";
+import { SectionFilters } from "../../components/Main/SectionFilters";
+import { SectionProducts } from "../../components/Main/SectionProducts";
 
 import styles from "./styles.module.scss";
 
