@@ -1,49 +1,35 @@
 import { FC, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  setProductsCart,
-  resetProductsCart,
-} from "../../../redux/reducers/cartReducer";
+import { setProductsCart, resetProductsCart } from "../../../redux/reducers/cartReducer";
 import { RootState } from "../../../redux/store";
-import { Product } from "../../../types";
+import { Product, LayoutType } from "../../../types";
 import { Button } from "../../UI/Button";
 
 import styles from "./styles.module.scss";
 
 interface IProductCardProps {
   product: Product;
-  view?: "vertical" | "gorizontal";
+  layoutType: LayoutType;
 }
 
-export const ProductCard: FC<IProductCardProps> = ({
-  product,
-  view = "vertical",
-}) => {
+export const ProductCard: FC<IProductCardProps> = ({ product, layoutType }) => {
   const navigate = useNavigate();
 
-  const viewStyle = {
-    vertical: styles.product_vertical,
-    gorizontal: styles.product_gorizontal,
-  };
-
-  const productStyle = [styles.product, viewStyle[view]].join(" ");
+  const productStyle = [styles.product];
+  if (LayoutType[layoutType] === "vertical") productStyle.push(styles.product_vertical);
+  if (LayoutType[layoutType] === "horizontal")
+    productStyle.push(styles.product_gorizontal);
 
   const { productsCart } = useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch();
 
-  const addToCard = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    product: Product
-  ) => {
+  const addToCard = (event: React.MouseEvent<HTMLButtonElement>, product: Product) => {
     event.stopPropagation();
     dispatch(setProductsCart(product));
   };
 
-  const dropToCard = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    product: Product
-  ) => {
+  const dropToCard = (event: React.MouseEvent<HTMLButtonElement>, product: Product) => {
     event.stopPropagation();
     dispatch(resetProductsCart({ product, buttonClick: "drop" }));
   };
@@ -54,7 +40,7 @@ export const ProductCard: FC<IProductCardProps> = ({
 
   return (
     <div
-      className={productStyle}
+      className={productStyle.join(" ")}
       onClick={() => navigate(`/product/alcohol/${product.id}`)}
     >
       <div className={styles.img}>
@@ -89,10 +75,8 @@ export const ProductCard: FC<IProductCardProps> = ({
         isActive={Boolean(isInCart)}
         onClick={
           isInCart
-            ? (event: React.MouseEvent<HTMLButtonElement>) =>
-                dropToCard(event, product)
-            : (event: React.MouseEvent<HTMLButtonElement>) =>
-                addToCard(event, product)
+            ? (event: React.MouseEvent<HTMLButtonElement>) => dropToCard(event, product)
+            : (event: React.MouseEvent<HTMLButtonElement>) => addToCard(event, product)
         }
       />
     </div>

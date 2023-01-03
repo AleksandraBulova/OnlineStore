@@ -6,12 +6,12 @@
   flex-direction: column;
 
   &__title {
-    @include accentText(1.5em, 600);
+    @include accentText(1.2em, 600);
     border-bottom: 2px solid $accent-red;
   }
 
   &__filters {
-    max-height: 30vh;
+    max-height: 20vh;
     margin-top: 0.2em;
     padding-right: 0.2em;
     overflow-y: auto;
