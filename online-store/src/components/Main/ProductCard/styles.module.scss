@@ -1,0 +1,162 @@
+@import "../../../styles/colors";
+@import "../../../styles/templates";
+
+.product {
+  display: grid;
+  gap: 0.2em;
+  padding: 1.5em 1em;
+  border-radius: 0.5em;
+  @include transition;
+  cursor: pointer;
+
+  &__name {
+    flex-grow: 1;
+    @include transition;
+
+    &:hover {
+      color: $accent-red;
+    }
+  }
+
+  &:hover {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  }
+
+  button {
+    position: relative;
+    z-index: 10;
+  }
+}
+
+.product_vertical {
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto auto;
+  align-items: center;
+  text-align: center;
+
+  .info {
+    text-align: center;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+
+.product_gorizontal {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas: "img ." "img ." "img .";
+  grid-column-gap: 0.5em;
+
+  .img {
+    grid-area: img;
+  }
+}
+
+.img {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+
+  &__itemWrapper {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    width: 100%;
+    @include transition;
+  }
+
+  &__item {
+    display: inline-block;
+    min-width: 100%;
+    height: 10em;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  &__pagination {
+    &_left,
+    &_right {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      display: flex;
+      min-height: 100%;
+    }
+
+    &_left {
+      z-index: 10;
+      left: 0;
+      right: 50%;
+
+      &:hover {
+        & + .img__itemWrapper {
+          transform: translateX(0);
+        }
+      }
+    }
+
+    &_right {
+      z-index: 10;
+      left: 50%;
+      right: 0;
+
+      &:hover {
+        & + .img__itemWrapper {
+          transform: translateX(-100%);
+        }
+
+        & ~ .img__bullets {
+          .img__bullets__item:first-child {
+            background-color: $accent-gray;
+          }
+
+          .img__bullets__item:last-child {
+            background-color: $accent-red;
+          }
+        }
+      }
+    }
+  }
+
+  &__bullets {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2em;
+    margin: 0.5em 0;
+
+    &__item {
+      width: 1em;
+      height: 0.1em;
+      border-radius: 1em;
+      background-color: $accent-gray;
+      @include transition;
+
+      &:first-child {
+        background-color: $accent-red;
+      }
+    }
+  }
+}
+
+.info {
+  &__category,
+  &__brand,
+  &__description,
+  &__stock {
+    font-size: 0.7em;
+  }
+
+  &__category,
+  &__description {
+    color: $accent-gray;
+  }
+
+  &__price {
+    color: $accent-red;
+    font-weight: 600;
+  }
+}

@@ -1,0 +1,23 @@
+@import "../../../styles/colors";
+@import "../../../styles/templates";
+.sort {
+  padding: 0 0.2em;
+  border: none;
+  outline: none;
+}
+
+.search {
+  padding: 0 0.2em;
+  border: none;
+  border-bottom: 2px solid $accent-gray;
+  outline: none;
+  @include transition;
+
+  &:focus {
+    border-bottom: 2px solid $accent-red;
+  }
+}
+
+.found {
+  margin-left: auto;
+}
