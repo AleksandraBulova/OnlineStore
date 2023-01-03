@@ -30,8 +30,9 @@ export const DualSlider: FC<DualSlider> = ({
         <span className={styles.values__value}>⟷</span>
         <span className={styles.values__value}>{max}</span>
       </div>
-      <div>
+      <div className={styles.dualSlider__inputs}>
         <input
+          className={[styles.input, styles.input_top].join(" ")}
           type="range"
           min="0"
           max={sliderMaxLength}
@@ -41,6 +42,7 @@ export const DualSlider: FC<DualSlider> = ({
           }
         />
         <input
+          className={styles.input}
           type="range"
           min="0"
           max={sliderMaxLength}
