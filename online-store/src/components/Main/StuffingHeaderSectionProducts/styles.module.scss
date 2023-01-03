@@ -4,6 +4,7 @@
   padding: 0 0.2em;
   border: none;
   outline: none;
+  cursor: pointer;
 }
 
 .search {
@@ -19,5 +20,59 @@
 }
 
 .found {
+  // margin-left: auto;
+}
+
+.gridSelectors {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  height: 100%;
   margin-left: auto;
+}
+
+.selector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2px;
+  height: 1.7em;
+  width: 1.7em;
+  padding: 2px;
+  border: 2px solid $accent-gray;
+  border-radius: 10px;
+  cursor: pointer;
+  @include transition;
+
+  &_horizontal {
+    flex-direction: column;
+  }
+
+  &:hover {
+    border: 2px solid $accent-orange;
+
+    .selector__item {
+      background: $accent-red;
+    }
+  }
+
+  &:active {
+    padding: 4px;
+  }
+
+  &_active {
+    border: 2px solid $accent-red;
+
+    .selector__item {
+      background: $accent-red;
+    }
+  }
+
+  &__item {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    background: $accent-gray;
+    @include transition;
+  }
 }

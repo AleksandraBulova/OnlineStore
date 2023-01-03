@@ -5,6 +5,7 @@ import {
   DualSliderInputNumbers,
   Product,
   SortOption,
+  LayoutType,
 } from "../../types";
 import { randomProducts } from "../../products";
 import { getFiltersState } from "../../utils/getFiltersState";
@@ -19,6 +20,7 @@ export interface IProductsState {
   products: Product[];
   viewProducts: Product[];
   sortType: SortOption;
+  layoutType: LayoutType;
   search: string;
   filterCategory: {
     [key: string]: boolean;
@@ -37,6 +39,7 @@ const initialState: IProductsState = {
     value: "default",
     label: "Without sorting",
   },
+  layoutType: LayoutType.vertical,
   search: "",
   filterCategory: {
     Wine: false,
@@ -97,6 +100,9 @@ export const productsSlice = createSlice({
         state.filterPrices = priceInputValues;
         state.filterStocks = stockInputValues;
       }
+    },
+    setLayout: (state, action: PayloadAction<LayoutType>) => {
+      state.layoutType = action.payload;
     },
     setFilterCategory: (
       state,
@@ -251,6 +257,7 @@ export const productsSlice = createSlice({
 
 export const {
   setSorting,
+  setLayout,
   setSearch,
   setFilterCategory,
   setDualSlider,

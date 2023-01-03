@@ -32,7 +32,6 @@ export const ProductCart: FC<IProductCardProps> = ({ product, index }) => {
     product: Product
   ) => {
     event.stopPropagation();
-    console.log(product, "product");
     dispatch(
       resetProductsCart({
         product,
@@ -42,7 +41,7 @@ export const ProductCart: FC<IProductCardProps> = ({ product, index }) => {
   };
 
   return (
-    <div onClick={() => navigate(`/product/${product.id}`)}>
+    <div onClick={() => navigate(`/product/alcohol/${product.id}`)}>
       <div>{index}</div>
       <div>
         <img src={product.photo[0]} alt="product" />

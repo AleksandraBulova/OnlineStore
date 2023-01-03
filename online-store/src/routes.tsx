@@ -19,7 +19,7 @@ export const routes: Route[] = [
   {
     id: 3,
     name: "Product",
-    path: "/product/:id",
+    path: "/product/alcohol/:id",
     element: ProductPage,
   },
 ];

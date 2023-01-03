@@ -23,6 +23,11 @@ export interface SortOption {
   label: string;
 }
 
+export enum LayoutType {
+  vertical,
+  horizontal,
+}
+
 export interface brandsFilter {
   [key: string]: boolean;
 }
@@ -44,4 +49,9 @@ export interface DualSliderFilter {
   inputValues: DualSliderInputValues;
   minValueIndex: number;
   maxValueIndex: number;
+}
+
+export interface PromoCode {
+  value: string;
+  discount: number;
 }
