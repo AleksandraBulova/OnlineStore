@@ -1,16 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Product } from "../../types";
+import { getUniqueProducts } from "../../utils/getUniqueProducts";
 
 export interface IProductsState {
   productsCart: Product[];
   limitOfProductsPerPage: number;
   pageOfProductsCart: number;
+  searchPromo: string;
 }
 
 const initialState: IProductsState = {
   productsCart: [],
   limitOfProductsPerPage: 3,
   pageOfProductsCart: 1,
+  searchPromo: "",
 };
 
 export const cartSlice = createSlice({
@@ -54,7 +57,7 @@ export const cartSlice = createSlice({
       action: PayloadAction<{ limit: number; page: number }>
     ) => {
       const statePage = Math.ceil(
-        state.productsCart.length / action.payload.limit
+        getUniqueProducts(state.productsCart).length / action.payload.limit
       );
       if (action.payload.page > statePage) {
         state.pageOfProductsCart = statePage;
@@ -64,6 +67,11 @@ export const cartSlice = createSlice({
     changePage: (state, action: PayloadAction<number>) => {
       state.pageOfProductsCart = action.payload;
     },
+    setSearchPromo: (state, action: PayloadAction<string | undefined>) => {
+      action.payload === undefined
+        ? (state.searchPromo = "")
+        : (state.searchPromo = action.payload);
+    },
   },
 });
 
@@ -72,6 +80,7 @@ export const {
   resetProductsCart,
   setLimitOfProductsPerPage,
   changePage,
+  setSearchPromo,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -5,6 +5,7 @@ import {
   setLimitOfProductsPerPage,
 } from "../../../redux/reducers/cartReducer";
 import { RootState } from "../../../redux/store";
+import { getUniqueProducts } from "../../../utils/getUniqueProducts";
 import { Button } from "../../UI/Button";
 
 export const StuffingHeaderSectionProductsCart: FC = () => {
@@ -17,7 +18,9 @@ export const StuffingHeaderSectionProductsCart: FC = () => {
     if (
       type === "plus" &&
       pageOfProductsCart !==
-        Math.ceil(productsCart.length / limitOfProductsPerPage)
+        Math.ceil(
+          getUniqueProducts(productsCart).length / limitOfProductsPerPage
+        )
     ) {
       dispatch(changePage(pageOfProductsCart + 1));
     }
@@ -34,7 +37,7 @@ export const StuffingHeaderSectionProductsCart: FC = () => {
         <input
           type="number"
           min="1"
-          max={productsCart.length}
+          max={getUniqueProducts(productsCart).length}
           value={limitOfProductsPerPage}
           onChange={(event) =>
             dispatch(
@@ -56,7 +59,9 @@ export const StuffingHeaderSectionProductsCart: FC = () => {
           />
           <div>
             {pageOfProductsCart}/
-            {Math.ceil(productsCart.length / limitOfProductsPerPage)}
+            {Math.ceil(
+              getUniqueProducts(productsCart).length / limitOfProductsPerPage
+            )}
           </div>
           <Button
             text=">"

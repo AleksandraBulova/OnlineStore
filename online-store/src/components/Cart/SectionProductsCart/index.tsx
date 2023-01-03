@@ -5,13 +5,15 @@ import { ProductCart } from "../ProductCart";
 import { HeaderSection } from "../../UI/HeaderSection";
 import { StuffingHeaderSectionProductsCart } from "../StuffingHeaderSectionProductsCart";
 import { Product } from "../../../types";
+import { getUniqueProducts } from "../../../utils/getUniqueProducts";
 
 export const SectionProductsCart: FC = () => {
   const { productsCart, pageOfProductsCart, limitOfProductsPerPage } =
     useSelector((state: RootState) => state.cart);
 
   const viewProducts = useMemo(() => {
-    const uniqueProductsCart = [...Array.from(new Set(productsCart))];
+    const uniqueProductsCart = getUniqueProducts(productsCart);
+
     const newViewProducts = uniqueProductsCart.reduce(
       (
         acc: Array<Product & { index: number }>[],

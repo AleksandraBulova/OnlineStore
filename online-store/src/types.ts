@@ -45,3 +45,8 @@ export interface DualSliderFilter {
   minValueIndex: number;
   maxValueIndex: number;
 }
+
+export interface PromoCode {
+  value: string;
+  discount: number;
+}

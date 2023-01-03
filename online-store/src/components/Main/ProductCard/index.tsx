@@ -55,7 +55,7 @@ export const ProductCard: FC<IProductCardProps> = ({
   return (
     <div
       className={productStyle}
-      onClick={() => navigate(`/product/${product.id}`)}
+      onClick={() => navigate(`/product/alcohol/${product.id}`)}
     >
       <div className={styles.img}>
         <div className={styles.img__pagination_left}></div>
