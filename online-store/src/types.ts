@@ -37,7 +37,7 @@ export enum DualSliderInputNumbers {
   input2,
 }
 
-type DualSliderInputValues = [firstInput: number, secondInput: number];
+export type DualSliderInputValues = [firstInput: number, secondInput: number];
 
 export interface DualSliderFilter {
   values: number[];

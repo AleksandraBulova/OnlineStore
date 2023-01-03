@@ -13,6 +13,7 @@ import {
   initialPricesFilter,
   initialStocksFilter,
 } from "../../constants/sortOptions";
+import { getDualSliderState } from "../../utils/getDualSliderState";
 
 export interface IProductsState {
   products: Product[];
@@ -66,8 +67,11 @@ export const productsSlice = createSlice({
     },
     setSearch: (state, action: PayloadAction<string>) => {
       state.search = action.payload;
+      state.filterPrices = initialPricesFilter;
+      state.filterStocks = initialStocksFilter;
+
       const actualState = JSON.parse(JSON.stringify(state));
-      state.viewProducts = getFiltersState(actualState.products, {
+      const viewProducts = getFiltersState(actualState.products, {
         sortType: actualState.sortType,
         search: actualState.search,
         filterCategory: actualState.filterCategory,
@@ -75,14 +79,35 @@ export const productsSlice = createSlice({
         filterPrices: actualState.filterPrices,
         filterStocks: actualState.filterStocks,
       });
+      state.viewProducts = viewProducts;
+
+      if (viewProducts.length > 0) {
+        const priceInputValues = getDualSliderState(
+          viewProducts,
+          actualState[DualSliderFilterTypes.price],
+          DualSliderFilterTypes.price
+        );
+
+        const stockInputValues = getDualSliderState(
+          viewProducts,
+          actualState[DualSliderFilterTypes.stock],
+          DualSliderFilterTypes.stock
+        );
+
+        state.filterPrices = priceInputValues;
+        state.filterStocks = stockInputValues;
+      }
     },
     setFilterCategory: (
       state,
       action: PayloadAction<{ checked: boolean; category: string }>
     ) => {
       state.filterCategory[action.payload.category] = action.payload.checked;
+      state.filterPrices = initialPricesFilter;
+      state.filterStocks = initialStocksFilter;
+
       const actualState = JSON.parse(JSON.stringify(state));
-      state.viewProducts = getFiltersState(actualState.products, {
+      const viewProducts = getFiltersState(actualState.products, {
         sortType: actualState.sortType,
         search: actualState.search,
         filterCategory: actualState.filterCategory,
@@ -90,14 +115,35 @@ export const productsSlice = createSlice({
         filterPrices: actualState.filterPrices,
         filterStocks: actualState.filterStocks,
       });
+      state.viewProducts = viewProducts;
+
+      if (viewProducts.length > 0) {
+        const priceInputValues = getDualSliderState(
+          viewProducts,
+          actualState[DualSliderFilterTypes.price],
+          DualSliderFilterTypes.price
+        );
+
+        const stockInputValues = getDualSliderState(
+          viewProducts,
+          actualState[DualSliderFilterTypes.stock],
+          DualSliderFilterTypes.stock
+        );
+
+        state.filterPrices = priceInputValues;
+        state.filterStocks = stockInputValues;
+      }
     },
     setFilterBrand: (
       state,
       action: PayloadAction<{ checked: boolean; brand: string }>
     ) => {
       state.filterBrand[action.payload.brand] = action.payload.checked;
+      state.filterPrices = initialPricesFilter;
+      state.filterStocks = initialStocksFilter;
+
       const actualState = JSON.parse(JSON.stringify(state));
-      state.viewProducts = getFiltersState(actualState.products, {
+      const viewProducts = getFiltersState(actualState.products, {
         sortType: actualState.sortType,
         search: actualState.search,
         filterCategory: actualState.filterCategory,
@@ -105,6 +151,24 @@ export const productsSlice = createSlice({
         filterPrices: actualState.filterPrices,
         filterStocks: actualState.filterStocks,
       });
+      state.viewProducts = viewProducts;
+
+      if (viewProducts.length > 0) {
+        const priceInputValues = getDualSliderState(
+          viewProducts,
+          actualState[DualSliderFilterTypes.price],
+          DualSliderFilterTypes.price
+        );
+
+        const stockInputValues = getDualSliderState(
+          viewProducts,
+          actualState[DualSliderFilterTypes.stock],
+          DualSliderFilterTypes.stock
+        );
+
+        state.filterPrices = priceInputValues;
+        state.filterStocks = stockInputValues;
+      }
     },
     setDualSlider: (
       state,
@@ -118,6 +182,13 @@ export const productsSlice = createSlice({
       const value = Number(action.payload.value);
       const inputNumber = action.payload.inputNumber;
 
+      if (filterType === "filterStocks") {
+        state.filterPrices = initialPricesFilter;
+      }
+      if (filterType === "filterPrices") {
+        state.filterStocks = initialStocksFilter;
+      }
+
       if (inputNumber === 0) {
         state[filterType].inputValues[0] = value;
       }
@@ -130,7 +201,8 @@ export const productsSlice = createSlice({
       state[filterType].maxValueIndex = Math.max(...state[filterType].inputValues);
 
       const actualState = JSON.parse(JSON.stringify(state));
-      state.viewProducts = getFiltersState(actualState.products, {
+      console.log(filterType);
+      const viewProducts = getFiltersState(actualState.products, {
         sortType: actualState.sortType,
         search: actualState.search,
         filterCategory: actualState.filterCategory,
@@ -138,6 +210,28 @@ export const productsSlice = createSlice({
         filterPrices: actualState.filterPrices,
         filterStocks: actualState.filterStocks,
       });
+      state.viewProducts = viewProducts;
+
+      if (viewProducts.length > 0) {
+        if (filterType === "filterStocks") {
+          const priceInputValues = getDualSliderState(
+            viewProducts,
+            actualState[DualSliderFilterTypes.price],
+            DualSliderFilterTypes.price
+          );
+          state.filterPrices = priceInputValues;
+        }
+
+        if (filterType === "filterPrices") {
+          const stockInputValues = getDualSliderState(
+            viewProducts,
+            actualState[DualSliderFilterTypes.stock],
+            DualSliderFilterTypes.stock
+          );
+
+          state.filterStocks = stockInputValues;
+        }
+      }
     },
     resetFilter: (state) => {
       state.viewProducts = state.products;
