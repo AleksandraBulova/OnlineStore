@@ -5,16 +5,18 @@ import { routes } from "../../routes";
 
 import logo from "../../assets/logo.png";
 import styles from "./styles.module.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { setSumProducts } from "../../redux/reducers/cartReducer";
 
 export const Header: FC = () => {
   const [mainPage, cartPage]: Route[] = routes;
-  const { productsCart } = useSelector((state: RootState) => state.cart);
-  const sumProducts = productsCart.reduce(
-    (acc, product) => acc + product.price,
-    0
+  const { productsCart, sumProducts } = useSelector(
+    (state: RootState) => state.cart
   );
+
+  const dispatch = useDispatch();
+  dispatch(setSumProducts());
 
   return (
     <header className={styles.header}>

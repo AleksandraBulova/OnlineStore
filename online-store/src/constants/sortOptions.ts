@@ -24,10 +24,6 @@ export const sortOptions: SortOption[] = [
   },
 ];
 
-export const initialBrandsFilter: brandsFilter = {};
-
-products.forEach((product) => (initialBrandsFilter[product.brand] = false));
-
 const productPrices: number[] = Array.from(
   new Set(
     products

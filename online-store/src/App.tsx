@@ -3,11 +3,19 @@ import { routes } from "./routes";
 import { Link } from "react-router-dom";
 import styles from "./App.module.scss";
 import { MainLayout } from "./layouts/mainLayout";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { updateFilters } from "./redux/reducers/productsReducer";
 
 function App() {
   const store = useSelector((store) => store);
+  const dispatch = useDispatch();
   console.log(store);
+
+  useEffect(() => {
+    dispatch(updateFilters());
+  }, []);
+
   return (
     <BrowserRouter>
       <div className={styles.wrapper}>

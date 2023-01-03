@@ -4,6 +4,7 @@ import { getUniqueProducts } from "../../utils/getUniqueProducts";
 
 export interface IProductsState {
   productsCart: Product[];
+  sumProducts: number;
   limitOfProductsPerPage: number;
   pageOfProductsCart: number;
   searchPromo: string;
@@ -11,6 +12,7 @@ export interface IProductsState {
 
 const initialState: IProductsState = {
   productsCart: [],
+  sumProducts: 0,
   limitOfProductsPerPage: 3,
   pageOfProductsCart: 1,
   searchPromo: "",
@@ -52,6 +54,12 @@ export const cartSlice = createSlice({
         ].reverse();
       }
     },
+    setSumProducts: (state) => {
+      state.sumProducts = state.productsCart.reduce(
+        (acc, product) => acc + product.price,
+        0
+      );
+    },
     setLimitOfProductsPerPage: (
       state,
       action: PayloadAction<{ limit: number; page: number }>
@@ -78,6 +86,7 @@ export const cartSlice = createSlice({
 export const {
   setProductsCart,
   resetProductsCart,
+  setSumProducts,
   setLimitOfProductsPerPage,
   changePage,
   setSearchPromo,
