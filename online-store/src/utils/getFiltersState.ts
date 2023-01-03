@@ -1,4 +1,4 @@
-import { DualSliderFilter, DualSliderFilterTypes, Product, SortOption } from "../types";
+import { DualSliderFilter, Product, SortOption } from "../types";
 
 export interface IFiltersState {
   sortType: SortOption;
@@ -13,15 +13,32 @@ export interface IFiltersState {
   filterStocks: DualSliderFilter;
 }
 
-export const getFiltersState = (products: Product[], filters: IFiltersState) => {
+export const getFiltersState = (
+  products: Product[],
+  filters: IFiltersState
+) => {
   let filteredProducts: Product[] = products;
 
   switch (filters.sortType.value) {
     case "ascCost":
-      filteredProducts = [...filteredProducts].sort((a, b) => a.price - b.price);
+      filteredProducts = [...filteredProducts].sort(
+        (a, b) => a.price - b.price
+      );
       break;
     case "descCost":
-      filteredProducts = [...filteredProducts].sort((a, b) => b.price - a.price);
+      filteredProducts = [...filteredProducts].sort(
+        (a, b) => b.price - a.price
+      );
+      break;
+    case "ascStock":
+      filteredProducts = [...filteredProducts].sort(
+        (a, b) => a.stock - b.stock
+      );
+      break;
+    case "descStock":
+      filteredProducts = [...filteredProducts].sort(
+        (a, b) => b.stock - a.stock
+      );
       break;
     case "default":
       filteredProducts = products;
@@ -33,7 +50,9 @@ export const getFiltersState = (products: Product[], filters: IFiltersState) => 
       (product) =>
         product.name.toLowerCase().includes(filters.search.toLowerCase()) ||
         product.brand.toLowerCase().includes(filters.search.toLowerCase()) ||
-        product.description.toLowerCase().includes(filters.search.toLowerCase()) ||
+        product.description
+          .toLowerCase()
+          .includes(filters.search.toLowerCase()) ||
         String(product.price).includes(filters.search) ||
         String(product.stock).includes(filters.search)
     );

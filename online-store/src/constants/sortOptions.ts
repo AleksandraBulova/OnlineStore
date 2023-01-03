@@ -8,11 +8,19 @@ export const sortOptions: SortOption[] = [
   },
   {
     value: "ascCost",
-    label: "Asc Cost",
+    label: "Ascending Cost",
   },
   {
     value: "descCost",
-    label: "Desc Cost",
+    label: "Descending Cost",
+  },
+  {
+    value: "ascStock",
+    label: "Ascending Stock",
+  },
+  {
+    value: "descStock",
+    label: "Descending Stock",
   },
 ];
 
