@@ -7,14 +7,15 @@ import {
   SortOption,
   LayoutType,
 } from "../../types";
-import { randomProducts } from "../../products";
+import { products } from "../../products";
 import { getFiltersState } from "../../utils/getFiltersState";
 import {
-  initialBrandsFilter,
   initialPricesFilter,
   initialStocksFilter,
+  sortOptions,
 } from "../../constants/sortOptions";
 import { getDualSliderState } from "../../utils/getDualSliderState";
+import { getInitialBrandFilters } from "../../utils/getInitialBrandFilters";
 
 export interface IProductsState {
   products: Product[];
@@ -32,25 +33,50 @@ export interface IProductsState {
   filterStocks: DualSliderFilter;
 }
 
+const urlParams = new URLSearchParams(window.location.search);
+const categories = urlParams.get("categories");
+const brands = urlParams.get("brands");
+const search = urlParams.get("search") || "";
+const sortType = urlParams.get("sortType");
+
 const initialState: IProductsState = {
-  products: randomProducts,
-  viewProducts: randomProducts,
-  sortType: {
+  products: products,
+  viewProducts: products,
+  sortType: sortOptions.find((el) => el.value === sortType) || {
     value: "default",
     label: "Without sorting",
   },
   layoutType: LayoutType.vertical,
-  search: "",
-  filterCategory: {
-    Wine: false,
-    Whiskey: false,
-    Cognac: false,
-    Vodka: false,
-  },
-  filterBrand: initialBrandsFilter,
+  search,
+  filterCategory: Object.fromEntries(
+    Object.entries({
+      Wine: false,
+      Whiskey: false,
+      Cognac: false,
+      Vodka: false,
+    }).map((el: [string, boolean]) =>
+      categories?.includes(el[0]) ? [el[0], true] : [el[0], false]
+    )
+  ),
+  filterBrand: Object.fromEntries(
+    Object.entries(getInitialBrandFilters(products)).map(
+      (el: [string, boolean]) =>
+        brands?.includes(el[0]) ? [el[0], true] : [el[0], false]
+    )
+  ),
   filterPrices: initialPricesFilter,
   filterStocks: initialStocksFilter,
 };
+
+console.log(
+  Object.fromEntries(
+    Object.entries(getInitialBrandFilters(products)).map(
+      (el: [string, boolean]) =>
+        categories?.includes(el[0]) ? [el[0], true] : [el[0], false]
+    )
+  ),
+  123
+);
 
 export const productsSlice = createSlice({
   name: "products",
@@ -203,8 +229,12 @@ export const productsSlice = createSlice({
         state[filterType].inputValues[1] = value;
       }
 
-      state[filterType].minValueIndex = Math.min(...state[filterType].inputValues);
-      state[filterType].maxValueIndex = Math.max(...state[filterType].inputValues);
+      state[filterType].minValueIndex = Math.min(
+        ...state[filterType].inputValues
+      );
+      state[filterType].maxValueIndex = Math.max(
+        ...state[filterType].inputValues
+      );
 
       const actualState = JSON.parse(JSON.stringify(state));
       console.log(filterType);
@@ -245,12 +275,23 @@ export const productsSlice = createSlice({
       state.filterCategory.Whiskey = false;
       state.filterCategory.Cognac = false;
       state.filterCategory.Vodka = false;
-      state.filterBrand = initialBrandsFilter;
+      state.filterBrand = getInitialBrandFilters(products);
       state.filterPrices = initialPricesFilter;
       state.filterStocks = initialStocksFilter;
       state.sortType.value = "default";
       state.sortType.label = "Without sorting";
       state.search = "";
+    },
+    updateFilters: (state) => {
+      const actualState = JSON.parse(JSON.stringify(state));
+      state.viewProducts = getFiltersState(actualState.products, {
+        sortType: actualState.sortType,
+        search: actualState.search,
+        filterCategory: actualState.filterCategory,
+        filterBrand: actualState.filterBrand,
+        filterPrices: actualState.filterPrices,
+        filterStocks: actualState.filterStocks,
+      });
     },
   },
 });
@@ -263,6 +304,7 @@ export const {
   setDualSlider,
   resetFilter,
   setFilterBrand,
+  updateFilters,
 } = productsSlice.actions;
 
 export default productsSlice.reducer;

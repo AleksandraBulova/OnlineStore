@@ -1,21 +1,20 @@
 import { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { promoCode } from "../../../constants/promoCode";
-import { setSearchPromo } from "../../../redux/reducers/cartReducer";
+import {
+  setSearchPromo,
+  setSumProducts,
+} from "../../../redux/reducers/cartReducer";
 import { RootState } from "../../../redux/store";
-import { PromoCode } from "../../../types";
 import { Button } from "../../UI/Button";
 
 export const Summary: FC = () => {
-  const { productsCart, searchPromo } = useSelector(
+  const { productsCart, sumProducts, searchPromo } = useSelector(
     (state: RootState) => state.cart
-  );
-  const sumProducts = productsCart.reduce(
-    (acc, product) => acc + product.price,
-    0
   );
 
   const dispatch = useDispatch();
+  dispatch(setSumProducts());
 
   return (
     <div>
@@ -28,7 +27,7 @@ export const Summary: FC = () => {
           dispatch(
             setSearchPromo(
               promoCode.find(
-                (el) => el.value.toUpperCase() === event.target.value
+                (el) => el.value === event.target.value.toUpperCase()
               )?.value
             )
           );

@@ -93,6 +93,36 @@ export const getFiltersState = (
       product.stock <= stockValues[maxStockIndex]
     );
   });
+  console.log(filters, "filters");
+  const sortType =
+    filters.sortType.value !== "default" ? filters.sortType.value : "";
+  const sortTypeQuery = sortType && `&sortType=${sortType}`;
+  const search = filters.search;
+  const searchQuery = search && `&search=${search}`;
+  const category = Object.entries(filters.filterCategory).reduce(
+    (acc: string[], curr) => (curr[1] ? [...acc, curr[0]] : [...acc]),
+    []
+  );
+  const categoryQuery = category.length
+    ? `&categories=${category.join(",")}`
+    : "";
+  const brands = Object.entries(filters.filterBrand).reduce(
+    (acc: string[], curr) => (curr[1] ? [...acc, curr[0]] : [...acc]),
+    []
+  );
+  const brandsQuery = brands.length ? `&brands=${brands.join(",")}` : "";
+
+  if (sortType || search || category.length || brands.length) {
+    console.log(4444);
+    window.history.replaceState(
+      null,
+      "Online store",
+      `/${sortTypeQuery}${searchQuery}${categoryQuery}${brandsQuery}`.replace(
+        "&",
+        "?"
+      )
+    );
+  }
 
   return filteredProducts;
 };

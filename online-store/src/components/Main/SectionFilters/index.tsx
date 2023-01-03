@@ -11,8 +11,13 @@ import styles from "./styles.module.scss";
 
 export const SectionFilters: FC = () => {
   const dispatch = useDispatch();
-  const copyLink = () =>
-    alert("TODO: Реализовать копирование поисковой строки");
+  const copyLink = () => {
+    if (navigator?.clipboard?.writeText) {
+      navigator?.clipboard?.writeText(window.location.href);
+    } else {
+      alert("Copy doesn't work on http!");
+    }
+  };
   const resetFilters = () => dispatch(resetFilter());
 
   return (
