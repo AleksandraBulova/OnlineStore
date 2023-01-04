@@ -5,15 +5,17 @@ import { RootState } from "../../../../redux/store";
 import {
   DualSliderFilterTypes,
   DualSliderInputNumbers,
+  DualSliderSettings,
+  FilterControllers,
 } from "../../../../types";
 import { FilterContainer } from "../FilterConteiner";
 import { DualSlider } from "../../../UI/DualSlider";
 
-import styles from "./styles.module.scss";
-
 export const PriceFilter: FC = () => {
   const {
-    filterPrices: { values, inputValues, minValueIndex, maxValueIndex },
+    viewProducts,
+    filterPrices: { values, minValueIndex, maxValueIndex, inputValues },
+    filterChangedBy,
   } = useSelector((state: RootState) => state.products);
   const dispatch = useDispatch();
   const handleChangeDualSlider = (
@@ -28,18 +30,36 @@ export const PriceFilter: FC = () => {
       })
     );
   };
-  const minPrice = values[minValueIndex];
-  const maxPrice = values[maxValueIndex];
-  const maxLength = values.length - 1;
+
+  const dualSliderSettings: DualSliderSettings = {
+    maxLength: values.length - 1,
+    firstInputValue: inputValues[0],
+    secondInputValue: inputValues[1],
+    min: values[minValueIndex],
+    max: values[maxValueIndex],
+  };
+
+  if (FilterControllers[filterChangedBy] !== "priceController") {
+    const prices = viewProducts.map((product) => product.price);
+    dualSliderSettings.min = prices.length > 0 ? Math.min(...prices) : values[0];
+    dualSliderSettings.max =
+      prices.length > 0 ? Math.max(...prices) : values[dualSliderSettings.maxLength];
+    dualSliderSettings.firstInputValue =
+      prices.length > 0 ? values.indexOf(dualSliderSettings.min) : 0;
+    dualSliderSettings.secondInputValue =
+      prices.length > 0
+        ? values.indexOf(dualSliderSettings.max)
+        : dualSliderSettings.maxLength;
+  }
 
   return (
     <FilterContainer title="Prices">
       <DualSlider
-        firstInputValue={inputValues[0]}
-        secondInputValue={inputValues[1]}
-        min={minPrice + "$"}
-        max={maxPrice + "$"}
-        sliderMaxLength={maxLength}
+        firstInputValue={dualSliderSettings.firstInputValue}
+        secondInputValue={dualSliderSettings.secondInputValue}
+        min={dualSliderSettings.min + "$"}
+        max={dualSliderSettings.max + "$"}
+        sliderMaxLength={dualSliderSettings.maxLength}
         handleChangeDualSlider={handleChangeDualSlider}
       />
     </FilterContainer>

@@ -51,7 +51,24 @@ export interface DualSliderFilter {
   maxValueIndex: number;
 }
 
+export type DualSliderSettings = {
+  maxLength: number;
+  firstInputValue: number;
+  secondInputValue: number;
+  min: number;
+  max: number;
+};
+
 export interface PromoCode {
   value: string;
   discount: number;
+}
+
+export enum FilterControllers {
+  initial,
+  searchController,
+  categoryController,
+  brandController,
+  priceController,
+  stockController,
 }

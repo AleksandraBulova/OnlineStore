@@ -6,6 +6,7 @@ import {
   Product,
   SortOption,
   LayoutType,
+  FilterControllers,
 } from "../../types";
 import { products } from "../../products";
 import { getFiltersState } from "../../utils/getFiltersState";
@@ -31,6 +32,7 @@ export interface IProductsState {
   };
   filterPrices: DualSliderFilter;
   filterStocks: DualSliderFilter;
+  filterChangedBy: FilterControllers;
 }
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -59,20 +61,19 @@ const initialState: IProductsState = {
     )
   ),
   filterBrand: Object.fromEntries(
-    Object.entries(getInitialBrandFilters(products)).map(
-      (el: [string, boolean]) =>
-        brands?.includes(el[0]) ? [el[0], true] : [el[0], false]
+    Object.entries(getInitialBrandFilters(products)).map((el: [string, boolean]) =>
+      brands?.includes(el[0]) ? [el[0], true] : [el[0], false]
     )
   ),
   filterPrices: initialPricesFilter,
   filterStocks: initialStocksFilter,
+  filterChangedBy: FilterControllers.initial,
 };
 
 console.log(
   Object.fromEntries(
-    Object.entries(getInitialBrandFilters(products)).map(
-      (el: [string, boolean]) =>
-        categories?.includes(el[0]) ? [el[0], true] : [el[0], false]
+    Object.entries(getInitialBrandFilters(products)).map((el: [string, boolean]) =>
+      categories?.includes(el[0]) ? [el[0], true] : [el[0], false]
     )
   ),
   123
@@ -96,8 +97,7 @@ export const productsSlice = createSlice({
     },
     setSearch: (state, action: PayloadAction<string>) => {
       state.search = action.payload;
-      state.filterPrices = initialPricesFilter;
-      state.filterStocks = initialStocksFilter;
+      state.filterChangedBy = FilterControllers.searchController;
 
       const actualState = JSON.parse(JSON.stringify(state));
       const viewProducts = getFiltersState(actualState.products, {
@@ -109,23 +109,6 @@ export const productsSlice = createSlice({
         filterStocks: actualState.filterStocks,
       });
       state.viewProducts = viewProducts;
-
-      if (viewProducts.length > 0) {
-        const priceInputValues = getDualSliderState(
-          viewProducts,
-          actualState[DualSliderFilterTypes.price],
-          DualSliderFilterTypes.price
-        );
-
-        const stockInputValues = getDualSliderState(
-          viewProducts,
-          actualState[DualSliderFilterTypes.stock],
-          DualSliderFilterTypes.stock
-        );
-
-        state.filterPrices = priceInputValues;
-        state.filterStocks = stockInputValues;
-      }
     },
     setLayout: (state, action: PayloadAction<LayoutType>) => {
       state.layoutType = action.payload;
@@ -135,8 +118,7 @@ export const productsSlice = createSlice({
       action: PayloadAction<{ checked: boolean; category: string }>
     ) => {
       state.filterCategory[action.payload.category] = action.payload.checked;
-      state.filterPrices = initialPricesFilter;
-      state.filterStocks = initialStocksFilter;
+      state.filterChangedBy = FilterControllers.categoryController;
 
       const actualState = JSON.parse(JSON.stringify(state));
       const viewProducts = getFiltersState(actualState.products, {
@@ -148,31 +130,13 @@ export const productsSlice = createSlice({
         filterStocks: actualState.filterStocks,
       });
       state.viewProducts = viewProducts;
-
-      if (viewProducts.length > 0) {
-        const priceInputValues = getDualSliderState(
-          viewProducts,
-          actualState[DualSliderFilterTypes.price],
-          DualSliderFilterTypes.price
-        );
-
-        const stockInputValues = getDualSliderState(
-          viewProducts,
-          actualState[DualSliderFilterTypes.stock],
-          DualSliderFilterTypes.stock
-        );
-
-        state.filterPrices = priceInputValues;
-        state.filterStocks = stockInputValues;
-      }
     },
     setFilterBrand: (
       state,
       action: PayloadAction<{ checked: boolean; brand: string }>
     ) => {
       state.filterBrand[action.payload.brand] = action.payload.checked;
-      state.filterPrices = initialPricesFilter;
-      state.filterStocks = initialStocksFilter;
+      state.filterChangedBy = FilterControllers.brandController;
 
       const actualState = JSON.parse(JSON.stringify(state));
       const viewProducts = getFiltersState(actualState.products, {
@@ -184,23 +148,6 @@ export const productsSlice = createSlice({
         filterStocks: actualState.filterStocks,
       });
       state.viewProducts = viewProducts;
-
-      if (viewProducts.length > 0) {
-        const priceInputValues = getDualSliderState(
-          viewProducts,
-          actualState[DualSliderFilterTypes.price],
-          DualSliderFilterTypes.price
-        );
-
-        const stockInputValues = getDualSliderState(
-          viewProducts,
-          actualState[DualSliderFilterTypes.stock],
-          DualSliderFilterTypes.stock
-        );
-
-        state.filterPrices = priceInputValues;
-        state.filterStocks = stockInputValues;
-      }
     },
     setDualSlider: (
       state,
@@ -214,11 +161,12 @@ export const productsSlice = createSlice({
       const value = Number(action.payload.value);
       const inputNumber = action.payload.inputNumber;
 
-      if (filterType === "filterStocks") {
-        state.filterPrices = initialPricesFilter;
-      }
       if (filterType === "filterPrices") {
-        state.filterStocks = initialStocksFilter;
+        state.filterChangedBy = FilterControllers.priceController;
+      }
+
+      if (filterType === "filterStocks") {
+        state.filterChangedBy = FilterControllers.stockController;
       }
 
       if (inputNumber === 0) {
@@ -229,15 +177,10 @@ export const productsSlice = createSlice({
         state[filterType].inputValues[1] = value;
       }
 
-      state[filterType].minValueIndex = Math.min(
-        ...state[filterType].inputValues
-      );
-      state[filterType].maxValueIndex = Math.max(
-        ...state[filterType].inputValues
-      );
+      state[filterType].minValueIndex = Math.min(...state[filterType].inputValues);
+      state[filterType].maxValueIndex = Math.max(...state[filterType].inputValues);
 
       const actualState = JSON.parse(JSON.stringify(state));
-      console.log(filterType);
       const viewProducts = getFiltersState(actualState.products, {
         sortType: actualState.sortType,
         search: actualState.search,
@@ -247,27 +190,6 @@ export const productsSlice = createSlice({
         filterStocks: actualState.filterStocks,
       });
       state.viewProducts = viewProducts;
-
-      if (viewProducts.length > 0) {
-        if (filterType === "filterStocks") {
-          const priceInputValues = getDualSliderState(
-            viewProducts,
-            actualState[DualSliderFilterTypes.price],
-            DualSliderFilterTypes.price
-          );
-          state.filterPrices = priceInputValues;
-        }
-
-        if (filterType === "filterPrices") {
-          const stockInputValues = getDualSliderState(
-            viewProducts,
-            actualState[DualSliderFilterTypes.stock],
-            DualSliderFilterTypes.stock
-          );
-
-          state.filterStocks = stockInputValues;
-        }
-      }
     },
     resetFilter: (state) => {
       state.viewProducts = state.products;
