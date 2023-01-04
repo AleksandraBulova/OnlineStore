@@ -19,23 +19,10 @@ function App() {
   return (
     <BrowserRouter>
       <div className={styles.wrapper}>
-        {/* <nav>
-          <ul>
-            {routes.map((route) => (
-              <li key={route.id}>
-                <Link to={route.path}>{route.name}</Link>
-              </li>
-            ))}
-          </ul>
-        </nav> */}
         <MainLayout>
           <Routes>
             {routes.map((route) => (
-              <Route
-                key={route.id}
-                path={route.path}
-                element={<route.element />}
-              />
+              <Route key={route.id} path={route.path} element={<route.element />} />
             ))}
           </Routes>
         </MainLayout>

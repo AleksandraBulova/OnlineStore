@@ -1,3 +1,38 @@
+@import "../../styles/colors";
+@import "../../styles/templates";
+
 .productPage {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
   flex-grow: 1;
+}
+
+.breadCrumbs {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+
+  &__item {
+    font-size: 0.8em;
+  }
+
+  &__link {
+    font-size: 0.8em;
+    @include transition;
+
+    &:hover {
+      color: $accent-red;
+      text-shadow: 0 0 10px $accent-red;
+    }
+
+    &:active {
+      opacity: 0.8;
+    }
+  }
+
+  &__delimiter {
+    font-size: 0.8em;
+    color: $accent-red;
+  }
 }
