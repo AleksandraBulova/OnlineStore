@@ -41,9 +41,12 @@ export const PriceFilter: FC = () => {
 
   if (FilterControllers[filterChangedBy] !== "priceController") {
     const prices = viewProducts.map((product) => product.price);
-    dualSliderSettings.min = prices.length > 0 ? Math.min(...prices) : values[0];
+    dualSliderSettings.min =
+      prices.length > 0 ? Math.min(...prices) : values[0];
     dualSliderSettings.max =
-      prices.length > 0 ? Math.max(...prices) : values[dualSliderSettings.maxLength];
+      prices.length > 0
+        ? Math.max(...prices)
+        : values[dualSliderSettings.maxLength];
     dualSliderSettings.firstInputValue =
       prices.length > 0 ? values.indexOf(dualSliderSettings.min) : 0;
     dualSliderSettings.secondInputValue =

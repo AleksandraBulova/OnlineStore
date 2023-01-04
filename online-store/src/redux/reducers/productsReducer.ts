@@ -15,7 +15,6 @@ import {
   initialStocksFilter,
   sortOptions,
 } from "../../constants/sortOptions";
-import { getDualSliderState } from "../../utils/getDualSliderState";
 import { getInitialBrandFilters } from "../../utils/getInitialBrandFilters";
 
 export interface IProductsState {
@@ -70,16 +69,6 @@ const initialState: IProductsState = {
   filterStocks: initialStocksFilter,
   filterChangedBy: FilterControllers.initial,
 };
-
-console.log(
-  Object.fromEntries(
-    Object.entries(getInitialBrandFilters(products)).map(
-      (el: [string, boolean]) =>
-        categories?.includes(el[0]) ? [el[0], true] : [el[0], false]
-    )
-  ),
-  123
-);
 
 export const productsSlice = createSlice({
   name: "products",

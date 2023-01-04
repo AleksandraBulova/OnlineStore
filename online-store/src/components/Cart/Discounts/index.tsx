@@ -1,12 +1,18 @@
 import { FC } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { promoCode } from "../../../constants/promoCode";
-import { RootState } from "../../../redux/store";
+import { dropPromo } from "../../../redux/reducers/cartReducer";
 import { Button } from "../../UI/Button";
 import { HeaderSection } from "../../UI/HeaderSection";
 
-export const Discounts: FC = () => {
-  const { promo } = useSelector((state: RootState) => state.cart);
+interface Props {
+  promo: {
+    [key: string]: boolean;
+  };
+}
+
+export const Discounts: FC<Props> = ({ promo }) => {
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -19,7 +25,11 @@ export const Discounts: FC = () => {
               item.value === elem[0] ? (
                 <div key={index}>
                   <div>{`${item.value} - ${item.discount}%`}</div>
-                  <Button text="Drop" isActive={false} onClick={() => null} />
+                  <Button
+                    text="Drop"
+                    isActive={false}
+                    onClick={() => dispatch(dropPromo(item.value))}
+                  />
                 </div>
               ) : null
             )

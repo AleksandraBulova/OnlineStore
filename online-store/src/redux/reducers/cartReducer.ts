@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { promoCode } from "../../constants/promoCode";
 import { Product } from "../../types";
 import { getUniqueProducts } from "../../utils/getUniqueProducts";
 
@@ -98,7 +99,7 @@ export const cartSlice = createSlice({
         ? (state.searchPromo = "")
         : (state.searchPromo = action.payload);
     },
-    changePrise: (state, action: PayloadAction<number>) => {
+    applyPromocode: (state, action: PayloadAction<number>) => {
       if (state.promo[state.searchPromo] === false) {
         state.discount = [...state.discount, action.payload];
         const discount = state.discount.reduce((acc, elem) => acc + elem);
@@ -106,6 +107,28 @@ export const cartSlice = createSlice({
           state.defultSumProducts - state.defultSumProducts * (discount / 100);
       }
       state.promo[state.searchPromo] = true;
+    },
+    dropPromo: (state, action: PayloadAction<string>) => {
+      state.promo[action.payload] = false;
+      promoCode.map((elem) => {
+        if (state.promo[elem.value] === false) {
+          const indexRemove = state.discount.findIndex(
+            (item) => item === elem.discount
+          );
+
+          state.discount = [
+            ...state.discount.slice(0, indexRemove),
+            ...state.discount.slice(indexRemove + 1),
+          ];
+
+          state.sumProducts = state.defultSumProducts;
+        } else {
+          const discount = state.discount.reduce((acc, elem) => acc + elem);
+          state.sumProducts =
+            state.defultSumProducts -
+            state.defultSumProducts * (discount / 100);
+        }
+      });
     },
   },
 });
@@ -117,7 +140,8 @@ export const {
   setLimitOfProductsPerPage,
   changePage,
   setSearchPromo,
-  changePrise,
+  applyPromocode,
+  dropPromo,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
