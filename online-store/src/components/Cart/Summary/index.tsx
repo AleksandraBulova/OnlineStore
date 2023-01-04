@@ -2,11 +2,12 @@ import { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { promoCode } from "../../../constants/promoCode";
 import {
+  changePrise,
   setSearchPromo,
-  setSumProducts,
 } from "../../../redux/reducers/cartReducer";
 import { RootState } from "../../../redux/store";
 import { Button } from "../../UI/Button";
+import { Discounts } from "../Discounts";
 
 export const Summary: FC = () => {
   const { productsCart, sumProducts, searchPromo } = useSelector(
@@ -14,7 +15,9 @@ export const Summary: FC = () => {
   );
 
   const dispatch = useDispatch();
-  dispatch(setSumProducts());
+
+  const discount = promoCode.find((el) => el.value === searchPromo)
+    ?.discount as number;
 
   return (
     <div>
@@ -35,16 +38,17 @@ export const Summary: FC = () => {
       />
       {searchPromo ? (
         <div>
-          <div>
-            {`${searchPromo} - ${
-              promoCode.find((el) => el.value === searchPromo)?.discount
-            }%`}
-          </div>
-          <Button text="Add" isActive={false} onClick={() => null} />{" "}
+          <div>{`${searchPromo} - ${discount}%`}</div>
+          <Button
+            text="Add"
+            isActive={false}
+            onClick={() => dispatch(changePrise(discount))}
+          />
         </div>
       ) : null}
       <p>Promo for test: 'XK3M9S', 'DV8Q6L'</p>
       <Button text="Buy now" isActive={false} onClick={() => null} />
+      <Discounts />
     </div>
   );
 };

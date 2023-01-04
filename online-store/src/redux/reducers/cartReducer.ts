@@ -4,18 +4,29 @@ import { getUniqueProducts } from "../../utils/getUniqueProducts";
 
 export interface IProductsState {
   productsCart: Product[];
+  defultSumProducts: number;
   sumProducts: number;
+  discount: number[];
   limitOfProductsPerPage: number;
   pageOfProductsCart: number;
   searchPromo: string;
+  promo: {
+    [key: string]: boolean;
+  };
 }
 
 const initialState: IProductsState = {
   productsCart: [],
+  defultSumProducts: 0,
   sumProducts: 0,
+  discount: [],
   limitOfProductsPerPage: 3,
   pageOfProductsCart: 1,
   searchPromo: "",
+  promo: {
+    XK3M9S: false,
+    DV8Q6L: false,
+  },
 };
 
 export const cartSlice = createSlice({
@@ -55,10 +66,17 @@ export const cartSlice = createSlice({
       }
     },
     setSumProducts: (state) => {
-      state.sumProducts = state.productsCart.reduce(
+      state.defultSumProducts = state.productsCart.reduce(
         (acc, product) => acc + product.price,
         0
       );
+      if (state.promo["XK3M9S"] === true || state.promo["DV8Q6L"] === true) {
+        const discount = state.discount.reduce((acc, elem) => acc + elem);
+        state.sumProducts =
+          state.defultSumProducts - state.defultSumProducts * (discount / 100);
+      } else {
+        state.sumProducts = state.defultSumProducts;
+      }
     },
     setLimitOfProductsPerPage: (
       state,
@@ -80,6 +98,15 @@ export const cartSlice = createSlice({
         ? (state.searchPromo = "")
         : (state.searchPromo = action.payload);
     },
+    changePrise: (state, action: PayloadAction<number>) => {
+      if (state.promo[state.searchPromo] === false) {
+        state.discount = [...state.discount, action.payload];
+        const discount = state.discount.reduce((acc, elem) => acc + elem);
+        state.sumProducts =
+          state.defultSumProducts - state.defultSumProducts * (discount / 100);
+      }
+      state.promo[state.searchPromo] = true;
+    },
   },
 });
 
@@ -90,6 +117,7 @@ export const {
   setLimitOfProductsPerPage,
   changePage,
   setSearchPromo,
+  changePrise,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

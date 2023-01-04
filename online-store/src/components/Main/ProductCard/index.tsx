@@ -1,7 +1,11 @@
 import { FC, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setProductsCart, resetProductsCart } from "../../../redux/reducers/cartReducer";
+import {
+  setProductsCart,
+  resetProductsCart,
+  setSumProducts,
+} from "../../../redux/reducers/cartReducer";
 import { RootState } from "../../../redux/store";
 import { Product, LayoutType } from "../../../types";
 import { Button } from "../../UI/Button";
@@ -17,21 +21,30 @@ export const ProductCard: FC<IProductCardProps> = ({ product, layoutType }) => {
   const navigate = useNavigate();
 
   const productStyle = [styles.product];
-  if (LayoutType[layoutType] === "vertical") productStyle.push(styles.product_vertical);
+  if (LayoutType[layoutType] === "vertical")
+    productStyle.push(styles.product_vertical);
   if (LayoutType[layoutType] === "horizontal")
     productStyle.push(styles.product_gorizontal);
 
   const { productsCart } = useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch();
 
-  const addToCard = (event: React.MouseEvent<HTMLButtonElement>, product: Product) => {
+  const addToCard = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    product: Product
+  ) => {
     event.stopPropagation();
     dispatch(setProductsCart(product));
+    dispatch(setSumProducts());
   };
 
-  const dropToCard = (event: React.MouseEvent<HTMLButtonElement>, product: Product) => {
+  const dropToCard = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    product: Product
+  ) => {
     event.stopPropagation();
     dispatch(resetProductsCart({ product, buttonClick: "drop" }));
+    dispatch(setSumProducts());
   };
 
   const isInCart = useMemo(() => {
@@ -75,8 +88,10 @@ export const ProductCard: FC<IProductCardProps> = ({ product, layoutType }) => {
         isActive={Boolean(isInCart)}
         onClick={
           isInCart
-            ? (event: React.MouseEvent<HTMLButtonElement>) => dropToCard(event, product)
-            : (event: React.MouseEvent<HTMLButtonElement>) => addToCard(event, product)
+            ? (event: React.MouseEvent<HTMLButtonElement>) =>
+                dropToCard(event, product)
+            : (event: React.MouseEvent<HTMLButtonElement>) =>
+                addToCard(event, product)
         }
       />
     </div>

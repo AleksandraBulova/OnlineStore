@@ -68,16 +68,6 @@ const initialState: IProductsState = {
   filterStocks: initialStocksFilter,
 };
 
-console.log(
-  Object.fromEntries(
-    Object.entries(getInitialBrandFilters(products)).map(
-      (el: [string, boolean]) =>
-        categories?.includes(el[0]) ? [el[0], true] : [el[0], false]
-    )
-  ),
-  123
-);
-
 export const productsSlice = createSlice({
   name: "products",
   initialState,
@@ -237,7 +227,6 @@ export const productsSlice = createSlice({
       );
 
       const actualState = JSON.parse(JSON.stringify(state));
-      console.log(filterType);
       const viewProducts = getFiltersState(actualState.products, {
         sortType: actualState.sortType,
         search: actualState.search,
@@ -281,6 +270,7 @@ export const productsSlice = createSlice({
       state.sortType.value = "default";
       state.sortType.label = "Without sorting";
       state.search = "";
+      window.history.replaceState(null, "Online store", `/`);
     },
     updateFilters: (state) => {
       const actualState = JSON.parse(JSON.stringify(state));
