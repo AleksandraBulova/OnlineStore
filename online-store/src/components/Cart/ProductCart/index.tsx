@@ -17,7 +17,8 @@ interface IProductCardProps {
 
 export const ProductCart: FC<IProductCardProps> = ({ product, index }) => {
   const navigate = useNavigate();
-  const { productsCart } = useSelector((state: RootState) => state.cart);
+  const { productsCart, limitOfProductsPerPage, pageOfProductsCart } =
+    useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch();
 
   const addToCard = (
