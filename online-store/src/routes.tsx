@@ -2,6 +2,7 @@ import { Route } from "./types";
 import { MainPage } from "./pages/MainPage";
 import { CartPage } from "./pages/CartPage";
 import { ProductPage } from "./pages/ProductPage";
+import { Page404 } from "./pages/404";
 
 export const routes: Route[] = [
   {
@@ -21,5 +22,11 @@ export const routes: Route[] = [
     name: "Product",
     path: "/product/alcohol/:id",
     element: ProductPage,
+  },
+  {
+    id: 4,
+    name: "404",
+    path: "*",
+    element: Page404,
   },
 ];

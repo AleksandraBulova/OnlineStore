@@ -9,6 +9,7 @@ export interface IProductsState {
   defultSumProducts: number;
   sumProducts: number;
   discount: number[];
+  limitInputValue: string;
   limitOfProductsPerPage: number;
   pageOfProductsCart: number;
   searchPromo: string;
@@ -28,6 +29,7 @@ const initialState: IProductsState = JSON.parse(state) || {
   defultSumProducts: 0,
   sumProducts: 0,
   discount: [],
+  limitInputValue: "3",
   limitOfProductsPerPage: limit ? Number(limit) : 3,
   pageOfProductsCart: page ? Number(page) : 1,
   searchPromo: "",
@@ -60,9 +62,7 @@ export const cartSlice = createSlice({
         );
       }
       if (action.payload.buttonClick === "remove") {
-        const idProducts = state.productsCart
-          .reverse()
-          .map((product) => product.id);
+        const idProducts = state.productsCart.reverse().map((product) => product.id);
 
         const indexRemove = idProducts.findIndex(
           (id) => id === action.payload.product.id
@@ -73,8 +73,19 @@ export const cartSlice = createSlice({
           ...state.productsCart.slice(indexRemove + 1),
         ].reverse();
       }
-      state.limitOfProductsPerPage = 3;
-      state.pageOfProductsCart = 1;
+
+      if (
+        state.productsCart.length % state.limitOfProductsPerPage === 0 &&
+        state.productsCart.length / state.limitOfProductsPerPage <
+          state.pageOfProductsCart
+      ) {
+        state.pageOfProductsCart =
+          state.pageOfProductsCart === 1
+            ? state.pageOfProductsCart
+            : state.pageOfProductsCart - 1;
+        getQueryCart(state.limitOfProductsPerPage, state.pageOfProductsCart);
+      }
+
       localStorage.setItem("state", JSON.stringify(state));
     },
     setSumProducts: (state) => {
@@ -90,6 +101,9 @@ export const cartSlice = createSlice({
         state.sumProducts = state.defultSumProducts;
       }
       localStorage.setItem("state", JSON.stringify(state));
+    },
+    setLimitInputValue: (state, action: PayloadAction<{ limitInputValue: string }>) => {
+      state.limitInputValue = action.payload.limitInputValue;
     },
     setLimitOfProductsPerPage: (
       state,
@@ -130,9 +144,7 @@ export const cartSlice = createSlice({
       state.promo[action.payload] = false;
       promoCode.map((elem) => {
         if (state.promo[elem.value] === false) {
-          const indexRemove = state.discount.findIndex(
-            (item) => item === elem.discount
-          );
+          const indexRemove = state.discount.findIndex((item) => item === elem.discount);
 
           state.discount = [
             ...state.discount.slice(0, indexRemove),
@@ -143,8 +155,7 @@ export const cartSlice = createSlice({
         } else {
           const discount = state.discount.reduce((acc, elem) => acc + elem);
           state.sumProducts =
-            state.defultSumProducts -
-            state.defultSumProducts * (discount / 100);
+            state.defultSumProducts - state.defultSumProducts * (discount / 100);
         }
       });
       localStorage.setItem("state", JSON.stringify(state));
@@ -156,6 +167,7 @@ export const {
   setProductsCart,
   resetProductsCart,
   setSumProducts,
+  setLimitInputValue,
   setLimitOfProductsPerPage,
   changePage,
   setSearchPromo,

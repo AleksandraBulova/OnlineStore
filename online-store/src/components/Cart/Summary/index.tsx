@@ -1,13 +1,12 @@
 import { FC, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { promoCode } from "../../../constants/promoCode";
-import {
-  applyPromocode,
-  setSearchPromo,
-} from "../../../redux/reducers/cartReducer";
+import { applyPromocode, setSearchPromo } from "../../../redux/reducers/cartReducer";
 import { RootState } from "../../../redux/store";
 import { Button } from "../../UI/Button";
 import { Discounts } from "../Discounts";
+
+import styles from "./styles.module.scss";
 
 export const Summary: FC = () => {
   const { productsCart, sumProducts, promo, searchPromo, defultSumProducts } =
@@ -15,35 +14,42 @@ export const Summary: FC = () => {
 
   const dispatch = useDispatch();
 
-  const discount = promoCode.find((el) => el.value === searchPromo)
-    ?.discount as number;
+  const discount = promoCode.find((el) => el.value === searchPromo)?.discount as number;
   const withPromo = useMemo(() => {
     return Object.values(promo).some((el) => el);
   }, [promo]);
 
   return (
-    <div>
+    <div className={styles.summary}>
       <div>Products: {productsCart.length}</div>
-      <div style={{ textDecoration: withPromo ? "line-through" : "" }}>
-        Total: ${defultSumProducts}
+      <div
+        className={styles.summary__price}
+        style={{ textDecoration: withPromo ? "line-through" : "" }}
+      >
+        <span className={styles.summary__title}>Total:</span>
+        {defultSumProducts} $
       </div>
-      {withPromo && <div>Total: ${sumProducts}</div>}
+      {withPromo && (
+        <div className={styles.summary__price}>
+          {" "}
+          <span className={styles.summary__title}>Total:</span> {sumProducts} $
+        </div>
+      )}
       {withPromo && <Discounts promo={promo} />}
       <input
+        className={styles.summary__input}
         type="text"
         placeholder="Enter promo code"
         onChange={(event) => {
           dispatch(
             setSearchPromo(
-              promoCode.find(
-                (el) => el.value === event.target.value.toUpperCase()
-              )?.value
+              promoCode.find((el) => el.value === event.target.value.toUpperCase())?.value
             )
           );
         }}
       />
       {searchPromo ? (
-        <div>
+        <div className={styles.summary__addPromo}>
           <div>{`${searchPromo} - ${discount}%`}</div>
           {!promo[searchPromo] && (
             <Button
@@ -54,7 +60,9 @@ export const Summary: FC = () => {
           )}
         </div>
       ) : null}
-      <p>Promo for test: 'XK3M9S', 'DV8Q6L'</p>
+      <p>
+        <span className={styles.summary__title}>Promo for test:</span>'XK3M9S', 'DV8Q6L'
+      </p>
       <Button text="Buy now" isActive={false} onClick={() => null} />
     </div>
   );

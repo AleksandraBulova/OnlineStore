@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { routes } from "./routes";
+import { Route as RouteType } from "./types";
 import styles from "./App.module.scss";
 import { MainLayout } from "./layouts/mainLayout";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +10,8 @@ import { updateFilters } from "./redux/reducers/productsReducer";
 function App() {
   const store = useSelector((store) => store);
   const dispatch = useDispatch();
+  const validRoutes = routes.filter((route) => route.name !== "404");
+  const Route404: RouteType = routes.find((route) => route.name === "404")!;
   console.log(store);
 
   useEffect(() => {
@@ -20,14 +23,10 @@ function App() {
       <div className={styles.wrapper}>
         <MainLayout>
           <Routes>
-            {routes.map((route) => (
+            {validRoutes.map((route) => (
               <Route key={route.id} path={route.path} element={<route.element />} />
             ))}
-            {/* TODO: create NotFound Component and add to route below */}
-            <Route
-              path="*"
-              element={<h1>Here should be NotFound component!!!</h1>}
-            />
+            <Route path={Route404.path} element={<Route404.element />} />
           </Routes>
         </MainLayout>
       </div>
