@@ -2,6 +2,7 @@ import { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   changePage,
+  setLimitInputValue,
   setLimitOfProductsPerPage,
 } from "../../../redux/reducers/cartReducer";
 import { RootState } from "../../../redux/store";
@@ -11,9 +12,8 @@ import { Button } from "../../UI/Button";
 import styles from "./styles.module.scss";
 
 export const StuffingHeaderSectionProductsCart: FC = () => {
-  const { productsCart, limitOfProductsPerPage, pageOfProductsCart } = useSelector(
-    (state: RootState) => state.cart
-  );
+  const { productsCart, limitInputValue, limitOfProductsPerPage, pageOfProductsCart } =
+    useSelector((state: RootState) => state.cart);
 
   const dispatch = useDispatch();
 
@@ -40,15 +40,21 @@ export const StuffingHeaderSectionProductsCart: FC = () => {
           type="number"
           min="1"
           max={getUniqueProducts(productsCart).length}
-          value={limitOfProductsPerPage}
-          onChange={(event) =>
-            dispatch(
-              setLimitOfProductsPerPage({
-                limit: Number(event.target.value),
-                page: pageOfProductsCart,
-              })
-            )
-          }
+          value={limitInputValue}
+          onChange={(event) => {
+            const limitInputValue = event.target.value;
+            if (limitInputValue === "0" || limitInputValue === "") {
+              dispatch(setLimitInputValue({ limitInputValue: limitInputValue }));
+            } else {
+              dispatch(setLimitInputValue({ limitInputValue: limitInputValue }));
+              dispatch(
+                setLimitOfProductsPerPage({
+                  limit: Number(limitInputValue),
+                  page: pageOfProductsCart,
+                })
+              );
+            }
+          }}
         />
       </label>
       <div className={styles.pageNumber}>
