@@ -73,8 +73,19 @@ export const cartSlice = createSlice({
           ...state.productsCart.slice(indexRemove + 1),
         ].reverse();
       }
-      state.limitOfProductsPerPage = 3;
-      state.pageOfProductsCart = 1;
+
+      if (
+        state.productsCart.length % state.limitOfProductsPerPage === 0 &&
+        state.productsCart.length / state.limitOfProductsPerPage <
+          state.pageOfProductsCart
+      ) {
+        state.pageOfProductsCart =
+          state.pageOfProductsCart === 1
+            ? state.pageOfProductsCart
+            : state.pageOfProductsCart - 1;
+        getQueryCart(state.limitOfProductsPerPage, state.pageOfProductsCart);
+      }
+
       localStorage.setItem("state", JSON.stringify(state));
     },
     setSumProducts: (state) => {

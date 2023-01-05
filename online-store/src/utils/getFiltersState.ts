@@ -13,32 +13,21 @@ export interface IFiltersState {
   filterStocks: DualSliderFilter;
 }
 
-export const getFiltersState = (
-  products: Product[],
-  filters: IFiltersState
-) => {
+export const getFiltersState = (products: Product[], filters: IFiltersState) => {
   let filteredProducts: Product[] = products;
 
   switch (filters.sortType.value) {
     case "ascCost":
-      filteredProducts = [...filteredProducts].sort(
-        (a, b) => a.price - b.price
-      );
+      filteredProducts = [...filteredProducts].sort((a, b) => a.price - b.price);
       break;
     case "descCost":
-      filteredProducts = [...filteredProducts].sort(
-        (a, b) => b.price - a.price
-      );
+      filteredProducts = [...filteredProducts].sort((a, b) => b.price - a.price);
       break;
     case "ascStock":
-      filteredProducts = [...filteredProducts].sort(
-        (a, b) => a.stock - b.stock
-      );
+      filteredProducts = [...filteredProducts].sort((a, b) => a.stock - b.stock);
       break;
     case "descStock":
-      filteredProducts = [...filteredProducts].sort(
-        (a, b) => b.stock - a.stock
-      );
+      filteredProducts = [...filteredProducts].sort((a, b) => b.stock - a.stock);
       break;
     case "default":
       filteredProducts = products;
@@ -50,9 +39,7 @@ export const getFiltersState = (
       (product) =>
         product.name.toLowerCase().includes(filters.search.toLowerCase()) ||
         product.brand.toLowerCase().includes(filters.search.toLowerCase()) ||
-        product.description
-          .toLowerCase()
-          .includes(filters.search.toLowerCase()) ||
+        product.description.toLowerCase().includes(filters.search.toLowerCase()) ||
         String(product.price).includes(filters.search) ||
         String(product.stock).includes(filters.search)
     );
@@ -94,8 +81,7 @@ export const getFiltersState = (
     );
   });
 
-  const sortType =
-    filters.sortType.value !== "default" ? filters.sortType.value : "";
+  const sortType = filters.sortType.value !== "default" ? filters.sortType.value : "";
   const sortTypeQuery = sortType && `&sortType=${sortType}`;
   const search = filters.search;
   const searchQuery = search && `&search=${search}`;
@@ -103,9 +89,7 @@ export const getFiltersState = (
     (acc: string[], curr) => (curr[1] ? [...acc, curr[0]] : [...acc]),
     []
   );
-  const categoryQuery = category.length
-    ? `&categories=${category.join(",")}`
-    : "";
+  const categoryQuery = category.length ? `&categories=${category.join(",")}` : "";
   const brands = Object.entries(filters.filterBrand).reduce(
     (acc: string[], curr) => (curr[1] ? [...acc, curr[0]] : [...acc]),
     []
@@ -116,10 +100,7 @@ export const getFiltersState = (
     window.history.replaceState(
       null,
       "Online store",
-      `/${sortTypeQuery}${searchQuery}${categoryQuery}${brandsQuery}`.replace(
-        "&",
-        "?"
-      )
+      `/${sortTypeQuery}${searchQuery}${categoryQuery}${brandsQuery}`.replace("&", "?")
     );
   }
 
