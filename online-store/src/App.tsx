@@ -21,11 +21,7 @@ function App() {
         <MainLayout>
           <Routes>
             {routes.map((route) => (
-              <Route
-                key={route.id}
-                path={route.path}
-                element={<route.element />}
-              />
+              <Route key={route.id} path={route.path} element={<route.element />} />
             ))}
             {/* TODO: create NotFound Component and add to route below */}
             <Route

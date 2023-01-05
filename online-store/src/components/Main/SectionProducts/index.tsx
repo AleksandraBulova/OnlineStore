@@ -22,15 +22,21 @@ export const SectionProducts: FC = () => {
       <HeaderSection>
         <StuffingHeaderSectionProducts />
       </HeaderSection>
-      <div className={productStyle.join(" ")}>
-        {viewProducts.length === 0 ? (
-          <div>No products found </div>
-        ) : (
-          viewProducts.map((product) => (
+      {viewProducts.length === 0 ? (
+        <div className={styles.notFound}>
+          <div className={styles.notFound__img}></div>
+          <span className={styles.notFound__taste}>
+            Sorry, your taste is too refined!
+          </span>
+          <span>No products found</span>
+        </div>
+      ) : (
+        <div className={productStyle.join(" ")}>
+          {viewProducts.map((product) => (
             <ProductCard key={product.id} product={product} layoutType={layoutType} />
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 };
