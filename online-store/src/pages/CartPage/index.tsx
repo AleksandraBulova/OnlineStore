@@ -8,15 +8,19 @@ import { getQueryCart } from "../../utils/getQueryCart";
 import styles from "./styles.module.scss";
 
 export const CartPage: FC = () => {
-  const { productsCart, limitOfProductsPerPage, pageOfProductsCart } =
-    useSelector((state: RootState) => state.cart);
+  const { productsCart, limitOfProductsPerPage, pageOfProductsCart } = useSelector(
+    (state: RootState) => state.cart
+  );
 
   // getQueryCart(limitOfProductsPerPage, pageOfProductsCart);
 
   return (
     <main className={styles.cartPage}>
       {productsCart.length === 0 ? (
-        <h3>Cart is Empty</h3>
+        <div className={styles.empty}>
+          <div className={styles.empty__img}></div>
+          <h3 className={styles.empty__text}>Cart is Empty</h3>
+        </div>
       ) : (
         <>
           <SectionProductsCart />
