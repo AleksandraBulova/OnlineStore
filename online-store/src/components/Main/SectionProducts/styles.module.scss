@@ -1,3 +1,5 @@
+@import "../../../styles/colors";
+
 .products {
   &__list {
     display: grid;
@@ -9,5 +11,29 @@
     &_gorizontal {
       grid-template-columns: repeat(2, 1fr);
     }
+  }
+}
+
+.notFound {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+
+  &__img {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1em;
+    background-image: url("../../../assets/not_found.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  &__taste {
+    font-weight: 800;
+    color: $accent-red;
   }
 }
