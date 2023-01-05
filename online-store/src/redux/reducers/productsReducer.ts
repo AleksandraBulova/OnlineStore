@@ -33,6 +33,7 @@ export interface IProductsState {
   filterPrices: DualSliderFilter;
   filterStocks: DualSliderFilter;
   filterChangedBy: FilterControllers;
+  activeImg: number;
 }
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -68,6 +69,7 @@ const initialState: IProductsState = {
   filterPrices: initialPricesFilter,
   filterStocks: initialStocksFilter,
   filterChangedBy: FilterControllers.initial,
+  activeImg: 0,
 };
 
 console.log(
@@ -215,6 +217,9 @@ export const productsSlice = createSlice({
         filterStocks: actualState.filterStocks,
       });
     },
+    setImg: (state, action: PayloadAction<number>) => {
+      state.activeImg = action.payload;
+    },
   },
 });
 
@@ -227,6 +232,7 @@ export const {
   resetFilter,
   setFilterBrand,
   updateFilters,
+  setImg,
 } = productsSlice.actions;
 
 export default productsSlice.reducer;

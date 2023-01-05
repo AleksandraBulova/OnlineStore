@@ -160,3 +160,11 @@
     font-weight: 600;
   }
 }
+
+.buy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.5em;
+}
