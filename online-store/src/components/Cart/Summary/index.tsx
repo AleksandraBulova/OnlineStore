@@ -1,25 +1,34 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { promoCode } from "../../../constants/promoCode";
 import {
+  applyPromocode,
   setSearchPromo,
-  setSumProducts,
 } from "../../../redux/reducers/cartReducer";
 import { RootState } from "../../../redux/store";
 import { Button } from "../../UI/Button";
+import { Discounts } from "../Discounts";
 
 export const Summary: FC = () => {
-  const { productsCart, sumProducts, searchPromo } = useSelector(
-    (state: RootState) => state.cart
-  );
+  const { productsCart, sumProducts, promo, searchPromo, defultSumProducts } =
+    useSelector((state: RootState) => state.cart);
 
   const dispatch = useDispatch();
-  dispatch(setSumProducts());
+
+  const discount = promoCode.find((el) => el.value === searchPromo)
+    ?.discount as number;
+  const withPromo = useMemo(() => {
+    return Object.values(promo).some((el) => el);
+  }, [promo]);
 
   return (
     <div>
       <div>Products: {productsCart.length}</div>
-      <div>Total: ${sumProducts}</div>
+      <div style={{ textDecoration: withPromo ? "line-through" : "" }}>
+        Total: ${defultSumProducts}
+      </div>
+      {withPromo && <div>Total: ${sumProducts}</div>}
+      {withPromo && <Discounts promo={promo} />}
       <input
         type="text"
         placeholder="Enter promo code"
@@ -35,12 +44,14 @@ export const Summary: FC = () => {
       />
       {searchPromo ? (
         <div>
-          <div>
-            {`${searchPromo} - ${
-              promoCode.find((el) => el.value === searchPromo)?.discount
-            }%`}
-          </div>
-          <Button text="Add" isActive={false} onClick={() => null} />{" "}
+          <div>{`${searchPromo} - ${discount}%`}</div>
+          {!promo[searchPromo] && (
+            <Button
+              text="Add"
+              isActive={false}
+              onClick={() => dispatch(applyPromocode(discount))}
+            />
+          )}
         </div>
       ) : null}
       <p>Promo for test: 'XK3M9S', 'DV8Q6L'</p>

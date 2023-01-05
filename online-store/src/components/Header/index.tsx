@@ -5,18 +5,14 @@ import { routes } from "../../routes";
 
 import logo from "../../assets/logo.png";
 import styles from "./styles.module.scss";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { setSumProducts } from "../../redux/reducers/cartReducer";
 
 export const Header: FC = () => {
   const [mainPage, cartPage]: Route[] = routes;
   const { productsCart, sumProducts } = useSelector(
     (state: RootState) => state.cart
   );
-
-  const dispatch = useDispatch();
-  dispatch(setSumProducts());
 
   return (
     <header className={styles.header}>
