@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { routes } from "./routes";
-import { Link } from "react-router-dom";
 import styles from "./App.module.scss";
 import { MainLayout } from "./layouts/mainLayout";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,15 +18,6 @@ function App() {
   return (
     <BrowserRouter>
       <div className={styles.wrapper}>
-        {/* <nav>
-          <ul>
-            {routes.map((route) => (
-              <li key={route.id}>
-                <Link to={route.path}>{route.name}</Link>
-              </li>
-            ))}
-          </ul>
-        </nav> */}
         <MainLayout>
           <Routes>
             {routes.map((route) => (
@@ -37,6 +27,11 @@ function App() {
                 element={<route.element />}
               />
             ))}
+            {/* TODO: create NotFound Component and add to route below */}
+            <Route
+              path="*"
+              element={<h1>Here should be NotFound component!!!</h1>}
+            />
           </Routes>
         </MainLayout>
       </div>

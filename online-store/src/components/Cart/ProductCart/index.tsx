@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import {
   resetProductsCart,
   setProductsCart,
+  setSumProducts,
 } from "../../../redux/reducers/cartReducer";
 import { RootState } from "../../../redux/store";
 import { Product } from "../../../types";
@@ -16,7 +17,8 @@ interface IProductCardProps {
 
 export const ProductCart: FC<IProductCardProps> = ({ product, index }) => {
   const navigate = useNavigate();
-  const { productsCart } = useSelector((state: RootState) => state.cart);
+  const { productsCart, limitOfProductsPerPage, pageOfProductsCart } =
+    useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch();
 
   const addToCard = (
@@ -25,6 +27,7 @@ export const ProductCart: FC<IProductCardProps> = ({ product, index }) => {
   ) => {
     event.stopPropagation();
     dispatch(setProductsCart(product));
+    dispatch(setSumProducts());
   };
 
   const removeToCard = (
@@ -38,6 +41,7 @@ export const ProductCart: FC<IProductCardProps> = ({ product, index }) => {
         buttonClick: "remove",
       })
     );
+    dispatch(setSumProducts());
   };
 
   return (

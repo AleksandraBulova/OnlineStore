@@ -15,7 +15,6 @@ import {
   initialStocksFilter,
   sortOptions,
 } from "../../constants/sortOptions";
-import { getDualSliderState } from "../../utils/getDualSliderState";
 import { getInitialBrandFilters } from "../../utils/getInitialBrandFilters";
 
 export interface IProductsState {
@@ -61,23 +60,15 @@ const initialState: IProductsState = {
     )
   ),
   filterBrand: Object.fromEntries(
-    Object.entries(getInitialBrandFilters(products)).map((el: [string, boolean]) =>
-      brands?.includes(el[0]) ? [el[0], true] : [el[0], false]
+    Object.entries(getInitialBrandFilters(products)).map(
+      (el: [string, boolean]) =>
+        brands?.includes(el[0]) ? [el[0], true] : [el[0], false]
     )
   ),
   filterPrices: initialPricesFilter,
   filterStocks: initialStocksFilter,
   filterChangedBy: FilterControllers.initial,
 };
-
-console.log(
-  Object.fromEntries(
-    Object.entries(getInitialBrandFilters(products)).map((el: [string, boolean]) =>
-      categories?.includes(el[0]) ? [el[0], true] : [el[0], false]
-    )
-  ),
-  123
-);
 
 export const productsSlice = createSlice({
   name: "products",
@@ -177,8 +168,12 @@ export const productsSlice = createSlice({
         state[filterType].inputValues[1] = value;
       }
 
-      state[filterType].minValueIndex = Math.min(...state[filterType].inputValues);
-      state[filterType].maxValueIndex = Math.max(...state[filterType].inputValues);
+      state[filterType].minValueIndex = Math.min(
+        ...state[filterType].inputValues
+      );
+      state[filterType].maxValueIndex = Math.max(
+        ...state[filterType].inputValues
+      );
 
       const actualState = JSON.parse(JSON.stringify(state));
       const viewProducts = getFiltersState(actualState.products, {
@@ -203,6 +198,7 @@ export const productsSlice = createSlice({
       state.sortType.value = "default";
       state.sortType.label = "Without sorting";
       state.search = "";
+      window.history.replaceState(null, "Online store", `/`);
     },
     updateFilters: (state) => {
       const actualState = JSON.parse(JSON.stringify(state));

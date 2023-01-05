@@ -93,7 +93,7 @@ export const getFiltersState = (
       product.stock <= stockValues[maxStockIndex]
     );
   });
-  console.log(filters, "filters");
+
   const sortType =
     filters.sortType.value !== "default" ? filters.sortType.value : "";
   const sortTypeQuery = sortType && `&sortType=${sortType}`;
@@ -113,7 +113,6 @@ export const getFiltersState = (
   const brandsQuery = brands.length ? `&brands=${brands.join(",")}` : "";
 
   if (sortType || search || category.length || brands.length) {
-    console.log(4444);
     window.history.replaceState(
       null,
       "Online store",
