@@ -138,8 +138,8 @@ export const ModalCheckoutWindow: FC = () => {
 
   return (
     <section>
-      <h3>Personal details</h3>
       <form>
+        <h3>Personal details</h3>
         <InputModal
           value={inputStates.name.value}
           type="text"
@@ -174,8 +174,8 @@ export const ModalCheckoutWindow: FC = () => {
           onBlur={(event) => handleBlurValue(event, "email")}
         />
         {inputStates.email.error && <div style={{ color: "red" }}>Error!</div>}
+        <input type="submit" value="Confirm" />
       </form>
-      <input type="submit" value="Confirm" />
     </section>
   );
 };

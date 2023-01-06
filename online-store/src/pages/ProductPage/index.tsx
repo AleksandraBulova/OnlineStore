@@ -5,7 +5,11 @@ import { routes } from "../../routes";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setImg } from "../../redux/reducers/productsReducer";
-import { setProductsCart, resetProductsCart } from "../../redux/reducers/cartReducer";
+import {
+  setProductsCart,
+  resetProductsCart,
+  setSumProducts,
+} from "../../redux/reducers/cartReducer";
 import { useParams } from "react-router-dom";
 import { RootState } from "../../redux/store";
 import { Product } from "../../types";
@@ -15,13 +19,20 @@ import styles from "./styles.module.scss";
 
 export const ProductPage: FC = () => {
   const { id } = useParams();
-  const { products, activeImg } = useSelector((state: RootState) => state.products);
+  const { products, activeImg } = useSelector(
+    (state: RootState) => state.products
+  );
   const { productsCart } = useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch();
   const [mainPage, cartPage]: Route[] = routes;
 
-  const product = products.find((product) => product.id === Number(id)) as Product;
-  const delimiterStyles = ["fa-solid fa-caret-right", styles.breadCrumbs__delimiter];
+  const product = products.find(
+    (product) => product.id === Number(id)
+  ) as Product;
+  const delimiterStyles = [
+    "fa-solid fa-caret-right",
+    styles.breadCrumbs__delimiter,
+  ];
   const isInCart = useMemo(() => {
     return productsCart.find((elem) => elem.id === product.id);
   }, [product, productsCart]);
@@ -32,11 +43,16 @@ export const ProductPage: FC = () => {
   ) => {
     event.stopPropagation();
     dispatch(setProductsCart(product));
+    dispatch(setSumProducts());
   };
 
-  const dropToCard = (event: React.MouseEvent<HTMLButtonElement>, product: Product) => {
+  const dropToCard = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    product: Product
+  ) => {
     event.stopPropagation();
     dispatch(resetProductsCart({ product, buttonClick: "drop" }));
+    dispatch(setSumProducts());
   };
 
   return (
@@ -57,7 +73,8 @@ export const ProductPage: FC = () => {
           <div className={styles.mini}>
             {product.photo.map((photo, index) => {
               const classNames = [styles.mini__item];
-              if (index === activeImg) classNames.push(styles.mini__item_active);
+              if (index === activeImg)
+                classNames.push(styles.mini__item_active);
 
               return (
                 <div
@@ -74,7 +91,11 @@ export const ProductPage: FC = () => {
             style={{ backgroundImage: `url(${product.photo[activeImg]})` }}
           ></div>
         </div>
-        <ul className={[styles.productCard__description, styles.description].join(" ")}>
+        <ul
+          className={[styles.productCard__description, styles.description].join(
+            " "
+          )}
+        >
           <li className={styles.description__name}>{product.name}</li>
           <li className={styles.description__category}>
             <span className={styles.description__title}>Category:</span>
@@ -89,7 +110,8 @@ export const ProductPage: FC = () => {
             {product.description}
           </li>
           <li className={styles.description__stock}>
-            <span className={styles.description__title}>Stock:</span> {product.stock}
+            <span className={styles.description__title}>Stock:</span>{" "}
+            {product.stock}
           </li>
         </ul>
         <div className={styles.buy}>
