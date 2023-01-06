@@ -111,12 +111,20 @@ export const getFiltersState = (
     []
   );
   const brandsQuery = brands.length ? `&brands=${brands.join(",")}` : "";
+  const priceMin =
+    filters.filterPrices.values[filters.filterPrices.minValueIndex];
+  const priceMax =
+    filters.filterPrices.values[filters.filterPrices.maxValueIndex];
+  const priceQuery = (priceMin || priceMax) && `&price=${priceMin}|${priceMax}`;
+
+  // filterPrices: actualState.filterPrices,
+  // filterStocks: actualState.filterStocks,
 
   if (sortType || search || category.length || brands.length) {
     window.history.replaceState(
       null,
       "Online store",
-      `/${sortTypeQuery}${searchQuery}${categoryQuery}${brandsQuery}`.replace(
+      `/${sortTypeQuery}${searchQuery}${categoryQuery}${brandsQuery}${priceQuery}`.replace(
         "&",
         "?"
       )
