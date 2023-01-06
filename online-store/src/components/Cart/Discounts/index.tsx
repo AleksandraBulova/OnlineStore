@@ -5,6 +5,8 @@ import { dropPromo } from "../../../redux/reducers/cartReducer";
 import { Button } from "../../UI/Button";
 import { HeaderSection } from "../../UI/HeaderSection";
 
+import styles from "./styles.module.scss";
+
 interface Props {
   promo: {
     [key: string]: boolean;
@@ -17,14 +19,16 @@ export const Discounts: FC<Props> = ({ promo }) => {
   return (
     <>
       <HeaderSection>
-        <h3>Applied codes</h3>
+        <h3 className={styles.promo__title}>Applied codes</h3>
       </HeaderSection>
       {Object.entries(promo).map((elem) => {
         return elem[1] === true
           ? promoCode.map((item, index) =>
               item.value === elem[0] ? (
-                <div key={index}>
-                  <div>{`${item.value} - ${item.discount}%`}</div>
+                <div className={styles.promo__item} key={index}>
+                  <div
+                    className={styles.promo__code}
+                  >{`${item.value} - ${item.discount}%`}</div>
                   <Button
                     text="Drop"
                     isActive={false}

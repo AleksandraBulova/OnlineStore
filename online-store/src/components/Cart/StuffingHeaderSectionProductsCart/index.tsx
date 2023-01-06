@@ -2,14 +2,17 @@ import { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   changePage,
+  setLimitInputValue,
   setLimitOfProductsPerPage,
 } from "../../../redux/reducers/cartReducer";
 import { RootState } from "../../../redux/store";
 import { getUniqueProducts } from "../../../utils/getUniqueProducts";
 import { Button } from "../../UI/Button";
 
+import styles from "./styles.module.scss";
+
 export const StuffingHeaderSectionProductsCart: FC = () => {
-  const { productsCart, limitOfProductsPerPage, pageOfProductsCart } =
+  const { productsCart, limitInputValue, limitOfProductsPerPage, pageOfProductsCart } =
     useSelector((state: RootState) => state.cart);
 
   const dispatch = useDispatch();
@@ -18,9 +21,7 @@ export const StuffingHeaderSectionProductsCart: FC = () => {
     if (
       type === "plus" &&
       pageOfProductsCart !==
-        Math.ceil(
-          getUniqueProducts(productsCart).length / limitOfProductsPerPage
-        )
+        Math.ceil(getUniqueProducts(productsCart).length / limitOfProductsPerPage)
     ) {
       dispatch(changePage(pageOfProductsCart + 1));
     }
@@ -31,43 +32,40 @@ export const StuffingHeaderSectionProductsCart: FC = () => {
 
   return (
     <>
-      <h2>Products In Cart</h2>
-      <label>
+      <h2 className={styles.title}>Products In Cart</h2>
+      <label className={styles.pageLimit}>
         Limit:
         <input
+          className={styles.pageLimit__input}
           type="number"
           min="1"
           max={getUniqueProducts(productsCart).length}
-          value={limitOfProductsPerPage}
-          onChange={(event) =>
-            dispatch(
-              setLimitOfProductsPerPage({
-                limit: Number(event.target.value),
-                page: pageOfProductsCart,
-              })
-            )
-          }
+          value={limitInputValue}
+          onChange={(event) => {
+            const limitInputValue = event.target.value;
+            if (limitInputValue === "0" || limitInputValue === "") {
+              dispatch(setLimitInputValue({ limitInputValue: limitInputValue }));
+            } else {
+              dispatch(setLimitInputValue({ limitInputValue: limitInputValue }));
+              dispatch(
+                setLimitOfProductsPerPage({
+                  limit: Number(limitInputValue),
+                  page: pageOfProductsCart,
+                })
+              );
+            }
+          }}
         />
       </label>
-      <div>
-        PAGE:
-        <div>
-          <Button
-            text="<"
-            isActive={false}
-            onClick={() => changePageHandler("minus")}
-          />
+      <div className={styles.pageNumber}>
+        Page:
+        <div className={styles.pageNumber__controllers}>
+          <Button text="<" isActive={false} onClick={() => changePageHandler("minus")} />
           <div>
             {pageOfProductsCart}/
-            {Math.ceil(
-              getUniqueProducts(productsCart).length / limitOfProductsPerPage
-            )}
+            {Math.ceil(getUniqueProducts(productsCart).length / limitOfProductsPerPage)}
           </div>
-          <Button
-            text=">"
-            isActive={false}
-            onClick={() => changePageHandler("plus")}
-          />
+          <Button text=">" isActive={false} onClick={() => changePageHandler("plus")} />
         </div>
       </div>
     </>

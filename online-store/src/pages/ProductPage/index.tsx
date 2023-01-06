@@ -13,9 +13,11 @@ import {
 import { useParams } from "react-router-dom";
 import { RootState } from "../../redux/store";
 import { Product } from "../../types";
-import { Button } from "../../components/UI/Button";
+import { BreadCrumbs } from "../../components/Details/breadCrumbs";
+import { ProductCard } from "../../components/Details/productCard";
 
 import styles from "./styles.module.scss";
+import { Button } from "../../components/UI/Button";
 
 export const ProductPage: FC = () => {
   const { id } = useParams();
@@ -34,7 +36,7 @@ export const ProductPage: FC = () => {
     styles.breadCrumbs__delimiter,
   ];
   const isInCart = useMemo(() => {
-    return productsCart.find((elem) => elem.id === product.id);
+    return productsCart.findIndex((elem) => elem.id === product.id);
   }, [product, productsCart]);
 
   const addToCard = (
