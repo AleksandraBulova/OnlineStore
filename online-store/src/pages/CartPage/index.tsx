@@ -8,8 +8,9 @@ import { RootState } from "../../redux/store";
 import styles from "./styles.module.scss";
 
 export const CartPage: FC = () => {
-  const { productsCart, limitOfProductsPerPage, pageOfProductsCart } =
-    useSelector((state: RootState) => state.cart);
+  const { productsCart, limitOfProductsPerPage, pageOfProductsCart } = useSelector(
+    (state: RootState) => state.cart
+  );
 
   // getQueryCart(limitOfProductsPerPage, pageOfProductsCart);
 

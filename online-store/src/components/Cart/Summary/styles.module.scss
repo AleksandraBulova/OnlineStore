@@ -34,7 +34,23 @@
     width: 100%;
   }
 
-  & button {
+  &__promoInfo {
+    font-size: 0.8em;
+    text-shadow: 0 0 10px $accent-red, 0 0 20px $accent-orange;
+  }
+
+  &__promo {
+    font-size: 0.7em;
+  }
+
+  & button,
+  & header {
     width: 100%;
+  }
+
+  & header {
+    height: fit-content;
+    margin-bottom: 0;
+    padding: 0;
   }
 }
