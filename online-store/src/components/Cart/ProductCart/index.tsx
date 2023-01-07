@@ -19,18 +19,23 @@ interface IProductCardProps {
 
 export const ProductCart: FC<IProductCardProps> = ({ product, index }) => {
   const navigate = useNavigate();
-  const { productsCart, limitOfProductsPerPage, pageOfProductsCart } = useSelector(
-    (state: RootState) => state.cart
-  );
+  const { productsCart, limitOfProductsPerPage, pageOfProductsCart } =
+    useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch();
 
-  const addToCard = (event: React.MouseEvent<HTMLButtonElement>, product: Product) => {
+  const addToCard = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    product: Product
+  ) => {
     event.stopPropagation();
     dispatch(setProductsCart(product));
     dispatch(setSumProducts());
   };
 
-  const removeToCard = (event: React.MouseEvent<HTMLButtonElement>, product: Product) => {
+  const removeToCard = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    product: Product
+  ) => {
     event.stopPropagation();
     dispatch(
       resetProductsCart({
@@ -44,14 +49,18 @@ export const ProductCart: FC<IProductCardProps> = ({ product, index }) => {
   return (
     <div
       className={styles.productCard}
-      onClick={() => navigate(`/product/alcohol/${product.id}`)}
+      onClick={() => navigate(`/product/${product.id}/${product.name}`)}
     >
       <div className={styles.productCard__index}>{index}</div>
       <div
         className={styles.productCard__img}
         style={{ backgroundImage: `url(${product.photo[0]})` }}
       />
-      <div className={[styles.productCard__productInfo, styles.productInfo].join(" ")}>
+      <div
+        className={[styles.productCard__productInfo, styles.productInfo].join(
+          " "
+        )}
+      >
         <h3 className={styles.productInfo__name}>{product.name}</h3>
         <h5 className={styles.productInfo__text}>
           <span className={styles.productInfo__title}>Brand:</span>
@@ -72,7 +81,9 @@ export const ProductCart: FC<IProductCardProps> = ({ product, index }) => {
               removeToCard(event, product)
             }
           />
-          <div>{productsCart.filter((item) => item.id === product.id).length}</div>
+          <div>
+            {productsCart.filter((item) => item.id === product.id).length}
+          </div>
           <Button
             text="+"
             isActive={false}
