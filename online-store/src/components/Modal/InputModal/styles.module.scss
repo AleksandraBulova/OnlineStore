@@ -19,11 +19,24 @@
   &_cardNumber,
   &_cardThru,
   &_CVV {
-    background: transparent;
+    width: 100%;
     color: $accent-gray;
+    background: transparent;
+
+    &:focus {
+      color: $primary-light;
+    }
   }
 
   &_cardNumber {
     grid-area: cardNum;
+  }
+
+  &_cardThru {
+    grid-area: cardThru;
+  }
+
+  &_CVV {
+    grid-area: CVV;
   }
 }

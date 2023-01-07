@@ -1,10 +1,11 @@
 import { FC, FocusEvent } from "react";
+import { ModalInputsTypes } from "../../../types";
 
 import styles from "./styles.module.scss";
 
 interface Props {
   type: string;
-  styleType: "personal" | "cardNumber";
+  styleType: ModalInputsTypes;
   placeholder: string;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   onBlur: (event: FocusEvent<HTMLInputElement>) => void;
@@ -22,12 +23,19 @@ export const InputModal: FC<Props> = ({
   const inputStyle = [styles.input];
 
   switch (styleType) {
-    case "personal":
-      inputStyle.push(styles.input_personal);
+    case ModalInputsTypes.cardNum:
+      inputStyle.push(styles.input_cardNumber);
       break;
 
-    case "cardNumber":
-      inputStyle.push(styles.input_cardNumber);
+    case ModalInputsTypes.cardThru:
+      inputStyle.push(styles.input_cardThru);
+      break;
+
+    case ModalInputsTypes.CVV:
+      inputStyle.push(styles.input_CVV);
+      break;
+    default:
+      inputStyle.push(styles.input_personal);
       break;
   }
 
