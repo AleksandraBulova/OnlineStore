@@ -1,0 +1,29 @@
+@import "../../../styles/colors";
+@import "../../../styles/templates";
+
+.input {
+  padding: 0 0.2em;
+  text-align: center;
+  border: none;
+  outline: none;
+  @include transition;
+
+  &_personal {
+    border-bottom: 2px solid $accent-gray;
+
+    &:focus {
+      border-bottom: 2px solid $accent-red;
+    }
+  }
+
+  &_cardNumber,
+  &_cardThru,
+  &_CVV {
+    background: transparent;
+    color: $accent-gray;
+  }
+
+  &_cardNumber {
+    grid-area: cardNum;
+  }
+}

@@ -27,7 +27,7 @@ export const CartPage: FC = () => {
           <SectionSummary />
         </>
       )}
-      {/* <ModalCheckoutWindow /> */}
+      <ModalCheckoutWindow />
     </main>
   );
 };
