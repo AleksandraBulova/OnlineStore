@@ -1,4 +1,4 @@
-import { DualSliderFilter, Product, SortOption } from "../types";
+import { DualSliderFilter, LayoutType, Product, SortOption } from "../types";
 
 export interface IFiltersState {
   sortType: SortOption;
@@ -11,6 +11,8 @@ export interface IFiltersState {
   };
   filterPrices: DualSliderFilter;
   filterStocks: DualSliderFilter;
+  layoutType: LayoutType;
+  layoutFirstChange: boolean;
 }
 
 export const getFiltersState = (products: Product[], filters: IFiltersState) => {
@@ -95,18 +97,32 @@ export const getFiltersState = (products: Product[], filters: IFiltersState) => 
     []
   );
   const brandsQuery = brands.length ? `&brands=${brands.join(",")}` : "";
+  const layoutType = filters.layoutType === 0 ? "vertical" : "horizontal";
+  const layoutTypeQuery = filters.layoutFirstChange ? `&view=${layoutType}` : "";
   const priceMin = filters.filterPrices.values[filters.filterPrices.minValueIndex];
   const priceMax = filters.filterPrices.values[filters.filterPrices.maxValueIndex];
-  const priceQuery = (priceMin || priceMax) && `&price=${priceMin}|${priceMax}`;
+  const priceQuery =
+    priceMin > 5 || priceMax < 7812 ? `&price=${priceMin}|${priceMax}` : "";
+  const stockMin = filters.filterStocks.values[filters.filterStocks.minValueIndex];
+  const stockMax = filters.filterStocks.values[filters.filterStocks.maxValueIndex];
+  const stockQuery =
+    stockMin > 1 || stockMax < 115 ? `&stock=${stockMin}|${stockMax}` : "";
 
-  // filterPrices: actualState.filterPrices,
-  // filterStocks: actualState.filterStocks,
-
-  if (sortType || search || category.length || brands.length) {
+  if (
+    sortType ||
+    search ||
+    category.length ||
+    brands.length ||
+    priceMin > 5 ||
+    priceMax < 7812 ||
+    stockMin > 1 ||
+    stockMax < 115 ||
+    layoutType
+  ) {
     window.history.replaceState(
       null,
       "Online store",
-      `/${sortTypeQuery}${searchQuery}${categoryQuery}${brandsQuery}${priceQuery}`.replace(
+      `/${sortTypeQuery}${searchQuery}${categoryQuery}${brandsQuery}${priceQuery}${stockQuery}${layoutTypeQuery}`.replace(
         "&",
         "?"
       )

@@ -21,7 +21,8 @@ export interface IProductsState {
   products: Product[];
   viewProducts: Product[];
   sortType: SortOption;
-  layoutType: LayoutType;
+  layoutType: number;
+  layoutFirstChange: boolean;
   search: string;
   filterCategory: {
     [key: string]: boolean;
@@ -40,6 +41,33 @@ const categories = urlParams.get("categories");
 const brands = urlParams.get("brands");
 const search = urlParams.get("search") || "";
 const sortType = urlParams.get("sortType");
+const view = urlParams.get("view");
+const price = urlParams.get("price");
+const minIndexPrice = initialPricesFilter.values.indexOf(
+  Number(price?.split("|")[0])
+);
+const maxIndexPrice = initialPricesFilter.values.indexOf(
+  Number(price?.split("|")[1])
+);
+const initialPricesFilterQuery: DualSliderFilter = {
+  values: initialPricesFilter.values,
+  inputValues: [minIndexPrice, maxIndexPrice],
+  minValueIndex: minIndexPrice,
+  maxValueIndex: maxIndexPrice,
+};
+const stock = urlParams.get("stock");
+const minIndexStock = initialStocksFilter.values.indexOf(
+  Number(stock?.split("|")[0])
+);
+const maxIndexStock = initialStocksFilter.values.indexOf(
+  Number(stock?.split("|")[1])
+);
+const initialStockFilterQuery: DualSliderFilter = {
+  values: initialStocksFilter.values,
+  inputValues: [minIndexStock, maxIndexStock],
+  minValueIndex: minIndexStock,
+  maxValueIndex: maxIndexStock,
+};
 
 const initialState: IProductsState = {
   products: products,
@@ -48,7 +76,8 @@ const initialState: IProductsState = {
     value: "default",
     label: "Without sorting",
   },
-  layoutType: LayoutType.vertical,
+  layoutType: view === "horizontal" ? 1 : 0,
+  layoutFirstChange: view ? true : false,
   search,
   filterCategory: Object.fromEntries(
     Object.entries({
@@ -66,8 +95,8 @@ const initialState: IProductsState = {
         brands?.includes(el[0]) ? [el[0], true] : [el[0], false]
     )
   ),
-  filterPrices: initialPricesFilter,
-  filterStocks: initialStocksFilter,
+  filterPrices: price ? initialPricesFilterQuery : initialPricesFilter,
+  filterStocks: stock ? initialStockFilterQuery : initialStocksFilter,
   filterChangedBy: FilterControllers.initial,
   activeImg: 0,
 };
@@ -86,6 +115,8 @@ export const productsSlice = createSlice({
         filterBrand: actualState.filterBrand,
         filterPrices: actualState.filterPrices,
         filterStocks: actualState.filterStocks,
+        layoutType: actualState.layoutType,
+        layoutFirstChange: actualState.layoutFirstChange,
       });
     },
     setSearch: (state, action: PayloadAction<string>) => {
@@ -100,11 +131,25 @@ export const productsSlice = createSlice({
         filterBrand: actualState.filterBrand,
         filterPrices: actualState.filterPrices,
         filterStocks: actualState.filterStocks,
+        layoutType: actualState.layoutType,
+        layoutFirstChange: actualState.layoutFirstChange,
       });
       state.viewProducts = viewProducts;
     },
     setLayout: (state, action: PayloadAction<LayoutType>) => {
       state.layoutType = action.payload;
+      state.layoutFirstChange = true;
+      const actualState = JSON.parse(JSON.stringify(state));
+      getFiltersState(actualState.products, {
+        sortType: actualState.sortType,
+        search: actualState.search,
+        filterCategory: actualState.filterCategory,
+        filterBrand: actualState.filterBrand,
+        filterPrices: actualState.filterPrices,
+        filterStocks: actualState.filterStocks,
+        layoutType: actualState.layoutType,
+        layoutFirstChange: actualState.layoutFirstChange,
+      });
     },
     setFilterCategory: (
       state,
@@ -121,6 +166,8 @@ export const productsSlice = createSlice({
         filterBrand: actualState.filterBrand,
         filterPrices: actualState.filterPrices,
         filterStocks: actualState.filterStocks,
+        layoutType: actualState.layoutType,
+        layoutFirstChange: actualState.layoutFirstChange,
       });
       state.viewProducts = viewProducts;
     },
@@ -139,6 +186,8 @@ export const productsSlice = createSlice({
         filterBrand: actualState.filterBrand,
         filterPrices: actualState.filterPrices,
         filterStocks: actualState.filterStocks,
+        layoutType: actualState.layoutType,
+        layoutFirstChange: actualState.layoutFirstChange,
       });
       state.viewProducts = viewProducts;
     },
@@ -185,6 +234,8 @@ export const productsSlice = createSlice({
         filterBrand: actualState.filterBrand,
         filterPrices: actualState.filterPrices,
         filterStocks: actualState.filterStocks,
+        layoutType: actualState.layoutType,
+        layoutFirstChange: actualState.layoutFirstChange,
       });
       state.viewProducts = viewProducts;
     },
@@ -211,6 +262,8 @@ export const productsSlice = createSlice({
         filterBrand: actualState.filterBrand,
         filterPrices: actualState.filterPrices,
         filterStocks: actualState.filterStocks,
+        layoutType: actualState.layoutType,
+        layoutFirstChange: actualState.layoutFirstChange,
       });
     },
     setImg: (state, action: PayloadAction<number>) => {
