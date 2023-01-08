@@ -82,3 +82,10 @@ export enum ModalInputsTypes {
   cardThru,
   CVV,
 }
+
+export enum PaymentSystem {
+  visa,
+  mastercard,
+  amex,
+  paypal,
+}
