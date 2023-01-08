@@ -15,21 +15,32 @@ export interface IFiltersState {
   layoutFirstChange: boolean;
 }
 
-export const getFiltersState = (products: Product[], filters: IFiltersState) => {
+export const getFiltersState = (
+  products: Product[],
+  filters: IFiltersState
+) => {
   let filteredProducts: Product[] = products;
 
   switch (filters.sortType.value) {
     case "ascCost":
-      filteredProducts = [...filteredProducts].sort((a, b) => a.price - b.price);
+      filteredProducts = [...filteredProducts].sort(
+        (a, b) => a.price - b.price
+      );
       break;
     case "descCost":
-      filteredProducts = [...filteredProducts].sort((a, b) => b.price - a.price);
+      filteredProducts = [...filteredProducts].sort(
+        (a, b) => b.price - a.price
+      );
       break;
     case "ascStock":
-      filteredProducts = [...filteredProducts].sort((a, b) => a.stock - b.stock);
+      filteredProducts = [...filteredProducts].sort(
+        (a, b) => a.stock - b.stock
+      );
       break;
     case "descStock":
-      filteredProducts = [...filteredProducts].sort((a, b) => b.stock - a.stock);
+      filteredProducts = [...filteredProducts].sort(
+        (a, b) => b.stock - a.stock
+      );
       break;
     case "default":
       filteredProducts = products;
@@ -41,7 +52,9 @@ export const getFiltersState = (products: Product[], filters: IFiltersState) => 
       (product) =>
         product.name.toLowerCase().includes(filters.search.toLowerCase()) ||
         product.brand.toLowerCase().includes(filters.search.toLowerCase()) ||
-        product.description.toLowerCase().includes(filters.search.toLowerCase()) ||
+        product.description
+          .toLowerCase()
+          .includes(filters.search.toLowerCase()) ||
         String(product.price).includes(filters.search) ||
         String(product.stock).includes(filters.search)
     );
@@ -83,7 +96,8 @@ export const getFiltersState = (products: Product[], filters: IFiltersState) => 
     );
   });
 
-  const sortType = filters.sortType.value !== "default" ? filters.sortType.value : "";
+  const sortType =
+    filters.sortType.value !== "default" ? filters.sortType.value : "";
   const sortTypeQuery = sortType && `&sortType=${sortType}`;
   const search = filters.search;
   const searchQuery = search && `&search=${search}`;
@@ -91,33 +105,42 @@ export const getFiltersState = (products: Product[], filters: IFiltersState) => 
     (acc: string[], curr) => (curr[1] ? [...acc, curr[0]] : [...acc]),
     []
   );
-  const categoryQuery = category.length ? `&categories=${category.join(",")}` : "";
+  const categoryQuery = category.length
+    ? `&categories=${category.join(",")}`
+    : "";
   const brands = Object.entries(filters.filterBrand).reduce(
     (acc: string[], curr) => (curr[1] ? [...acc, curr[0]] : [...acc]),
     []
   );
   const brandsQuery = brands.length ? `&brands=${brands.join(",")}` : "";
   const layoutType = filters.layoutType === 0 ? "vertical" : "horizontal";
-  const layoutTypeQuery = filters.layoutFirstChange ? `&view=${layoutType}` : "";
-  const priceMin = filters.filterPrices.values[filters.filterPrices.minValueIndex];
-  const priceMax = filters.filterPrices.values[filters.filterPrices.maxValueIndex];
+  const layoutTypeQuery = filters.layoutFirstChange
+    ? `&view=${layoutType}`
+    : "";
+  const priceMin =
+    filters.filterPrices.values[filters.filterPrices.minValueIndex];
+  const priceMax =
+    filters.filterPrices.values[filters.filterPrices.maxValueIndex];
   const priceQuery =
     priceMin > 5 || priceMax < 7812 ? `&price=${priceMin}|${priceMax}` : "";
-  const stockMin = filters.filterStocks.values[filters.filterStocks.minValueIndex];
-  const stockMax = filters.filterStocks.values[filters.filterStocks.maxValueIndex];
+  const stockMin =
+    filters.filterStocks.values[filters.filterStocks.minValueIndex];
+  const stockMax =
+    filters.filterStocks.values[filters.filterStocks.maxValueIndex];
   const stockQuery =
     stockMin > 1 || stockMax < 115 ? `&stock=${stockMin}|${stockMax}` : "";
 
   if (
+    (window.location.pathname === "/",
     sortType ||
-    search ||
-    category.length ||
-    brands.length ||
-    priceMin > 5 ||
-    priceMax < 7812 ||
-    stockMin > 1 ||
-    stockMax < 115 ||
-    layoutType
+      search ||
+      category.length ||
+      brands.length ||
+      priceMin > 5 ||
+      priceMax < 7812 ||
+      stockMin > 1 ||
+      stockMax < 115 ||
+      layoutType)
   ) {
     window.history.replaceState(
       null,

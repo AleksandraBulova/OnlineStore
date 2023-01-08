@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react";
+import { FC, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { promoCode } from "../../../constants/promoCode";
 import {
@@ -24,10 +24,12 @@ export const Summary: FC = () => {
 
   const dispatch = useDispatch();
 
-  const discount = promoCode.find((el) => el.value === searchPromo)?.discount as number;
+  const discount = promoCode.find((el) => el.value === searchPromo)
+    ?.discount as number;
   const withPromo = useMemo(() => {
     return Object.values(promo).some((el) => el);
   }, [promo]);
+  const [valueInput, setValueInput] = useState("");
 
   return (
     <div className={styles.summary}>
@@ -53,10 +55,14 @@ export const Summary: FC = () => {
         className={styles.summary__input}
         type="text"
         placeholder="Enter promo code"
+        value={valueInput}
         onChange={(event) => {
+          setValueInput((valueInput) => (valueInput = event.target.value));
           dispatch(
             setSearchPromo(
-              promoCode.find((el) => el.value === event.target.value.toUpperCase())?.value
+              promoCode.find(
+                (el) => el.value === event.target.value.toUpperCase()
+              )?.value
             )
           );
         }}
@@ -70,13 +76,17 @@ export const Summary: FC = () => {
             <Button
               text="Add"
               isActive={false}
-              onClick={() => dispatch(applyPromocode(discount))}
+              onClick={() => {
+                setValueInput((valueInput) => (valueInput = ""));
+                dispatch(applyPromocode(discount));
+              }}
             />
           )}
         </div>
       ) : null}
       <p className={styles.summary__promo}>
-        <span className={styles.summary__title}>Promo for test:</span>'XK3M9S', 'DV8Q6L'
+        <span className={styles.summary__title}>Promo for test:</span>'XK3M9S',
+        'DV8Q6L'
       </p>
       <Button
         text="Buy now"
