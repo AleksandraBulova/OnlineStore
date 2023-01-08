@@ -1,11 +1,10 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setDualSlider } from "../../../../redux/reducers/productsReducer";
 import { RootState } from "../../../../redux/store";
 import {
   DualSliderFilterTypes,
   DualSliderInputNumbers,
-  DualSliderSettings,
   FilterControllers,
 } from "../../../../types";
 import { FilterContainer } from "../FilterConteiner";
@@ -17,6 +16,7 @@ export const PriceFilter: FC = () => {
     filterPrices: { values, minValueIndex, maxValueIndex, inputValues },
     filterChangedBy,
   } = useSelector((state: RootState) => state.products);
+
   const dispatch = useDispatch();
   const handleChangeDualSlider = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -31,29 +31,44 @@ export const PriceFilter: FC = () => {
     );
   };
 
-  const dualSliderSettings: DualSliderSettings = {
-    maxLength: values.length - 1,
-    firstInputValue: inputValues[0],
-    secondInputValue: inputValues[1],
-    min: values[minValueIndex],
-    max: values[maxValueIndex],
-  };
+  const dualSliderSettings = useMemo(() => {
+    const defaultSettings = {
+      maxLength: values.length - 1,
+      firstInputValue: inputValues[0],
+      secondInputValue: inputValues[1],
+      min: values[minValueIndex],
+      max: values[maxValueIndex],
+    };
 
-  if (FilterControllers[filterChangedBy] !== "priceController") {
-    const prices = viewProducts.map((product) => product.price);
-    dualSliderSettings.min =
-      prices.length > 0 ? Math.min(...prices) : values[0];
-    dualSliderSettings.max =
-      prices.length > 0
-        ? Math.max(...prices)
-        : values[dualSliderSettings.maxLength];
-    dualSliderSettings.firstInputValue =
-      prices.length > 0 ? values.indexOf(dualSliderSettings.min) : 0;
-    dualSliderSettings.secondInputValue =
-      prices.length > 0
-        ? values.indexOf(dualSliderSettings.max)
-        : dualSliderSettings.maxLength;
-  }
+    const urlParams = new URLSearchParams(window.location.search);
+    const price = urlParams.get("price");
+    if (!price) {
+      if (FilterControllers[filterChangedBy] !== "priceController") {
+        const prices = viewProducts.map((product) => product.price);
+        defaultSettings.min =
+          prices.length > 0 ? Math.min(...prices) : values[0];
+        defaultSettings.max =
+          prices.length > 0
+            ? Math.max(...prices)
+            : values[defaultSettings.maxLength];
+        defaultSettings.firstInputValue =
+          prices.length > 0 ? values.indexOf(defaultSettings.min) : 0;
+        defaultSettings.secondInputValue =
+          prices.length > 0
+            ? values.indexOf(defaultSettings.max)
+            : defaultSettings.maxLength;
+      }
+    }
+
+    return defaultSettings;
+  }, [
+    values,
+    inputValues,
+    minValueIndex,
+    maxValueIndex,
+    viewProducts,
+    filterChangedBy,
+  ]);
 
   return (
     <FilterContainer title="Prices">

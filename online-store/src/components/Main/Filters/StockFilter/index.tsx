@@ -1,11 +1,10 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setDualSlider } from "../../../../redux/reducers/productsReducer";
 import { RootState } from "../../../../redux/store";
 import {
   DualSliderFilterTypes,
   DualSliderInputNumbers,
-  DualSliderSettings,
   FilterControllers,
 } from "../../../../types";
 import { FilterContainer } from "../FilterConteiner";
@@ -31,26 +30,45 @@ export const StockFilter: FC = () => {
     );
   };
 
-  const dualSliderSettings: DualSliderSettings = {
-    maxLength: values.length - 1,
-    firstInputValue: inputValues[0],
-    secondInputValue: inputValues[1],
-    min: values[minValueIndex],
-    max: values[maxValueIndex],
-  };
+  const dualSliderSettings = useMemo(() => {
+    const defaultSettings = {
+      maxLength: values.length - 1,
+      firstInputValue: inputValues[0],
+      secondInputValue: inputValues[1],
+      min: values[minValueIndex],
+      max: values[maxValueIndex],
+    };
 
-  if (FilterControllers[filterChangedBy] !== "stockController") {
-    const stocks = viewProducts.map((product) => product.stock);
-    dualSliderSettings.min = stocks.length > 0 ? Math.min(...stocks) : values[0];
-    dualSliderSettings.max =
-      stocks.length > 0 ? Math.max(...stocks) : values[dualSliderSettings.maxLength];
-    dualSliderSettings.firstInputValue =
-      stocks.length > 0 ? values.indexOf(dualSliderSettings.min) : 0;
-    dualSliderSettings.secondInputValue =
-      stocks.length > 0
-        ? values.indexOf(dualSliderSettings.max)
-        : dualSliderSettings.maxLength;
-  }
+    const urlParams = new URLSearchParams(window.location.search);
+    const stock = urlParams.get("stock");
+
+    if (!stock) {
+      if (FilterControllers[filterChangedBy] !== "stockController") {
+        const stocks = viewProducts.map((product) => product.stock);
+        defaultSettings.min =
+          stocks.length > 0 ? Math.min(...stocks) : values[0];
+        defaultSettings.max =
+          stocks.length > 0
+            ? Math.max(...stocks)
+            : values[defaultSettings.maxLength];
+        defaultSettings.firstInputValue =
+          stocks.length > 0 ? values.indexOf(defaultSettings.min) : 0;
+        defaultSettings.secondInputValue =
+          stocks.length > 0
+            ? values.indexOf(defaultSettings.max)
+            : defaultSettings.maxLength;
+      }
+    }
+
+    return defaultSettings;
+  }, [
+    values,
+    inputValues,
+    minValueIndex,
+    maxValueIndex,
+    viewProducts,
+    filterChangedBy,
+  ]);
 
   return (
     <FilterContainer title="Stock">
