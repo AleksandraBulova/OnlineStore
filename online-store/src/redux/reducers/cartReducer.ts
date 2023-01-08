@@ -34,7 +34,7 @@ const initialState: IProductsState = JSON.parse(state) || {
   limitOfProductsPerPage: limit ? Number(limit) : 3,
   pageOfProductsCart: page ? Number(page) : 1,
   searchPromo: "",
-  isModalShown: true,
+  isModalShown: false,
   promo: {
     XK3M9S: false,
     DV8Q6L: false,
