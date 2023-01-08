@@ -13,14 +13,8 @@ import { Discounts } from "../Discounts";
 import styles from "./styles.module.scss";
 
 export const Summary: FC = () => {
-  const {
-    productsCart,
-    sumProducts,
-    promo,
-    searchPromo,
-    defultSumProducts,
-    isModalShown,
-  } = useSelector((state: RootState) => state.cart);
+  const { productsCart, sumProducts, promo, searchPromo, defultSumProducts } =
+    useSelector((state: RootState) => state.cart);
 
   const dispatch = useDispatch();
 

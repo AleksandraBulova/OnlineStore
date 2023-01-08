@@ -2,7 +2,7 @@
 @import "../../../styles/templates";
 
 .modal {
-  position: absolute;
+  position: fixed;
   z-index: 100;
   top: 50vh;
   left: 50vw;
@@ -53,6 +53,37 @@
   & button {
     margin-top: 10px;
     width: 200px;
+  }
+}
+
+.paySystem {
+  position: relative;
+  right: 20px;
+  grid-area: cardImg;
+  justify-self: end;
+  width: 40px;
+  height: 40px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  &_visa {
+    background-image: url(../../../assets/visa.png);
+    animation: appear 400ms ease-in-out;
+  }
+
+  &_mastercard {
+    background-image: url(../../../assets/mastercard.png);
+    animation: appear 400ms ease-in-out;
+  }
+
+  &_amex {
+    background-image: url(../../../assets/amExpress.png);
+    animation: appear 400ms ease-in-out;
+  }
+
+  &_paypal {
+    background-image: url(../../../assets/paypal.png);
   }
 }
 
