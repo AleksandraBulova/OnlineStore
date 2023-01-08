@@ -1,6 +1,7 @@
 import React, { FC, FocusEvent, useState } from "react";
-import { useDispatch } from "react-redux";
-import { modalToggle } from "../../../redux/reducers/cartReducer";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../../redux/store";
+import { clearCart, setModalSubmitted } from "../../../redux/reducers/cartReducer";
 import { ModalInputsTypes, PaymentSystem } from "../../../types";
 import { InputModal } from "../InputModal";
 import { Button } from "../../UI/Button";
@@ -10,6 +11,9 @@ import styles from "./styles.module.scss";
 
 export const ModalCheckoutWindow: FC = () => {
   const dispatch = useDispatch();
+  const { isModalSubmitted, secondsToRedirect } = useSelector(
+    (state: RootState) => state.cart
+  );
   const [inputStates, setInputStates] = useState({
     name: { value: "", error: false, isValid: false },
     tel: { value: "", error: false, isValid: false },
@@ -24,7 +28,6 @@ export const ModalCheckoutWindow: FC = () => {
     cardThru: { value: "", error: false, isValid: false },
     CVV: { value: "", error: false, isValid: false },
   });
-  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
   const paySystemStyles = [styles.paySystem];
 
@@ -42,9 +45,6 @@ export const ModalCheckoutWindow: FC = () => {
       paySystemStyles.push(styles.paySystem_paypal);
       break;
   }
-
-  console.log(inputStates);
-  console.log(isFormSubmitted);
 
   const handleChangeValue = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -363,8 +363,8 @@ export const ModalCheckoutWindow: FC = () => {
     ).length;
 
     if (isFormValid) {
-      setIsFormSubmitted(true);
-      // dispatch(modalToggle(false));
+      dispatch(clearCart());
+      dispatch(setModalSubmitted(true));
     } else {
       setInputStates((prev) => ({
         name: { ...prev.name, error: prev.name.isValid ? false : true },
@@ -380,7 +380,7 @@ export const ModalCheckoutWindow: FC = () => {
 
   return (
     <section className={styles.modal}>
-      {!isFormSubmitted && (
+      {!isModalSubmitted && (
         <form className={styles.form}>
           <h3 className={styles.form__title}>Personal details</h3>
           <InputModal
@@ -479,7 +479,7 @@ export const ModalCheckoutWindow: FC = () => {
           <Button text={"Confirm"} isActive={false} onClick={submitHandler} />
         </form>
       )}
-      {isFormSubmitted && <ModaleSuccessOrder />}
+      {isModalSubmitted && <ModaleSuccessOrder timeLeft={secondsToRedirect} />}
     </section>
   );
 };
