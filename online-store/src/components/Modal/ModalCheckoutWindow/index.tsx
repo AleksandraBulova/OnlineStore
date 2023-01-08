@@ -4,6 +4,7 @@ import { modalToggle } from "../../../redux/reducers/cartReducer";
 import { ModalInputsTypes, PaymentSystem } from "../../../types";
 import { InputModal } from "../InputModal";
 import { Button } from "../../UI/Button";
+import { ModaleSuccessOrder } from "../ModalSuccessOrder";
 
 import styles from "./styles.module.scss";
 
@@ -23,7 +24,7 @@ export const ModalCheckoutWindow: FC = () => {
     cardThru: { value: "", error: false, isValid: false },
     CVV: { value: "", error: false, isValid: false },
   });
-  const [isFormValid, setIsFormValid] = useState(false);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
   const paySystemStyles = [styles.paySystem];
 
@@ -43,6 +44,7 @@ export const ModalCheckoutWindow: FC = () => {
   }
 
   console.log(inputStates);
+  console.log(isFormSubmitted);
 
   const handleChangeValue = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -52,28 +54,44 @@ export const ModalCheckoutWindow: FC = () => {
 
     switch (type) {
       case ModalInputsTypes.name:
-        setInputStates((prev) => ({
-          ...prev,
-          name: { ...prev.name, value: eventTarget.value },
-        }));
+        setInputStates((prev) => {
+          if (eventTarget.value.length > 25)
+            eventTarget.value = eventTarget.value.substring(0, 25);
+          return {
+            ...prev,
+            name: { ...prev.name, value: eventTarget.value },
+          };
+        });
         break;
       case ModalInputsTypes.tel:
-        setInputStates((prev) => ({
-          ...prev,
-          tel: { ...prev.tel, value: eventTarget.value },
-        }));
+        setInputStates((prev) => {
+          if (eventTarget.value.length > 25)
+            eventTarget.value = eventTarget.value.substring(0, 25);
+          return {
+            ...prev,
+            tel: { ...prev.tel, value: eventTarget.value },
+          };
+        });
         break;
       case ModalInputsTypes.address:
-        setInputStates((prev) => ({
-          ...prev,
-          address: { ...prev.address, value: eventTarget.value },
-        }));
+        setInputStates((prev) => {
+          if (eventTarget.value.length > 25)
+            eventTarget.value = eventTarget.value.substring(0, 25);
+          return {
+            ...prev,
+            address: { ...prev.address, value: eventTarget.value },
+          };
+        });
         break;
       case ModalInputsTypes.email:
-        setInputStates((prev) => ({
-          ...prev,
-          email: { ...prev.email, value: eventTarget.value },
-        }));
+        setInputStates((prev) => {
+          if (eventTarget.value.length > 25)
+            eventTarget.value = eventTarget.value.substring(0, 25);
+          return {
+            ...prev,
+            email: { ...prev.email, value: eventTarget.value },
+          };
+        });
         break;
       case ModalInputsTypes.cardNum:
         setInputStates((prev) => {
@@ -345,8 +363,8 @@ export const ModalCheckoutWindow: FC = () => {
     ).length;
 
     if (isFormValid) {
-      setIsFormValid(true);
-      dispatch(modalToggle(false));
+      setIsFormSubmitted(true);
+      // dispatch(modalToggle(false));
     } else {
       setInputStates((prev) => ({
         name: { ...prev.name, error: prev.name.isValid ? false : true },
@@ -362,103 +380,106 @@ export const ModalCheckoutWindow: FC = () => {
 
   return (
     <section className={styles.modal}>
-      <form className={styles.form}>
-        <h3 className={styles.form__title}>Personal details</h3>
-        <InputModal
-          value={inputStates.name.value}
-          type="text"
-          styleType={ModalInputsTypes.name}
-          placeholder="Name Surname"
-          onChange={(event) => handleChangeValue(event, ModalInputsTypes.name)}
-          onBlur={(event) => handleBlurValue(event, ModalInputsTypes.name)}
-        />
-        {inputStates.name.error && (
-          <div className={styles.form__error}>
-            Name should contain two words more then 3 chars length!
+      {!isFormSubmitted && (
+        <form className={styles.form}>
+          <h3 className={styles.form__title}>Personal details</h3>
+          <InputModal
+            value={inputStates.name.value}
+            type="text"
+            styleType={ModalInputsTypes.name}
+            placeholder="Name Surname"
+            onChange={(event) => handleChangeValue(event, ModalInputsTypes.name)}
+            onBlur={(event) => handleBlurValue(event, ModalInputsTypes.name)}
+          />
+          {inputStates.name.error && (
+            <div className={styles.form__error}>
+              Name should contain two words more then 3 chars length!
+            </div>
+          )}
+          <InputModal
+            value={inputStates.tel.value}
+            type="tel"
+            styleType={ModalInputsTypes.tel}
+            placeholder="Phone number"
+            onChange={(event) => handleChangeValue(event, ModalInputsTypes.tel)}
+            onBlur={(event) => handleBlurValue(event, ModalInputsTypes.tel)}
+          />
+          {inputStates.tel.error && (
+            <div className={styles.form__error}>
+              Phone number should be 9 numbers length and starts with '+'
+            </div>
+          )}
+          <InputModal
+            value={inputStates.address.value}
+            type="text"
+            styleType={ModalInputsTypes.address}
+            placeholder="Delivery Address"
+            onChange={(event) => handleChangeValue(event, ModalInputsTypes.address)}
+            onBlur={(event) => handleBlurValue(event, ModalInputsTypes.address)}
+          />
+          {inputStates.address.error && (
+            <div className={styles.form__error}>
+              Address should contain three words more then 5 chars length!
+            </div>
+          )}
+          <InputModal
+            value={inputStates.email.value}
+            type="email"
+            styleType={ModalInputsTypes.email}
+            placeholder="E-mail"
+            onChange={(event) => handleChangeValue(event, ModalInputsTypes.email)}
+            onBlur={(event) => handleBlurValue(event, ModalInputsTypes.email)}
+          />
+          {inputStates.email.error && (
+            <div className={styles.form__error}>Please enter valid e-mail!</div>
+          )}
+          <h3 className={styles.form__title}>Credit card details</h3>
+          <div className={styles.form__card}>
+            <div className={styles.form__cardInputs}>
+              <div className={paySystemStyles.join(" ")}></div>
+              <InputModal
+                value={inputStates.cardNum.value}
+                type="text"
+                styleType={ModalInputsTypes.cardNum}
+                placeholder="Card number"
+                onChange={(event) => handleChangeValue(event, ModalInputsTypes.cardNum)}
+                onBlur={(event) => handleBlurValue(event, ModalInputsTypes.cardNum)}
+              />
+              <InputModal
+                value={inputStates.cardThru.value}
+                type="text"
+                styleType={ModalInputsTypes.cardThru}
+                placeholder="Card Thru"
+                onChange={(event) => handleChangeValue(event, ModalInputsTypes.cardThru)}
+                onBlur={(event) => handleBlurValue(event, ModalInputsTypes.cardThru)}
+              />
+              <InputModal
+                value={inputStates.CVV.value}
+                type="text"
+                styleType={ModalInputsTypes.CVV}
+                placeholder="CVV"
+                onChange={(event) => handleChangeValue(event, ModalInputsTypes.CVV)}
+                onBlur={(event) => handleBlurValue(event, ModalInputsTypes.CVV)}
+              />
+            </div>
           </div>
-        )}
-        <InputModal
-          value={inputStates.tel.value}
-          type="tel"
-          styleType={ModalInputsTypes.tel}
-          placeholder="Phone number"
-          onChange={(event) => handleChangeValue(event, ModalInputsTypes.tel)}
-          onBlur={(event) => handleBlurValue(event, ModalInputsTypes.tel)}
-        />
-        {inputStates.tel.error && (
-          <div className={styles.form__error}>
-            Phone number should be 9 numbers length and starts with '+'
-          </div>
-        )}
-        <InputModal
-          value={inputStates.address.value}
-          type="text"
-          styleType={ModalInputsTypes.address}
-          placeholder="Delivery Address"
-          onChange={(event) => handleChangeValue(event, ModalInputsTypes.address)}
-          onBlur={(event) => handleBlurValue(event, ModalInputsTypes.address)}
-        />
-        {inputStates.address.error && (
-          <div className={styles.form__error}>
-            Address should contain three words more then 5 chars length!
-          </div>
-        )}
-        <InputModal
-          value={inputStates.email.value}
-          type="email"
-          styleType={ModalInputsTypes.email}
-          placeholder="E-mail"
-          onChange={(event) => handleChangeValue(event, ModalInputsTypes.email)}
-          onBlur={(event) => handleBlurValue(event, ModalInputsTypes.email)}
-        />
-        {inputStates.email.error && (
-          <div className={styles.form__error}>Please enter valid e-mail!</div>
-        )}
-        <h3 className={styles.form__title}>Credit card details</h3>
-        <div className={styles.form__card}>
-          <div className={styles.form__cardInputs}>
-            <div className={paySystemStyles.join(" ")}></div>
-            <InputModal
-              value={inputStates.cardNum.value}
-              type="text"
-              styleType={ModalInputsTypes.cardNum}
-              placeholder="Card number"
-              onChange={(event) => handleChangeValue(event, ModalInputsTypes.cardNum)}
-              onBlur={(event) => handleBlurValue(event, ModalInputsTypes.cardNum)}
-            />
-            <InputModal
-              value={inputStates.cardThru.value}
-              type="text"
-              styleType={ModalInputsTypes.cardThru}
-              placeholder="Card Thru"
-              onChange={(event) => handleChangeValue(event, ModalInputsTypes.cardThru)}
-              onBlur={(event) => handleBlurValue(event, ModalInputsTypes.cardThru)}
-            />
-            <InputModal
-              value={inputStates.CVV.value}
-              type="text"
-              styleType={ModalInputsTypes.CVV}
-              placeholder="CVV"
-              onChange={(event) => handleChangeValue(event, ModalInputsTypes.CVV)}
-              onBlur={(event) => handleBlurValue(event, ModalInputsTypes.CVV)}
-            />
-          </div>
-        </div>
-        {inputStates.cardNum.error && (
-          <div className={styles.form__error}>
-            Card number should contain 16 numbers and should not start with '0'!
-          </div>
-        )}
-        {inputStates.cardThru.error && (
-          <div className={styles.form__error}>
-            CardTru should contain month(01-12) and year not yearly 22
-          </div>
-        )}
-        {inputStates.CVV.error && (
-          <div className={styles.form__error}>CVV should contain 3 numbers</div>
-        )}
-        <Button text={"Confirm"} isActive={false} onClick={submitHandler} />
-      </form>
+          {inputStates.cardNum.error && (
+            <div className={styles.form__error}>
+              Card number should contain 16 numbers and should not start with '0'!
+            </div>
+          )}
+          {inputStates.cardThru.error && (
+            <div className={styles.form__error}>
+              CardTru should contain month(01-12) and year not yearly 22
+            </div>
+          )}
+          {inputStates.CVV.error && (
+            <div className={styles.form__error}>CVV should contain 3 numbers</div>
+          )}
+          <Button text={"Confirm"} isActive={false} onClick={submitHandler} />
+        </form>
+      )}
+      {isFormSubmitted && <ModaleSuccessOrder />}
     </section>
   );
 };

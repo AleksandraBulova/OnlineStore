@@ -54,6 +54,19 @@ export const cartSlice = createSlice({
       }
       localStorage.setItem("state", JSON.stringify(state));
     },
+    clearCart: (state) => {
+      state.productsCart = [];
+      state.defultSumProducts = 0;
+      state.sumProducts = 0;
+      state.discount = [];
+      state.limitInputValue = "3";
+      state.limitOfProductsPerPage = 3;
+      state.pageOfProductsCart = 1;
+      state.searchPromo = "";
+      state.isModalShown = false;
+      state.promo.XK3M9S = false;
+      state.promo.DV8Q6L = false;
+    },
     resetProductsCart: (
       state,
       action: PayloadAction<{ product: Product; buttonClick: string }>
@@ -171,6 +184,7 @@ export const cartSlice = createSlice({
 
 export const {
   setProductsCart,
+  clearCart,
   resetProductsCart,
   setSumProducts,
   setLimitInputValue,
