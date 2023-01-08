@@ -1,7 +1,7 @@
 import React, { FC, FocusEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { modalToggle } from "../../../redux/reducers/cartReducer";
-import { ModalInputsTypes } from "../../../types";
+import { ModalInputsTypes, PaymentSystem } from "../../../types";
 import { InputModal } from "../InputModal";
 import { Button } from "../../UI/Button";
 
@@ -14,14 +14,35 @@ export const ModalCheckoutWindow: FC = () => {
     tel: { value: "", error: false, isValid: false },
     address: { value: "", error: false, isValid: false },
     email: { value: "", error: false, isValid: false },
-    cardNum: { value: "", error: false, isValid: false },
+    cardNum: {
+      value: "",
+      error: false,
+      isValid: false,
+      paySystem: PaymentSystem.paypal,
+    },
     cardThru: { value: "", error: false, isValid: false },
     CVV: { value: "", error: false, isValid: false },
   });
   const [isFormValid, setIsFormValid] = useState(false);
 
+  const paySystemStyles = [styles.paySystem];
+
+  switch (inputStates.cardNum.paySystem) {
+    case PaymentSystem.visa:
+      paySystemStyles.push(styles.paySystem_visa);
+      break;
+    case PaymentSystem.mastercard:
+      paySystemStyles.push(styles.paySystem_mastercard);
+      break;
+    case PaymentSystem.amex:
+      paySystemStyles.push(styles.paySystem_amex);
+      break;
+    case PaymentSystem.paypal:
+      paySystemStyles.push(styles.paySystem_paypal);
+      break;
+  }
+
   console.log(inputStates);
-  console.log(isFormValid);
 
   const handleChangeValue = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -61,6 +82,7 @@ export const ModalCheckoutWindow: FC = () => {
           if (eventTarget.value.length > 16)
             eventTarget.value = eventTarget.value.substring(0, 16);
           let template = "XXXX XXXX XXXX XXXX";
+          let paySystem;
           const numbersArr = eventTarget.value.split("");
           numbersArr.forEach((number) => (template = template.replace(/X/, number)));
           eventTarget.value = template;
@@ -80,11 +102,27 @@ export const ModalCheckoutWindow: FC = () => {
             caretePosition - currentCaretePosition > 1
               ? currentCaretePosition
               : caretePosition;
+
+          switch (eventTarget.value[0]) {
+            case "4":
+              paySystem = PaymentSystem.visa;
+              break;
+            case "5":
+              paySystem = PaymentSystem.mastercard;
+              break;
+            case "6":
+              paySystem = PaymentSystem.amex;
+              break;
+            default:
+              paySystem = PaymentSystem.paypal;
+              break;
+          }
           return {
             ...prev,
             cardNum: {
               ...prev.cardNum,
               value: eventTarget.value,
+              paySystem: paySystem,
             },
           };
         });
@@ -247,7 +285,7 @@ export const ModalCheckoutWindow: FC = () => {
         break;
 
       case ModalInputsTypes.cardNum:
-        if (!"456".includes(eventTarget.value[0]) || eventTarget.value.includes("X")) {
+        if (eventTarget.value[0] === "0" || eventTarget.value.includes("X")) {
           setInputStates((prev) => ({
             ...prev,
             cardNum: { ...prev.cardNum, error: true, isValid: false },
@@ -379,6 +417,7 @@ export const ModalCheckoutWindow: FC = () => {
         <h3 className={styles.form__title}>Credit card details</h3>
         <div className={styles.form__card}>
           <div className={styles.form__cardInputs}>
+            <div className={paySystemStyles.join(" ")}></div>
             <InputModal
               value={inputStates.cardNum.value}
               type="text"
@@ -407,7 +446,7 @@ export const ModalCheckoutWindow: FC = () => {
         </div>
         {inputStates.cardNum.error && (
           <div className={styles.form__error}>
-            Card number should contain 16 numbers and start with '4', '5' or '6'
+            Card number should contain 16 numbers and should not start with '0'!
           </div>
         )}
         {inputStates.cardThru.error && (
