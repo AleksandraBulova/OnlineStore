@@ -1,53 +1,164 @@
-import { FC, FocusEvent, useState } from "react";
+import React, { FC, FocusEvent, useState } from "react";
+import { useDispatch } from "react-redux";
+import { modalToggle } from "../../../redux/reducers/cartReducer";
+import { ModalInputsTypes } from "../../../types";
 import { InputModal } from "../InputModal";
+import { Button } from "../../UI/Button";
+
+import styles from "./styles.module.scss";
 
 export const ModalCheckoutWindow: FC = () => {
+  const dispatch = useDispatch();
   const [inputStates, setInputStates] = useState({
-    name: { value: "", error: false },
-    tel: { value: "", error: false },
-    address: { value: "", error: false },
-    email: { value: "", error: false },
+    name: { value: "", error: false, isValid: false },
+    tel: { value: "", error: false, isValid: false },
+    address: { value: "", error: false, isValid: false },
+    email: { value: "", error: false, isValid: false },
+    cardNum: { value: "", error: false, isValid: false },
+    cardThru: { value: "", error: false, isValid: false },
+    CVV: { value: "", error: false, isValid: false },
   });
+  const [isFormValid, setIsFormValid] = useState(false);
 
   console.log(inputStates);
+  console.log(isFormValid);
 
   const handleChangeValue = (
     event: React.ChangeEvent<HTMLInputElement>,
-    type: string
+    type: ModalInputsTypes
   ) => {
     const eventTarget = event.target;
 
     switch (type) {
-      case "name":
+      case ModalInputsTypes.name:
         setInputStates((prev) => ({
           ...prev,
           name: { ...prev.name, value: eventTarget.value },
         }));
-        return;
-      case "tel":
+        break;
+      case ModalInputsTypes.tel:
         setInputStates((prev) => ({
           ...prev,
           tel: { ...prev.tel, value: eventTarget.value },
         }));
-        return;
-      case "address":
+        break;
+      case ModalInputsTypes.address:
         setInputStates((prev) => ({
           ...prev,
           address: { ...prev.address, value: eventTarget.value },
         }));
-        return;
-      case "email":
+        break;
+      case ModalInputsTypes.email:
         setInputStates((prev) => ({
           ...prev,
           email: { ...prev.email, value: eventTarget.value },
         }));
-        return;
+        break;
+      case ModalInputsTypes.cardNum:
+        setInputStates((prev) => {
+          const currentCaretePosition = eventTarget.selectionStart!;
+          eventTarget.value = eventTarget.value.replace(/[^0-9]/g, "");
+          if (eventTarget.value.length > 16)
+            eventTarget.value = eventTarget.value.substring(0, 16);
+          let template = "XXXX XXXX XXXX XXXX";
+          const numbersArr = eventTarget.value.split("");
+          numbersArr.forEach((number) => (template = template.replace(/X/, number)));
+          eventTarget.value = template;
+          const lastXIndex = template.indexOf("X");
+          const lastSpaceIndex = template.indexOf(" X");
+          const caretePosition =
+            lastXIndex - lastSpaceIndex === 1
+              ? lastXIndex - 1
+              : lastXIndex !== -1
+              ? lastXIndex
+              : 19;
+          eventTarget.selectionStart =
+            caretePosition - currentCaretePosition > 1
+              ? currentCaretePosition
+              : caretePosition;
+          eventTarget.selectionEnd =
+            caretePosition - currentCaretePosition > 1
+              ? currentCaretePosition
+              : caretePosition;
+          return {
+            ...prev,
+            cardNum: {
+              ...prev.cardNum,
+              value: eventTarget.value,
+            },
+          };
+        });
+        break;
+      case ModalInputsTypes.cardThru:
+        setInputStates((prev) => {
+          const currentCaretePosition = eventTarget.selectionStart!;
+          eventTarget.value = eventTarget.value.replace(/[^0-9]/g, "");
+          if (eventTarget.value.length > 4)
+            eventTarget.value = eventTarget.value.substring(0, 4);
+          let template = "XX/XX";
+          const numbersArr = eventTarget.value.split("");
+          numbersArr.forEach((number) => (template = template.replace(/X/, number)));
+          eventTarget.value = template;
+          const lastXIndex = template.indexOf("X");
+          const lastSpaceIndex = template.indexOf("/X");
+          const caretePosition =
+            lastXIndex - lastSpaceIndex === 1
+              ? lastXIndex - 1
+              : lastXIndex !== -1
+              ? lastXIndex
+              : 5;
+          eventTarget.selectionStart =
+            caretePosition - currentCaretePosition > 1
+              ? currentCaretePosition
+              : caretePosition;
+          eventTarget.selectionEnd =
+            caretePosition - currentCaretePosition > 1
+              ? currentCaretePosition
+              : caretePosition;
+          return {
+            ...prev,
+            cardThru: {
+              ...prev.cardThru,
+              value: eventTarget.value,
+            },
+          };
+        });
+        break;
+
+      case ModalInputsTypes.CVV:
+        setInputStates((prev) => {
+          const currentCaretePosition = eventTarget.selectionStart!;
+          eventTarget.value = eventTarget.value.replace(/[^0-9]/g, "");
+          if (eventTarget.value.length > 3)
+            eventTarget.value = eventTarget.value.substring(0, 3);
+          let template = "XXX";
+          const numbersArr = eventTarget.value.split("");
+          numbersArr.forEach((number) => (template = template.replace(/X/, number)));
+          eventTarget.value = template;
+          const caretePosition = template.indexOf("X");
+          eventTarget.selectionStart =
+            caretePosition - currentCaretePosition > 1
+              ? currentCaretePosition
+              : caretePosition;
+          eventTarget.selectionEnd =
+            caretePosition - currentCaretePosition > 1
+              ? currentCaretePosition
+              : caretePosition;
+          return {
+            ...prev,
+            CVV: {
+              ...prev.CVV,
+              value: eventTarget.value,
+            },
+          };
+        });
+        break;
     }
   };
 
   const handleBlurValue = (
     event: FocusEvent<HTMLInputElement>,
-    type: string
+    type: ModalInputsTypes
   ): void => {
     const eventTarget = event.target;
     const valueArray = eventTarget.value.split(" ");
@@ -56,7 +167,7 @@ export const ModalCheckoutWindow: FC = () => {
       /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
 
     switch (type) {
-      case "name":
+      case ModalInputsTypes.name:
         if (valueArray.length >= 2) {
           const check = valueArray
             .join(" ")
@@ -71,37 +182,37 @@ export const ModalCheckoutWindow: FC = () => {
           ) {
             setInputStates((prev) => ({
               ...prev,
-              name: { ...prev.name, error: false },
+              name: { ...prev.name, error: false, isValid: true },
             }));
-            return;
+            break;
           }
         }
         setInputStates((prev) => ({
           ...prev,
-          name: { ...prev.name, error: true },
+          name: { ...prev.name, error: true, isValid: false },
         }));
-        return;
-      case "tel":
+        break;
+
+      case ModalInputsTypes.tel:
         if (valueArrayForTel.length >= 10 && valueArrayForTel[0] === "+") {
-          const check = valueArrayForTel
-            .slice(+valueArrayForTel[1])
-            .map((item) => {
-              return item < "0" || item > "9" ? false : true;
-            });
+          const check = valueArrayForTel.slice(+valueArrayForTel[1]).map((item) => {
+            return item < "0" || item > "9" ? false : true;
+          });
           if (check.every((elem) => elem)) {
             setInputStates((prev) => ({
               ...prev,
-              tel: { ...prev.tel, error: false },
+              tel: { ...prev.tel, error: false, isValid: true },
             }));
-            return;
+            break;
           }
         }
         setInputStates((prev) => ({
           ...prev,
-          tel: { ...prev.tel, error: true },
+          tel: { ...prev.tel, error: true, isValid: false },
         }));
-        return;
-      case "address":
+        break;
+
+      case ModalInputsTypes.address:
         if (valueArray.length >= 3) {
           if (
             valueArray[0].length >= 5 &&
@@ -110,71 +221,204 @@ export const ModalCheckoutWindow: FC = () => {
           ) {
             setInputStates((prev) => ({
               ...prev,
-              address: { ...prev.address, error: false },
+              address: { ...prev.address, error: false, isValid: true },
             }));
-            return;
+            break;
           }
         }
         setInputStates((prev) => ({
           ...prev,
-          address: { ...prev.address, error: true },
+          address: { ...prev.address, error: true, isValid: false },
         }));
-        return;
-      case "email":
+        break;
+
+      case ModalInputsTypes.email:
         if (EMAIL_REGEXP.test(eventTarget.value)) {
           setInputStates((prev) => ({
             ...prev,
-            email: { ...prev.email, error: false },
+            email: { ...prev.email, error: false, isValid: true },
           }));
-          return;
+          break;
         }
         setInputStates((prev) => ({
           ...prev,
-          email: { ...prev.email, error: true },
+          email: { ...prev.email, error: true, isValid: false },
         }));
-        return;
+        break;
+
+      case ModalInputsTypes.cardNum:
+        if (!"456".includes(eventTarget.value[0]) || eventTarget.value.includes("X")) {
+          setInputStates((prev) => ({
+            ...prev,
+            cardNum: { ...prev.cardNum, error: true, isValid: false },
+          }));
+          break;
+        }
+
+        setInputStates((prev) => ({
+          ...prev,
+          cardNum: { ...prev.cardNum, error: false, isValid: true },
+        }));
+        break;
+
+      case ModalInputsTypes.cardThru:
+        if (
+          Number(eventTarget.value.substring(0, 2)) === 0 ||
+          Number(eventTarget.value.substring(0, 2)) > 12 ||
+          Number(eventTarget.value.substring(3)) < 23 ||
+          eventTarget.value.includes("X")
+        ) {
+          console.log(Number(eventTarget.value.substring(0, 2)));
+          setInputStates((prev) => ({
+            ...prev,
+            cardThru: { ...prev.cardThru, error: true, isValid: false },
+          }));
+          break;
+        }
+
+        setInputStates((prev) => ({
+          ...prev,
+          cardThru: { ...prev.cardThru, error: false, isValid: true },
+        }));
+        break;
+
+      case ModalInputsTypes.CVV:
+        if (eventTarget.value.includes("X")) {
+          setInputStates((prev) => ({
+            ...prev,
+            CVV: { ...prev.CVV, error: true, isValid: false },
+          }));
+          break;
+        }
+
+        setInputStates((prev) => ({
+          ...prev,
+          CVV: { ...prev.CVV, error: false, isValid: true },
+        }));
+        break;
+    }
+  };
+
+  const submitHandler = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+
+    const isFormValid = !Object.entries(inputStates).filter(
+      (inputState) => !inputState[1].isValid
+    ).length;
+
+    if (isFormValid) {
+      setIsFormValid(true);
+      dispatch(modalToggle(false));
+    } else {
+      setInputStates((prev) => ({
+        name: { ...prev.name, error: prev.name.isValid ? false : true },
+        tel: { ...prev.tel, error: prev.tel.isValid ? false : true },
+        address: { ...prev.address, error: prev.address.isValid ? false : true },
+        email: { ...prev.email, error: prev.email.isValid ? false : true },
+        cardNum: { ...prev.cardNum, error: prev.cardNum.isValid ? false : true },
+        cardThru: { ...prev.cardThru, error: prev.cardThru.isValid ? false : true },
+        CVV: { ...prev.CVV, error: prev.CVV.isValid ? false : true },
+      }));
     }
   };
 
   return (
-    <section>
-      <form>
-        <h3>Personal details</h3>
+    <section className={styles.modal}>
+      <form className={styles.form}>
+        <h3 className={styles.form__title}>Personal details</h3>
         <InputModal
           value={inputStates.name.value}
           type="text"
+          styleType={ModalInputsTypes.name}
           placeholder="Name Surname"
-          onChange={(event) => handleChangeValue(event, "name")}
-          onBlur={(event) => handleBlurValue(event, "name")}
+          onChange={(event) => handleChangeValue(event, ModalInputsTypes.name)}
+          onBlur={(event) => handleBlurValue(event, ModalInputsTypes.name)}
         />
-        {inputStates.name.error && <div style={{ color: "red" }}>Error!</div>}
+        {inputStates.name.error && (
+          <div className={styles.form__error}>
+            Name should contain two words more then 3 chars length!
+          </div>
+        )}
         <InputModal
           value={inputStates.tel.value}
           type="tel"
+          styleType={ModalInputsTypes.tel}
           placeholder="Phone number"
-          onChange={(event) => handleChangeValue(event, "tel")}
-          onBlur={(event) => handleBlurValue(event, "tel")}
+          onChange={(event) => handleChangeValue(event, ModalInputsTypes.tel)}
+          onBlur={(event) => handleBlurValue(event, ModalInputsTypes.tel)}
         />
-        {inputStates.tel.error && <div style={{ color: "red" }}>Error!</div>}
+        {inputStates.tel.error && (
+          <div className={styles.form__error}>
+            Phone number should be 9 numbers length and starts with '+'
+          </div>
+        )}
         <InputModal
           value={inputStates.address.value}
           type="text"
+          styleType={ModalInputsTypes.address}
           placeholder="Delivery Address"
-          onChange={(event) => handleChangeValue(event, "address")}
-          onBlur={(event) => handleBlurValue(event, "address")}
+          onChange={(event) => handleChangeValue(event, ModalInputsTypes.address)}
+          onBlur={(event) => handleBlurValue(event, ModalInputsTypes.address)}
         />
         {inputStates.address.error && (
-          <div style={{ color: "red" }}>Error!</div>
+          <div className={styles.form__error}>
+            Address should contain three words more then 5 chars length!
+          </div>
         )}
         <InputModal
           value={inputStates.email.value}
           type="email"
+          styleType={ModalInputsTypes.email}
           placeholder="E-mail"
-          onChange={(event) => handleChangeValue(event, "email")}
-          onBlur={(event) => handleBlurValue(event, "email")}
+          onChange={(event) => handleChangeValue(event, ModalInputsTypes.email)}
+          onBlur={(event) => handleBlurValue(event, ModalInputsTypes.email)}
         />
-        {inputStates.email.error && <div style={{ color: "red" }}>Error!</div>}
-        <input type="submit" value="Confirm" />
+        {inputStates.email.error && (
+          <div className={styles.form__error}>Please enter valid e-mail!</div>
+        )}
+        <h3 className={styles.form__title}>Credit card details</h3>
+        <div className={styles.form__card}>
+          <div className={styles.form__cardInputs}>
+            <InputModal
+              value={inputStates.cardNum.value}
+              type="text"
+              styleType={ModalInputsTypes.cardNum}
+              placeholder="Card number"
+              onChange={(event) => handleChangeValue(event, ModalInputsTypes.cardNum)}
+              onBlur={(event) => handleBlurValue(event, ModalInputsTypes.cardNum)}
+            />
+            <InputModal
+              value={inputStates.cardThru.value}
+              type="text"
+              styleType={ModalInputsTypes.cardThru}
+              placeholder="Card Thru"
+              onChange={(event) => handleChangeValue(event, ModalInputsTypes.cardThru)}
+              onBlur={(event) => handleBlurValue(event, ModalInputsTypes.cardThru)}
+            />
+            <InputModal
+              value={inputStates.CVV.value}
+              type="text"
+              styleType={ModalInputsTypes.CVV}
+              placeholder="CVV"
+              onChange={(event) => handleChangeValue(event, ModalInputsTypes.CVV)}
+              onBlur={(event) => handleBlurValue(event, ModalInputsTypes.CVV)}
+            />
+          </div>
+        </div>
+        {inputStates.cardNum.error && (
+          <div className={styles.form__error}>
+            Card number should contain 16 numbers and start with '4', '5' or '6'
+          </div>
+        )}
+        {inputStates.cardThru.error && (
+          <div className={styles.form__error}>
+            CardTru should contain month(01-12) and year not yearly 22
+          </div>
+        )}
+        {inputStates.CVV.error && (
+          <div className={styles.form__error}>CVV should contain 3 numbers</div>
+        )}
+        <Button text={"Confirm"} isActive={false} onClick={submitHandler} />
       </form>
     </section>
   );

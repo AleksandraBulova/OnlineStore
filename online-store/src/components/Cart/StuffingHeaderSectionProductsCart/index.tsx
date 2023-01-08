@@ -1,4 +1,4 @@
-import { FC } from "react";
+import React, { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   changePage,
@@ -30,6 +30,29 @@ export const StuffingHeaderSectionProductsCart: FC = () => {
     }
   };
 
+  const changeLimitHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let limitInputValue = event.target.value;
+    const productInCart = getUniqueProducts(productsCart).length;
+
+    if (limitInputValue.length <= productInCart.toString().length) {
+      if (Number(limitInputValue) < 1 && limitInputValue !== "") limitInputValue = "3";
+      if (Number(limitInputValue) > productInCart)
+        limitInputValue = productInCart.toString();
+
+      if (limitInputValue.replace(/0/g, "").length === 0 || limitInputValue === "") {
+        dispatch(setLimitInputValue({ limitInputValue: limitInputValue }));
+      } else {
+        dispatch(setLimitInputValue({ limitInputValue: limitInputValue }));
+        dispatch(
+          setLimitOfProductsPerPage({
+            limit: Number(limitInputValue),
+            page: pageOfProductsCart,
+          })
+        );
+      }
+    }
+  };
+
   return (
     <>
       <h2 className={styles.title}>Products In Cart</h2>
@@ -41,20 +64,7 @@ export const StuffingHeaderSectionProductsCart: FC = () => {
           min="1"
           max={getUniqueProducts(productsCart).length}
           value={limitInputValue}
-          onChange={(event) => {
-            const limitInputValue = event.target.value;
-            if (limitInputValue === "0" || limitInputValue === "") {
-              dispatch(setLimitInputValue({ limitInputValue: limitInputValue }));
-            } else {
-              dispatch(setLimitInputValue({ limitInputValue: limitInputValue }));
-              dispatch(
-                setLimitOfProductsPerPage({
-                  limit: Number(limitInputValue),
-                  page: pageOfProductsCart,
-                })
-              );
-            }
-          }}
+          onChange={changeLimitHandler}
         />
       </label>
       <div className={styles.pageNumber}>

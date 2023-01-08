@@ -2,11 +2,13 @@ import { FC } from "react";
 import { Link } from "react-router-dom";
 import { Route, Product } from "../../../types";
 import { routes } from "../../../routes";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../../redux/store";
 import {
   setProductsCart,
   resetProductsCart,
   setSumProducts,
+  modalToggle,
 } from "../../../redux/reducers/cartReducer";
 import { setImg } from "../../../redux/reducers/productsReducer";
 
@@ -20,6 +22,7 @@ interface ProductCard {
 }
 
 export const ProductCard: FC<ProductCard> = ({ product, activeImg, isInCart }) => {
+  const { isModalShown } = useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch();
   const [, cartPage]: Route[] = routes;
 
@@ -94,8 +97,11 @@ export const ProductCard: FC<ProductCard> = ({ product, activeImg, isInCart }) =
           className={styles.buy__link}
           onClick={
             isInCart === -1
-              ? (event: React.MouseEvent<HTMLAnchorElement>) => addToCard(event, product)
-              : undefined
+              ? (event: React.MouseEvent<HTMLAnchorElement>) => {
+                  addToCard(event, product);
+                  dispatch(modalToggle(true));
+                }
+              : () => dispatch(modalToggle(true))
           }
           to={cartPage.path}
         >

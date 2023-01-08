@@ -72,3 +72,13 @@ export enum FilterControllers {
   priceController,
   stockController,
 }
+
+export enum ModalInputsTypes {
+  name,
+  tel,
+  address,
+  email,
+  cardNum,
+  cardThru,
+  CVV,
+}

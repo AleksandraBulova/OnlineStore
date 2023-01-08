@@ -3,9 +3,15 @@
 @import "./styles/templates";
 
 body {
+  position: relative;
   @include primaryText(calc(15px + 0.390625vw), 400);
   color: $primary-dark;
   background-color: $primary-light;
+  overflow: hidden;
+}
+
+.scrollHidden {
+  overflow: hidden;
 }
 
 .wrapper {

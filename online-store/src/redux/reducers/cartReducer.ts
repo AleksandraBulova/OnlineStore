@@ -13,6 +13,7 @@ export interface IProductsState {
   limitOfProductsPerPage: number;
   pageOfProductsCart: number;
   searchPromo: string;
+  isModalShown: boolean;
   promo: {
     [key: string]: boolean;
   };
@@ -33,6 +34,7 @@ const initialState: IProductsState = JSON.parse(state) || {
   limitOfProductsPerPage: limit ? Number(limit) : 3,
   pageOfProductsCart: page ? Number(page) : 1,
   searchPromo: "",
+  isModalShown: true,
   promo: {
     XK3M9S: false,
     DV8Q6L: false,
@@ -160,6 +162,9 @@ export const cartSlice = createSlice({
       });
       localStorage.setItem("state", JSON.stringify(state));
     },
+    modalToggle: (state, action: PayloadAction<boolean>) => {
+      state.isModalShown = action.payload;
+    },
   },
 });
 
@@ -173,6 +178,7 @@ export const {
   setSearchPromo,
   applyPromocode,
   dropPromo,
+  modalToggle,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

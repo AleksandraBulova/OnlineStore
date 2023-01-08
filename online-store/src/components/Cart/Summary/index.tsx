@@ -1,7 +1,11 @@
 import { FC, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { promoCode } from "../../../constants/promoCode";
-import { applyPromocode, setSearchPromo } from "../../../redux/reducers/cartReducer";
+import {
+  applyPromocode,
+  setSearchPromo,
+  modalToggle,
+} from "../../../redux/reducers/cartReducer";
 import { RootState } from "../../../redux/store";
 import { Button } from "../../UI/Button";
 import { Discounts } from "../Discounts";
@@ -9,8 +13,14 @@ import { Discounts } from "../Discounts";
 import styles from "./styles.module.scss";
 
 export const Summary: FC = () => {
-  const { productsCart, sumProducts, promo, searchPromo, defultSumProducts } =
-    useSelector((state: RootState) => state.cart);
+  const {
+    productsCart,
+    sumProducts,
+    promo,
+    searchPromo,
+    defultSumProducts,
+    isModalShown,
+  } = useSelector((state: RootState) => state.cart);
 
   const dispatch = useDispatch();
 
@@ -21,7 +31,10 @@ export const Summary: FC = () => {
 
   return (
     <div className={styles.summary}>
-      <div>Products: {productsCart.length}</div>
+      <div>
+        <span className={styles.summary__title}>Products:</span>
+        {productsCart.length}
+      </div>
       <div
         className={styles.summary__price}
         style={{ textDecoration: withPromo ? "line-through" : "" }}
@@ -50,7 +63,9 @@ export const Summary: FC = () => {
       />
       {searchPromo ? (
         <div className={styles.summary__addPromo}>
-          <div>{`${searchPromo} - ${discount}%`}</div>
+          <div
+            className={styles.summary__promoInfo}
+          >{`${searchPromo} - ${discount}%`}</div>
           {!promo[searchPromo] && (
             <Button
               text="Add"
@@ -60,10 +75,14 @@ export const Summary: FC = () => {
           )}
         </div>
       ) : null}
-      <p>
+      <p className={styles.summary__promo}>
         <span className={styles.summary__title}>Promo for test:</span>'XK3M9S', 'DV8Q6L'
       </p>
-      <Button text="Buy now" isActive={false} onClick={() => null} />
+      <Button
+        text="Buy now"
+        isActive={false}
+        onClick={() => dispatch(modalToggle(true))}
+      />
     </div>
   );
 };
