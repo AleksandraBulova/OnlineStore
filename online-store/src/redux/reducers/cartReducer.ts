@@ -87,7 +87,9 @@ export const cartSlice = createSlice({
         );
       }
       if (action.payload.buttonClick === "remove") {
-        const idProducts = state.productsCart.reverse().map((product) => product.id);
+        const idProducts = state.productsCart
+          .reverse()
+          .map((product) => product.id);
 
         const indexRemove = idProducts.findIndex(
           (id) => id === action.payload.product.id
@@ -108,7 +110,9 @@ export const cartSlice = createSlice({
           state.pageOfProductsCart === 1
             ? state.pageOfProductsCart
             : state.pageOfProductsCart - 1;
-        getQueryCart(state.limitOfProductsPerPage, state.pageOfProductsCart);
+        if (state.productsCart.length !== 0) {
+          getQueryCart(state.limitOfProductsPerPage, state.pageOfProductsCart);
+        }
       }
 
       localStorage.setItem("state", JSON.stringify(state));
@@ -127,7 +131,10 @@ export const cartSlice = createSlice({
       }
       localStorage.setItem("state", JSON.stringify(state));
     },
-    setLimitInputValue: (state, action: PayloadAction<{ limitInputValue: string }>) => {
+    setLimitInputValue: (
+      state,
+      action: PayloadAction<{ limitInputValue: string }>
+    ) => {
       state.limitInputValue = action.payload.limitInputValue;
     },
     setLimitOfProductsPerPage: (
@@ -170,7 +177,9 @@ export const cartSlice = createSlice({
       state.promo[action.payload] = false;
       promoCode.map((elem) => {
         if (state.promo[elem.value] === false) {
-          const indexRemove = state.discount.findIndex((item) => item === elem.discount);
+          const indexRemove = state.discount.findIndex(
+            (item) => item === elem.discount
+          );
 
           state.discount = [
             ...state.discount.slice(0, indexRemove),
@@ -181,13 +190,15 @@ export const cartSlice = createSlice({
         } else {
           const discount = state.discount.reduce((acc, elem) => acc + elem);
           state.sumProducts =
-            state.defultSumProducts - state.defultSumProducts * (discount / 100);
+            state.defultSumProducts -
+            state.defultSumProducts * (discount / 100);
         }
       });
       localStorage.setItem("state", JSON.stringify(state));
     },
     modalToggle: (state, action: PayloadAction<boolean>) => {
       state.isModalShown = action.payload;
+      localStorage.setItem("state", JSON.stringify(state));
     },
   },
 });

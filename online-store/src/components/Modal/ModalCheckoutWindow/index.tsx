@@ -1,7 +1,10 @@
 import React, { FC, FocusEvent, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../redux/store";
-import { clearCart, setModalSubmitted } from "../../../redux/reducers/cartReducer";
+import {
+  clearCart,
+  setModalSubmitted,
+} from "../../../redux/reducers/cartReducer";
 import { ModalInputsTypes, PaymentSystem } from "../../../types";
 import { InputModal } from "../InputModal";
 import { Button } from "../../UI/Button";
@@ -95,14 +98,16 @@ export const ModalCheckoutWindow: FC = () => {
         break;
       case ModalInputsTypes.cardNum:
         setInputStates((prev) => {
-          const currentCaretePosition = eventTarget.selectionStart!;
+          const currentCaretePosition = eventTarget.selectionStart as number;
           eventTarget.value = eventTarget.value.replace(/[^0-9]/g, "");
           if (eventTarget.value.length > 16)
             eventTarget.value = eventTarget.value.substring(0, 16);
           let template = "XXXX XXXX XXXX XXXX";
           let paySystem;
           const numbersArr = eventTarget.value.split("");
-          numbersArr.forEach((number) => (template = template.replace(/X/, number)));
+          numbersArr.forEach(
+            (number) => (template = template.replace(/X/, number))
+          );
           eventTarget.value = template;
           const lastXIndex = template.indexOf("X");
           const lastSpaceIndex = template.indexOf(" X");
@@ -147,13 +152,15 @@ export const ModalCheckoutWindow: FC = () => {
         break;
       case ModalInputsTypes.cardThru:
         setInputStates((prev) => {
-          const currentCaretePosition = eventTarget.selectionStart!;
+          const currentCaretePosition = eventTarget.selectionStart as number;
           eventTarget.value = eventTarget.value.replace(/[^0-9]/g, "");
           if (eventTarget.value.length > 4)
             eventTarget.value = eventTarget.value.substring(0, 4);
           let template = "XX/XX";
           const numbersArr = eventTarget.value.split("");
-          numbersArr.forEach((number) => (template = template.replace(/X/, number)));
+          numbersArr.forEach(
+            (number) => (template = template.replace(/X/, number))
+          );
           eventTarget.value = template;
           const lastXIndex = template.indexOf("X");
           const lastSpaceIndex = template.indexOf("/X");
@@ -183,13 +190,15 @@ export const ModalCheckoutWindow: FC = () => {
 
       case ModalInputsTypes.CVV:
         setInputStates((prev) => {
-          const currentCaretePosition = eventTarget.selectionStart!;
+          const currentCaretePosition = eventTarget.selectionStart as number;
           eventTarget.value = eventTarget.value.replace(/[^0-9]/g, "");
           if (eventTarget.value.length > 3)
             eventTarget.value = eventTarget.value.substring(0, 3);
           let template = "XXX";
           const numbersArr = eventTarget.value.split("");
-          numbersArr.forEach((number) => (template = template.replace(/X/, number)));
+          numbersArr.forEach(
+            (number) => (template = template.replace(/X/, number))
+          );
           eventTarget.value = template;
           const caretePosition = template.indexOf("X");
           eventTarget.selectionStart =
@@ -251,9 +260,11 @@ export const ModalCheckoutWindow: FC = () => {
 
       case ModalInputsTypes.tel:
         if (valueArrayForTel.length >= 10 && valueArrayForTel[0] === "+") {
-          const check = valueArrayForTel.slice(+valueArrayForTel[1]).map((item) => {
-            return item < "0" || item > "9" ? false : true;
-          });
+          const check = valueArrayForTel
+            .slice(+valueArrayForTel[1])
+            .map((item) => {
+              return item < "0" || item > "9" ? false : true;
+            });
           if (check.every((elem) => elem)) {
             setInputStates((prev) => ({
               ...prev,
@@ -324,7 +335,6 @@ export const ModalCheckoutWindow: FC = () => {
           Number(eventTarget.value.substring(3)) < 23 ||
           eventTarget.value.includes("X")
         ) {
-          console.log(Number(eventTarget.value.substring(0, 2)));
           setInputStates((prev) => ({
             ...prev,
             cardThru: { ...prev.cardThru, error: true, isValid: false },
@@ -369,10 +379,19 @@ export const ModalCheckoutWindow: FC = () => {
       setInputStates((prev) => ({
         name: { ...prev.name, error: prev.name.isValid ? false : true },
         tel: { ...prev.tel, error: prev.tel.isValid ? false : true },
-        address: { ...prev.address, error: prev.address.isValid ? false : true },
+        address: {
+          ...prev.address,
+          error: prev.address.isValid ? false : true,
+        },
         email: { ...prev.email, error: prev.email.isValid ? false : true },
-        cardNum: { ...prev.cardNum, error: prev.cardNum.isValid ? false : true },
-        cardThru: { ...prev.cardThru, error: prev.cardThru.isValid ? false : true },
+        cardNum: {
+          ...prev.cardNum,
+          error: prev.cardNum.isValid ? false : true,
+        },
+        cardThru: {
+          ...prev.cardThru,
+          error: prev.cardThru.isValid ? false : true,
+        },
         CVV: { ...prev.CVV, error: prev.CVV.isValid ? false : true },
       }));
     }
@@ -388,7 +407,9 @@ export const ModalCheckoutWindow: FC = () => {
             type="text"
             styleType={ModalInputsTypes.name}
             placeholder="Name Surname"
-            onChange={(event) => handleChangeValue(event, ModalInputsTypes.name)}
+            onChange={(event) =>
+              handleChangeValue(event, ModalInputsTypes.name)
+            }
             onBlur={(event) => handleBlurValue(event, ModalInputsTypes.name)}
           />
           {inputStates.name.error && (
@@ -414,7 +435,9 @@ export const ModalCheckoutWindow: FC = () => {
             type="text"
             styleType={ModalInputsTypes.address}
             placeholder="Delivery Address"
-            onChange={(event) => handleChangeValue(event, ModalInputsTypes.address)}
+            onChange={(event) =>
+              handleChangeValue(event, ModalInputsTypes.address)
+            }
             onBlur={(event) => handleBlurValue(event, ModalInputsTypes.address)}
           />
           {inputStates.address.error && (
@@ -427,7 +450,9 @@ export const ModalCheckoutWindow: FC = () => {
             type="email"
             styleType={ModalInputsTypes.email}
             placeholder="E-mail"
-            onChange={(event) => handleChangeValue(event, ModalInputsTypes.email)}
+            onChange={(event) =>
+              handleChangeValue(event, ModalInputsTypes.email)
+            }
             onBlur={(event) => handleBlurValue(event, ModalInputsTypes.email)}
           />
           {inputStates.email.error && (
@@ -442,30 +467,41 @@ export const ModalCheckoutWindow: FC = () => {
                 type="text"
                 styleType={ModalInputsTypes.cardNum}
                 placeholder="Card number"
-                onChange={(event) => handleChangeValue(event, ModalInputsTypes.cardNum)}
-                onBlur={(event) => handleBlurValue(event, ModalInputsTypes.cardNum)}
+                onChange={(event) =>
+                  handleChangeValue(event, ModalInputsTypes.cardNum)
+                }
+                onBlur={(event) =>
+                  handleBlurValue(event, ModalInputsTypes.cardNum)
+                }
               />
               <InputModal
                 value={inputStates.cardThru.value}
                 type="text"
                 styleType={ModalInputsTypes.cardThru}
                 placeholder="Card Thru"
-                onChange={(event) => handleChangeValue(event, ModalInputsTypes.cardThru)}
-                onBlur={(event) => handleBlurValue(event, ModalInputsTypes.cardThru)}
+                onChange={(event) =>
+                  handleChangeValue(event, ModalInputsTypes.cardThru)
+                }
+                onBlur={(event) =>
+                  handleBlurValue(event, ModalInputsTypes.cardThru)
+                }
               />
               <InputModal
                 value={inputStates.CVV.value}
                 type="text"
                 styleType={ModalInputsTypes.CVV}
                 placeholder="CVV"
-                onChange={(event) => handleChangeValue(event, ModalInputsTypes.CVV)}
+                onChange={(event) =>
+                  handleChangeValue(event, ModalInputsTypes.CVV)
+                }
                 onBlur={(event) => handleBlurValue(event, ModalInputsTypes.CVV)}
               />
             </div>
           </div>
           {inputStates.cardNum.error && (
             <div className={styles.form__error}>
-              Card number should contain 16 numbers and should not start with '0'!
+              Card number should contain 16 numbers and should not start with
+              '0'!
             </div>
           )}
           {inputStates.cardThru.error && (
@@ -474,7 +510,9 @@ export const ModalCheckoutWindow: FC = () => {
             </div>
           )}
           {inputStates.CVV.error && (
-            <div className={styles.form__error}>CVV should contain 3 numbers</div>
+            <div className={styles.form__error}>
+              CVV should contain 3 numbers
+            </div>
           )}
           <Button text={"Confirm"} isActive={false} onClick={submitHandler} />
         </form>
