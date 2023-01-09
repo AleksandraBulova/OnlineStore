@@ -135,7 +135,12 @@ export const cartSlice = createSlice({
       state,
       action: PayloadAction<{ limitInputValue: string }>
     ) => {
-      state.limitInputValue = action.payload.limitInputValue;
+      if (action.payload.limitInputValue <= "0") {
+        state.limitInputValue = "3";
+        state.limitOfProductsPerPage = 3;
+      } else {
+        state.limitInputValue = action.payload.limitInputValue;
+      }
     },
     setLimitOfProductsPerPage: (
       state,

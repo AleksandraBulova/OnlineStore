@@ -38,7 +38,7 @@ export const StuffingHeaderSectionProductsCart: FC = () => {
 
   const changeLimitHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const limitInputValue = event.target.value;
-    if (limitInputValue === "0" || limitInputValue === "") {
+    if (limitInputValue <= "0" || limitInputValue === "") {
       dispatch(setLimitInputValue({ limitInputValue: limitInputValue }));
     } else {
       dispatch(setLimitInputValue({ limitInputValue: limitInputValue }));
