@@ -12,8 +12,12 @@ import { Button } from "../../UI/Button";
 import styles from "./styles.module.scss";
 
 export const StuffingHeaderSectionProductsCart: FC = () => {
-  const { productsCart, limitInputValue, limitOfProductsPerPage, pageOfProductsCart } =
-    useSelector((state: RootState) => state.cart);
+  const {
+    productsCart,
+    limitInputValue,
+    limitOfProductsPerPage,
+    pageOfProductsCart,
+  } = useSelector((state: RootState) => state.cart);
 
   const dispatch = useDispatch();
 
@@ -21,7 +25,9 @@ export const StuffingHeaderSectionProductsCart: FC = () => {
     if (
       type === "plus" &&
       pageOfProductsCart !==
-        Math.ceil(getUniqueProducts(productsCart).length / limitOfProductsPerPage)
+        Math.ceil(
+          getUniqueProducts(productsCart).length / limitOfProductsPerPage
+        )
     ) {
       dispatch(changePage(pageOfProductsCart + 1));
     }
@@ -31,25 +37,17 @@ export const StuffingHeaderSectionProductsCart: FC = () => {
   };
 
   const changeLimitHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let limitInputValue = event.target.value;
-    const productInCart = getUniqueProducts(productsCart).length;
-
-    if (limitInputValue.length <= productInCart.toString().length) {
-      if (Number(limitInputValue) < 1 && limitInputValue !== "") limitInputValue = "3";
-      if (Number(limitInputValue) > productInCart)
-        limitInputValue = productInCart.toString();
-
-      if (limitInputValue.replace(/0/g, "").length === 0 || limitInputValue === "") {
-        dispatch(setLimitInputValue({ limitInputValue: limitInputValue }));
-      } else {
-        dispatch(setLimitInputValue({ limitInputValue: limitInputValue }));
-        dispatch(
-          setLimitOfProductsPerPage({
-            limit: Number(limitInputValue),
-            page: pageOfProductsCart,
-          })
-        );
-      }
+    const limitInputValue = event.target.value;
+    if (limitInputValue <= "0" || limitInputValue === "") {
+      dispatch(setLimitInputValue({ limitInputValue: limitInputValue }));
+    } else {
+      dispatch(setLimitInputValue({ limitInputValue: limitInputValue }));
+      dispatch(
+        setLimitOfProductsPerPage({
+          limit: Number(limitInputValue),
+          page: pageOfProductsCart,
+        })
+      );
     }
   };
 
@@ -70,12 +68,22 @@ export const StuffingHeaderSectionProductsCart: FC = () => {
       <div className={styles.pageNumber}>
         Page:
         <div className={styles.pageNumber__controllers}>
-          <Button text="<" isActive={false} onClick={() => changePageHandler("minus")} />
+          <Button
+            text="<"
+            isActive={false}
+            onClick={() => changePageHandler("minus")}
+          />
           <div>
             {pageOfProductsCart}/
-            {Math.ceil(getUniqueProducts(productsCart).length / limitOfProductsPerPage)}
+            {Math.ceil(
+              getUniqueProducts(productsCart).length / limitOfProductsPerPage
+            )}
           </div>
-          <Button text=">" isActive={false} onClick={() => changePageHandler("plus")} />
+          <Button
+            text=">"
+            isActive={false}
+            onClick={() => changePageHandler("plus")}
+          />
         </div>
       </div>
     </>

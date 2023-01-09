@@ -251,6 +251,7 @@ export const productsSlice = createSlice({
       state.sortType.value = "default";
       state.sortType.label = "Without sorting";
       state.search = "";
+      state.layoutType = 0;
       window.history.replaceState(null, "Online store", `/`);
     },
     updateFilters: (state) => {
