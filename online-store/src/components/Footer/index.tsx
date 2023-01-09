@@ -1,6 +1,6 @@
-import { FC } from "react"
+import { FC } from "react";
 
-import styles from "./styles.module.scss"
+import styles from "./styles.module.scss";
 
 export const Footer: FC = () => {
   return (
@@ -8,11 +8,14 @@ export const Footer: FC = () => {
       <div className={styles.authorInfo}>
         <div className={styles.authorInfo__item}>
           <a href="https://rs.school/js/">
-            <img src="https://rs.school/images/rs_school_js.svg" alt="RS School" />
+            <img
+              src="https://rs.school/images/rs_school_js.svg"
+              alt="RS School"
+            />
           </a>
         </div>
         <div className={styles.authorInfo__item}>
-          <span>2022</span>
+          <span>2023</span>
         </div>
         <div className={styles.authorInfo__item}>
           <div className={styles.github}>
@@ -36,5 +39,5 @@ export const Footer: FC = () => {
         </div>
       </div>
     </footer>
-  )
-}
+  );
+};

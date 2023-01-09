@@ -506,7 +506,7 @@ export const ModalCheckoutWindow: FC = () => {
           )}
           {inputStates.cardThru.error && (
             <div className={styles.form__error}>
-              CardTru should contain month(01-12) and year not yearly 22
+              CardTru should contain month(01-12) and year not yearly 23
             </div>
           )}
           {inputStates.CVV.error && (
