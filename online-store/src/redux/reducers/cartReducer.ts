@@ -14,6 +14,8 @@ export interface IProductsState {
   pageOfProductsCart: number;
   searchPromo: string;
   isModalShown: boolean;
+  isModalSubmitted: boolean;
+  secondsToRedirect: number;
   promo: {
     [key: string]: boolean;
   };
@@ -35,6 +37,8 @@ const initialState: IProductsState = JSON.parse(state) || {
   pageOfProductsCart: page ? Number(page) : 1,
   searchPromo: "",
   isModalShown: false,
+  isModalSubmitted: false,
+  secondsToRedirect: 3,
   promo: {
     XK3M9S: false,
     DV8Q6L: false,
@@ -53,6 +57,25 @@ export const cartSlice = createSlice({
         state.productsCart = [...state.productsCart, action.payload];
       }
       localStorage.setItem("state", JSON.stringify(state));
+    },
+    clearCart: (state) => {
+      state.productsCart = [];
+      state.defultSumProducts = 0;
+      state.sumProducts = 0;
+      state.discount = [];
+      state.limitInputValue = "3";
+      state.limitOfProductsPerPage = 3;
+      state.pageOfProductsCart = 1;
+      state.searchPromo = "";
+      state.secondsToRedirect = 3;
+      state.promo.XK3M9S = false;
+      state.promo.DV8Q6L = false;
+    },
+    setModalSubmitted: (state, action: PayloadAction<boolean>) => {
+      state.isModalSubmitted = action.payload;
+    },
+    setSecondsToRedirect: (state, action: PayloadAction<number>) => {
+      state.secondsToRedirect = action.payload;
     },
     resetProductsCart: (
       state,
@@ -171,6 +194,9 @@ export const cartSlice = createSlice({
 
 export const {
   setProductsCart,
+  clearCart,
+  setModalSubmitted,
+  setSecondsToRedirect,
   resetProductsCart,
   setSumProducts,
   setLimitInputValue,
