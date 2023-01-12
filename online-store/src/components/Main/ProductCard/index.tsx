@@ -12,12 +12,12 @@ import { Button } from "../../UI/Button";
 
 import styles from "./styles.module.scss";
 
-interface IProductCardProps {
+interface ProductCardProps {
   product: Product;
   layoutType: LayoutType;
 }
 
-export const ProductCard: FC<IProductCardProps> = ({ product, layoutType }) => {
+export const ProductCard: FC<ProductCardProps> = ({ product, layoutType }) => {
   const navigate = useNavigate();
 
   const productStyle = [styles.product];

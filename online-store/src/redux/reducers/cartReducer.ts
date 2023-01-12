@@ -4,7 +4,7 @@ import { Product } from "../../types";
 import { getQueryCart } from "../../utils/getQueryCart";
 import { getUniqueProducts } from "../../utils/getUniqueProducts";
 
-export interface IProductsState {
+export interface ProductsState {
   productsCart: Product[];
   defultSumProducts: number;
   sumProducts: number;
@@ -27,7 +27,7 @@ const page = urlParams.get("page");
 
 const state = localStorage.getItem("state") as string;
 
-const initialState: IProductsState = JSON.parse(state) || {
+const initialState: ProductsState = JSON.parse(state) || {
   productsCart: [],
   defultSumProducts: 0,
   sumProducts: 0,
@@ -138,6 +138,8 @@ export const cartSlice = createSlice({
       if (action.payload.limitInputValue <= "0") {
         state.limitInputValue = "3";
         state.limitOfProductsPerPage = 3;
+        state.pageOfProductsCart = 1;
+        getQueryCart(state.limitOfProductsPerPage, state.pageOfProductsCart);
       } else {
         state.limitInputValue = action.payload.limitInputValue;
       }
@@ -191,7 +193,14 @@ export const cartSlice = createSlice({
             ...state.discount.slice(indexRemove + 1),
           ];
 
-          state.sumProducts = state.defultSumProducts;
+          if (state.discount.length !== 0) {
+            const discount = state.discount.reduce((acc, elem) => acc + elem);
+            state.sumProducts =
+              state.defultSumProducts -
+              state.defultSumProducts * (discount / 100);
+          } else {
+            state.sumProducts = state.defultSumProducts;
+          }
         } else {
           const discount = state.discount.reduce((acc, elem) => acc + elem);
           state.sumProducts =

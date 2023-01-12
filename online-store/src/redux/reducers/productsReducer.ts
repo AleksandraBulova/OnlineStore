@@ -17,7 +17,7 @@ import {
 } from "../../constants/sortOptions";
 import { getInitialBrandFilters } from "../../utils/getInitialBrandFilters";
 
-export interface IProductsState {
+export interface ProductsState {
   products: Product[];
   viewProducts: Product[];
   sortType: SortOption;
@@ -69,36 +69,50 @@ const initialStockFilterQuery: DualSliderFilter = {
   maxValueIndex: maxIndexStock,
 };
 
-const initialState: IProductsState = {
-  products: products,
-  viewProducts: products,
-  sortType: sortOptions.find((el) => el.value === sortType) || {
-    value: "default",
-    label: "Without sorting",
-  },
-  layoutType: view === "horizontal" ? 1 : 0,
-  layoutFirstChange: view ? true : false,
-  search,
-  filterCategory: Object.fromEntries(
-    Object.entries({
-      Wine: false,
-      Whiskey: false,
-      Cognac: false,
-      Vodka: false,
-    }).map((el: [string, boolean]) =>
-      categories?.includes(el[0]) ? [el[0], true] : [el[0], false]
-    )
-  ),
-  filterBrand: Object.fromEntries(
-    Object.entries(getInitialBrandFilters(products)).map(
-      (el: [string, boolean]) =>
-        brands?.includes(el[0]) ? [el[0], true] : [el[0], false]
-    )
-  ),
-  filterPrices: price ? initialPricesFilterQuery : initialPricesFilter,
-  filterStocks: stock ? initialStockFilterQuery : initialStocksFilter,
-  filterChangedBy: FilterControllers.initial,
-  activeImg: 0,
+const getInitialStateWithoutViewProducts: Omit<ProductsState, "viewProducts"> =
+  {
+    products: products,
+    sortType: sortOptions.find((el) => el.value === sortType) || {
+      value: "default",
+      label: "Without sorting",
+    },
+    layoutType: view === "horizontal" ? 1 : 0,
+    layoutFirstChange: view ? true : false,
+    search,
+    filterCategory: Object.fromEntries(
+      Object.entries({
+        Wine: false,
+        Whiskey: false,
+        Cognac: false,
+        Vodka: false,
+      }).map((el: [string, boolean]) =>
+        categories?.includes(el[0]) ? [el[0], true] : [el[0], false]
+      )
+    ),
+    filterBrand: Object.fromEntries(
+      Object.entries(getInitialBrandFilters(products)).map(
+        (el: [string, boolean]) =>
+          brands?.includes(el[0]) ? [el[0], true] : [el[0], false]
+      )
+    ),
+    filterPrices: price ? initialPricesFilterQuery : initialPricesFilter,
+    filterStocks: stock ? initialStockFilterQuery : initialStocksFilter,
+    filterChangedBy: FilterControllers.initial,
+    activeImg: 0,
+  };
+
+const initialState: ProductsState = {
+  ...getInitialStateWithoutViewProducts,
+  viewProducts: getFiltersState(products, {
+    sortType: getInitialStateWithoutViewProducts.sortType,
+    search: getInitialStateWithoutViewProducts.search,
+    filterCategory: getInitialStateWithoutViewProducts.filterCategory,
+    filterBrand: getInitialStateWithoutViewProducts.filterBrand,
+    filterPrices: getInitialStateWithoutViewProducts.filterPrices,
+    filterStocks: getInitialStateWithoutViewProducts.filterStocks,
+    layoutType: getInitialStateWithoutViewProducts.layoutType,
+    layoutFirstChange: getInitialStateWithoutViewProducts.layoutFirstChange,
+  }),
 };
 
 export const productsSlice = createSlice({
