@@ -1,5 +1,14 @@
 import { DualSliderFilter, LayoutType, Product, SortOption } from "../types";
-import { getSortTypeQuery, getCaterogyQuery, getBrandQuery } from "./getFiltersQuery";
+import {
+  getSortTypeQuery,
+  getSearchQuery,
+  getCaterogyQuery,
+  getBrandQuery,
+  getlayoutTypeQuery,
+  getPriceQuery,
+  getStockQuery,
+} from "./getFiltersQuery";
+import { setQueryFilters } from "./setQueryFilters";
 
 export interface FiltersState {
   sortType: SortOption;
@@ -85,41 +94,33 @@ export const getFiltersState = (products: Product[], filters: FiltersState) => {
   });
 
   const sortTypeQuery = getSortTypeQuery(filters.sortType);
-  const searchQuery = filters.search ? `&search=${filters.search}` : "";
+  const searchQuery = getSearchQuery(filters.search);
   const categoryQuery = getCaterogyQuery(filters.filterCategory);
   const brandsQuery = getBrandQuery(filters.filterBrand);
-  const layoutType = filters.layoutType === 0 ? "vertical" : "horizontal";
-  const layoutTypeQuery = filters.layoutFirstChange ? `&view=${layoutType}` : "";
-  const priceMin = filters.filterPrices.values[filters.filterPrices.minValueIndex];
-  const priceMax = filters.filterPrices.values[filters.filterPrices.maxValueIndex];
-  const priceQuery =
-    priceMin > 5 || priceMax < 7812 ? `&price=${priceMin}|${priceMax}` : "";
-  const stockMin = filters.filterStocks.values[filters.filterStocks.minValueIndex];
-  const stockMax = filters.filterStocks.values[filters.filterStocks.maxValueIndex];
-  const stockQuery =
-    stockMin > 1 || stockMax < 115 ? `&stock=${stockMin}|${stockMax}` : "";
+  const layoutTypeQuery = getlayoutTypeQuery(
+    filters.layoutType,
+    filters.layoutFirstChange
+  );
+  const priceQuery = getPriceQuery(
+    filters.filterPrices.values,
+    filters.filterPrices.minValueIndex,
+    filters.filterPrices.maxValueIndex
+  );
+  const stockQuery = getStockQuery(
+    filters.filterStocks.values,
+    filters.filterStocks.minValueIndex,
+    filters.filterStocks.maxValueIndex
+  );
 
-  if (
-    window.location.pathname === "/" &&
-    (sortTypeQuery ||
-      searchQuery ||
-      categoryQuery ||
-      brandsQuery ||
-      priceMin > 5 ||
-      priceMax < 7812 ||
-      stockMin > 1 ||
-      stockMax < 115 ||
-      layoutType)
-  ) {
-    window.history.replaceState(
-      null,
-      "Online store",
-      `/${sortTypeQuery}${searchQuery}${categoryQuery}${brandsQuery}${priceQuery}${stockQuery}${layoutTypeQuery}`.replace(
-        "&",
-        "?"
-      )
-    );
-  }
+  setQueryFilters(
+    sortTypeQuery,
+    searchQuery,
+    categoryQuery,
+    brandsQuery,
+    priceQuery,
+    stockQuery,
+    layoutTypeQuery
+  );
 
   return filteredProducts;
 };
