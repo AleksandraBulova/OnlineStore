@@ -1,6 +1,6 @@
 import { DualSliderFilter, LayoutType, Product, SortOption } from "../types";
 
-export interface IFiltersState {
+export interface FiltersState {
   sortType: SortOption;
   search: string;
   filterCategory: {
@@ -15,10 +15,7 @@ export interface IFiltersState {
   layoutFirstChange: boolean;
 }
 
-export const getFiltersState = (
-  products: Product[],
-  filters: IFiltersState
-) => {
+export const getFiltersState = (products: Product[], filters: FiltersState) => {
   let filteredProducts: Product[] = products;
 
   switch (filters.sortType.value) {
@@ -131,8 +128,8 @@ export const getFiltersState = (
     stockMin > 1 || stockMax < 115 ? `&stock=${stockMin}|${stockMax}` : "";
 
   if (
-    (window.location.pathname === "/",
-    sortType ||
+    window.location.pathname === "/" &&
+    (sortType ||
       search ||
       category.length ||
       brands.length ||

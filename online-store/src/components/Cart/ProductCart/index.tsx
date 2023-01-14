@@ -12,12 +12,12 @@ import { Button } from "../../UI/Button";
 
 import styles from "./styles.module.scss";
 
-interface IProductCardProps {
+interface ProductCardProps {
   product: Product;
   index: number;
 }
 
-export const ProductCart: FC<IProductCardProps> = ({ product, index }) => {
+export const ProductCart: FC<ProductCardProps> = ({ product, index }) => {
   const navigate = useNavigate();
   const { productsCart, limitOfProductsPerPage, pageOfProductsCart } =
     useSelector((state: RootState) => state.cart);
@@ -92,7 +92,10 @@ export const ProductCart: FC<IProductCardProps> = ({ product, index }) => {
             }
           />
         </div>
-        <div className={styles.value__price}>{`${product.price} $`}</div>
+        <div className={styles.value__price}>{`${
+          product.price *
+          productsCart.filter((item) => item.id === product.id).length
+        } $`}</div>
       </div>
     </div>
   );
