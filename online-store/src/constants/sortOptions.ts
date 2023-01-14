@@ -1,5 +1,5 @@
 import { products } from "../products";
-import { brandsFilter, DualSliderFilter, Product, SortOption } from "../types";
+import { DualSliderFilter, Product, SortOption } from "../types";
 
 export const sortOptions: SortOption[] = [
   {
@@ -43,9 +43,7 @@ const productStocks: number[] = Array.from(
   new Set(
     products
       .map((product: Product) => product.stock)
-      .sort(
-        (firstStock: number, secondStock: number) => firstStock - secondStock
-      )
+      .sort((firstStock: number, secondStock: number) => firstStock - secondStock)
   )
 );
 
