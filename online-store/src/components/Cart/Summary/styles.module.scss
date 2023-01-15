@@ -1,0 +1,56 @@
+@import "../../../styles/colors";
+
+.summary {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 0.5em;
+  height: 100%;
+
+  &__title {
+    margin-right: 0.5em;
+    font-weight: 600;
+    color: $primary-dark;
+  }
+
+  &__price {
+    color: $accent-red;
+  }
+
+  &__input {
+    text-align: center;
+    border: none;
+    border-bottom: 2px solid $accent-red;
+    outline: none;
+  }
+
+  &__addPromo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5em;
+    width: 100%;
+  }
+
+  &__promoInfo {
+    font-size: 0.8em;
+    text-shadow: 0 0 10px $accent-red, 0 0 20px $accent-orange;
+  }
+
+  &__promo {
+    font-size: 0.7em;
+  }
+
+  & button,
+  & header {
+    width: 100%;
+  }
+
+  & header {
+    height: fit-content;
+    margin-bottom: 0;
+    padding: 0;
+  }
+}

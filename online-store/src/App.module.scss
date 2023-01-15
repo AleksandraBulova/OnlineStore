@@ -1,0 +1,23 @@
+@import "./styles/normalize";
+@import "./styles/colors";
+@import "./styles/templates";
+
+body {
+  position: relative;
+  @include primaryText(16px, 400);
+  color: $primary-dark;
+  background-color: $primary-light;
+}
+
+.scrollHidden {
+  overflow: hidden;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 0 1em;
+  max-width: 1440px;
+  min-height: 100vh;
+}

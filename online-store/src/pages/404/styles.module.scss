@@ -1,0 +1,28 @@
+@import "../../styles/colors";
+@import "../../styles/templates";
+
+.pageNotFound {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex-grow: 1;
+
+  &__404 {
+    @include accentText(5em, 800);
+    color: $accent-red;
+  }
+
+  &__logo {
+    width: 80px;
+    height: 80px;
+    background-image: url("../../assets/logo.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  &__text {
+    font-size: 2em;
+  }
+}

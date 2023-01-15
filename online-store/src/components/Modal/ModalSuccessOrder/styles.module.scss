@@ -1,0 +1,24 @@
+@import "../../../styles/colors";
+@import "../../../styles/templates";
+
+.order {
+  @include accentText(2em, 800);
+  text-align: center;
+  color: $accent-red;
+  animation: appear 400ms ease-in-out;
+}
+
+.redirect {
+  font-size: 1.5em;
+  text-align: center;
+  animation: appear 400ms ease-in-out;
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

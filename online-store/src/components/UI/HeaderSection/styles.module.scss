@@ -1,0 +1,13 @@
+@import "../../../styles/colors";
+@import "../../../styles/templates.scss";
+
+.productsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+  height: 50px;
+  margin-bottom: 0.5em;
+  padding: 0.5em 0;
+  border-bottom: 2px solid $accent-red;
+}

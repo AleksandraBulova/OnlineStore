@@ -1,0 +1,29 @@
+@import "../../../styles/colors";
+@import "../../../styles/templates.scss";
+
+.btn {
+  padding: 0.2em 0.7em;
+  font-size: 0.8em;
+  color: $primary-light;
+  background-color: $primary-dark;
+  border: none;
+  border-radius: 10px;
+  @include transition;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $accent-red;
+  }
+
+  &:active {
+    opacity: 0.8;
+  }
+
+  &.active {
+    background-color: $accent-red;
+
+    &:hover {
+      background-color: $accent-orange;
+    }
+  }
+}

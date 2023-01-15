@@ -1,0 +1,27 @@
+@import "../../../styles/colors";
+@import "../../../styles/templates";
+
+.promo {
+  @include transition;
+
+  &__title {
+    width: 100%;
+    text-align: center;
+    color: $accent-red;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5em;
+    width: 100%;
+  }
+
+  &__code {
+    font-size: 0.7em;
+    font-weight: 600;
+    color: $accent-orange;
+  }
+}

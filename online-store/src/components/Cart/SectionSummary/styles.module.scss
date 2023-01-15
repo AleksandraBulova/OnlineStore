@@ -1,0 +1,7 @@
+@import "../../../styles/templates";
+
+.title {
+  width: 100%;
+  @include accentText(2em, 600);
+  text-align: center;
+}
