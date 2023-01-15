@@ -6,7 +6,7 @@ import styles from "./styles.module.scss";
 
 export const MainPage: FC = () => {
   return (
-    <main className={styles.mainPage}>
+    <main className={styles.mainPage} data-testid="mainPage-content">
       <SectionFilters />
       <SectionProducts />
     </main>
