@@ -10,25 +10,17 @@ import styles from "./styles.module.scss";
 
 export const ProductPage: FC = () => {
   const { id } = useParams();
-  const { products, activeImg } = useSelector(
-    (state: RootState) => state.products
-  );
+  const { products, activeImg } = useSelector((state: RootState) => state.products);
   const { productsCart } = useSelector((state: RootState) => state.cart);
-  const product = products.find(
-    (product) => product.id === Number(id)
-  ) as Product;
+  const product = products.find((product) => product.id === Number(id)) as Product;
   const isInCart = useMemo(() => {
     return productsCart.findIndex((elem) => elem.id === product.id);
   }, [product, productsCart]);
 
   return (
-    <main className={styles.productPage}>
+    <main className={styles.productPage} data-testid="productPage-content">
       <BreadCrumbs product={product} />
-      <ProductCard
-        product={product}
-        activeImg={activeImg}
-        isInCart={isInCart}
-      />
+      <ProductCard product={product} activeImg={activeImg} isInCart={isInCart} />
     </main>
   );
 };

@@ -21,27 +21,20 @@ export const ProductCard: FC<ProductCardProps> = ({ product, layoutType }) => {
   const navigate = useNavigate();
 
   const productStyle = [styles.product];
-  if (LayoutType[layoutType] === "vertical")
-    productStyle.push(styles.product_vertical);
+  if (LayoutType[layoutType] === "vertical") productStyle.push(styles.product_vertical);
   if (LayoutType[layoutType] === "horizontal")
     productStyle.push(styles.product_gorizontal);
 
   const { productsCart } = useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch();
 
-  const addToCard = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    product: Product
-  ) => {
+  const addToCard = (event: React.MouseEvent<HTMLButtonElement>, product: Product) => {
     event.stopPropagation();
     dispatch(setProductsCart(product));
     dispatch(setSumProducts());
   };
 
-  const dropToCard = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    product: Product
-  ) => {
+  const dropToCard = (event: React.MouseEvent<HTMLButtonElement>, product: Product) => {
     event.stopPropagation();
     dispatch(resetProductsCart({ product, buttonClick: "drop" }));
     dispatch(setSumProducts());
@@ -55,6 +48,7 @@ export const ProductCard: FC<ProductCardProps> = ({ product, layoutType }) => {
     <div
       className={productStyle.join(" ")}
       onClick={() => navigate(`/product/${product.id}/${product.name}`)}
+      data-testid={product.id}
     >
       <div className={styles.img}>
         <div className={styles.img__pagination_left}></div>
@@ -88,10 +82,8 @@ export const ProductCard: FC<ProductCardProps> = ({ product, layoutType }) => {
         isActive={Boolean(isInCart)}
         onClick={
           isInCart
-            ? (event: React.MouseEvent<HTMLButtonElement>) =>
-                dropToCard(event, product)
-            : (event: React.MouseEvent<HTMLButtonElement>) =>
-                addToCard(event, product)
+            ? (event: React.MouseEvent<HTMLButtonElement>) => dropToCard(event, product)
+            : (event: React.MouseEvent<HTMLButtonElement>) => addToCard(event, product)
         }
       />
     </div>

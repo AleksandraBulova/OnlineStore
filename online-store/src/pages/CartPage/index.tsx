@@ -39,7 +39,7 @@ export const CartPage: FC = () => {
   }, [isModalSubmitted, secondsToRedirect]);
 
   return (
-    <main className={styles.cartPage}>
+    <main className={styles.cartPage} data-testid="cartPage-content">
       {productsCart.length === 0 ? (
         <div className={styles.empty}>
           <div className={styles.empty__img}></div>
